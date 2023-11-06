@@ -1,5 +1,5 @@
 <?php
-namespace kapcco\views;
+namespace kapcco\view;
 
 use Jenssegers\Blade\Blade;
 
