@@ -8,7 +8,9 @@ class Router{
     private $defaultRoute;
 
     public function init_routes(){
-        $this->setDefaultRoute(getenv('APP_NAME') .'\controller\AuthController@index');
+        $this->setDefaultRoute('kapcco\controller\AuthController@index');
+
+        $this->addRoute('/kapcco/register/', 'kapcco\controller\AuthController@render_register_view');
          
     }
 
