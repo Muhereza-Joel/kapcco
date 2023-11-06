@@ -1,0 +1,20 @@
+{
+    "name": "stella/kapcco",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Muhereza Joel",
+            "email": "muherezajoel40@gmail.com"
+        }
+    ],
+    "require": {
+        "jenssegers/blade": "^1.1",
+        "vlucas/phpdotenv": "^4.3"
+    },
+
+    "autoload": {
+        "psr-4": {
+            "kapcco\\": "C:\\wamp64\\www\\kapcco"
+        }
+    }
+}
