@@ -9,6 +9,7 @@ $envData = [
     'DB_DATABASE' => 'kapcco_store_db',
     'DB_USERNAME' => 'root',
     'DB_PASSWORD' => '',
+    'APP_NAME' => 'kapcco',
 ];
 
 // Generate the contents for the new .env file
