@@ -1,9 +1,15 @@
 <?php
+
+use Dotenv\Dotenv;
+
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
 require_once "vendor/autoload.php";
 require_once "autoload.php";
+
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->load();
 
 $router = new kapcco\core\Router();
 
