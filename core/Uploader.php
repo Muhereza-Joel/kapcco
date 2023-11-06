@@ -10,16 +10,23 @@ class Uploader{
         $this->filename = basename($_FILES[$key]['name']);
         $this->file_data = $_FILES[$key]['tmp_name'];
     }
-
     public function save_in($folder){
         $this->file_destination = $folder;
     }
 
+    private function generateUniqueFilename() {
+        $originalExtension = pathinfo($this->filename, PATHINFO_EXTENSION);
+        $uniqueFilename = uniqid() . '.' . $originalExtension;
+        return $uniqueFilename;
+    }
+
+
     public function save(){
-        $name = $this->file_destination . $this->filename;
+        $uniqueFilename = $this->generateUniqueFilename();
+        $name = $this->file_destination . $uniqueFilename;
         $success = move_uploaded_file($this->file_data, $name);
 
-        return $success;
+        return $success ? $uniqueFilename : false;
     }
 
     public function get_file_name(){
