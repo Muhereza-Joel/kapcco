@@ -12,7 +12,7 @@
 
                             <div class="d-flex justify-content-center py-4">
                                 <a href="/<?php echo e($appName); ?>" class="logo d-flex align-items-center w-auto">
-                                    <img src="assets/img/logo2.png" alt="kapcco logo" style="width: 200px;">
+                                    <img src="/<?php echo e($appName); ?>/assets/img/logo2.png" alt="kapcco logo" style="width: 200px;">
                                     <span class="d-none d-lg-block mt-3">Coffe Store Management Information System</span>
                                 </a>
                             </div><!-- End Logo -->
@@ -50,6 +50,7 @@
                                                     <button class="btn btn-primary w-100" type="submit">Login</button>
                                                 </div>
                                                 <div class="col-12">
+                                                    <a href="/<?php echo e($appName); ?>/create-profile/">Create Profile</a>
                                                     <p class="small mb-0">If you don't have account? <a href="/<?php echo e($appName); ?>/register/">click here to</a> create an account</p>
                                                 </div>
                                             </form>

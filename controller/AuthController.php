@@ -24,6 +24,16 @@ class AuthController{
         echo ($html);
     }
 
+    public function render_create_profile_view(){
+        $blade_view = new BladeView();
+        $html = $blade_view->render('createProfile', [
+            'pageTitle' => "KAPCCO Auth-Register",
+            'appName' => getenv('APP_NAME'),
+        ]);
+
+        echo ($html);
+    }
+
 }
 
 
