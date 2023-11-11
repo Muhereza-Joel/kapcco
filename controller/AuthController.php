@@ -1,6 +1,7 @@
 <?php
 namespace kapcco\controller;
 
+use Illuminate\Support\Facades\URL;
 use kapcco\model\User;
 use kapcco\view\BladeView;
 
@@ -37,6 +38,11 @@ class AuthController{
 
     public function sign_in_user(){
         User::login();
+    }
+
+    public function create_account(){
+        $user = new User();
+        $user->add_user();
     }
 
 }

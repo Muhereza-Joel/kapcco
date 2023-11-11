@@ -96,6 +96,41 @@ class User{
       
         return $user_profile;
       }
+
+      public function add_user(){
+        $request = Request::capture();
+        
+        $email = $request->input('email');
+        $username = $request->input('username');
+        $password = $request->input('password');
+
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+        $new_user = new User();
+        $user = $new_user->get_user($username, $email);
+
+        if($user){
+            $response = ['message' => 'Username or email already taken..'];
+            $httpStatus = 401;
+
+            Request::send_response($httpStatus, $response);
+
+        }
+        
+        if(!$user){
+            $query = "INSERT INTO app_users(username, email, password) VALUES(?, ?, ?)";
+            
+            $stmt = $this->database->prepare($query);
+            $stmt->bind_param("sss", $username, $email, $hashed_password);
+            $stmt->execute();
+
+            $response = ['message' => 'Account created, you can now login'];
+            $httpStatus = 200;
+            
+            Request::send_response($httpStatus, $response);
+        }
+
+      }
 }
 
 ?>

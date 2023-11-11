@@ -27,7 +27,10 @@
                     <p class="text-center small">Enter your personal details to create account</p>
                   </div>
 
-                  <form class="row g-3 needs-validation" novalidate>
+                  <div id="invalid-registration" class="alert alert-danger alert-dismissible fade d-none p-1" role="alert">
+                      <span class="text-center"></span>
+                   </div>
+                  <form id="registration-form" class="row g-3 needs-validation" novalidate>
 
                     <div class="col-12">
                       <label for="yourEmail" class="form-label">Your Email</label>
@@ -52,7 +55,7 @@
 
                     
                     <div class="col-12">
-                      <button class="btn btn-primary w-100" type="submit">Create Account</button>
+                      <button id="submit-button" class="btn btn-primary w-100" type="submit">Create Account</button>
                     </div>
                     <div class="col-12">
                       <p class="small mb-0">If you have an account already? <a href="/{{$appName}}/auth/login/">Click here</a> to login</p>
@@ -70,7 +73,7 @@
                         <h5 class="fw-bold text-dark mt-2">Account Approval</h5>
                         Once you sign up, your account will be pending until the validation ends and laiter it will be active
                          
-                        <div class="alert alert-danger mt-2">
+                        <div class="alert alert-warning mt-2">
                            <strong>Note your username and password,</strong> because you will use it all the time to login to your account
                         </div>
                      
@@ -91,3 +94,49 @@
   </main><!-- End #main -->
 
   @include('partials/footer')
+
+  <script>
+    $(document).ready(function(){
+       $('#registration-form').submit(function(e){
+          e.preventDefault();
+
+          let formData = $(this).serialize();
+
+          $.ajax({
+            method: 'post',
+            url: '/kapcco/auth/create-account/',
+            data: formData,
+            success: function(response){
+
+              $('#invalid-registration').removeClass('alert-danger')
+              $('#invalid-registration').removeClass('d-none')
+              $('#invalid-registration').addClass('alert-success')
+              $('#invalid-registration').addClass('show')
+              $('#invalid-registration').fadeIn();
+              $('#invalid-registration span').text(response.message);
+              $('#submit-button').prop('disabled', 'true');
+
+              setTimeout(function(){
+                window.location.replace("http://localhost/kapcco/")
+              }, 3000)
+
+              
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+              if (jqXHR.status === 401) {
+                $('#invalid-registration').removeClass('d-none')
+                $('#invalid-registration').removeClass('alert-success')
+                $('#invalid-registration').addClass('alert-danger')
+                $('#invalid-registration').addClass('show')
+                $('#invalid-registration').fadeIn();
+                $('#invalid-registration span').text(jqXHR.responseJSON.message);
+
+                setTimeout(function(){
+                  $('#invalid-registration').fadeOut();
+              }, 3000)
+              }
+            }
+          })
+       })
+    })
+  </script>
