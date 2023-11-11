@@ -2,9 +2,11 @@
 namespace kapcco\core;
 
 class Session{
+    //TODO Follow Up About Implementing secure sessions
 
     public static function start(){
         if(session_status() == PHP_SESSION_NONE){
+            session_name(getenv('APP_NAME'));
             session_start();
         }
     }
