@@ -1,6 +1,7 @@
 <?php
 namespace kapcco\controller;
 
+use kapcco\model\User;
 use kapcco\view\BladeView;
 
 class AuthController{
@@ -32,6 +33,10 @@ class AuthController{
         ]);
 
         echo ($html);
+    }
+
+    public function sign_in_user(){
+        User::login();
     }
 
 }

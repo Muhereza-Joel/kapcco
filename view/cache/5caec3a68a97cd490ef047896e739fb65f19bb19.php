@@ -12,6 +12,8 @@
 
 <!-- Template Main JS File -->
 <script src="/<?php echo e($appName); ?>/assets/js/main.js"></script>
+<script src="/<?php echo e($appName); ?>/assets/js/jquery.min.js"></script>
+<script src="/<?php echo e($appName); ?>/assets/js/moments.js"></script>
 
 </body>
 

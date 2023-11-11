@@ -13,6 +13,7 @@ class Router{
         $this->addRoute('/kapcco/auth/register/', 'kapcco\controller\AuthController@render_register_view');
         $this->addRoute('/kapcco/auth/login/', 'kapcco\controller\AuthController@index');
         $this->addRoute('/kapcco/auth/create-profile/', 'kapcco\controller\AuthController@render_create_profile_view');
+        $this->addRoute('/kapcco/auth/login/sign-in/', 'kapcco\controller\AuthController@sign_in_user');
          
     }
 

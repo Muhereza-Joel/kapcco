@@ -29,8 +29,10 @@
                                                 <p class="text-center small">Enter your username & password to login</p>
                                             </div>
 
-                                            <form class="row g-3 needs-validation" novalidate>
-
+                                            <div id="invalid-login" class="alert alert-danger alert-dismissible fade d-none p-1" role="alert">
+                                                <span class="text-center"></span>
+                                            </div>
+                                            <form id="login-form" class="row g-3 needs-validation" novalidate>
                                                 <div class="col-12">
                                                     <label for="yourUsername" class="form-label">Username or Email</label>
                                                     <div class="input-group has-validation">
@@ -85,3 +87,41 @@
         </div>
     </main><!-- End #main -->
     @include('partials/footer')
+
+    <script>
+        $(document).ready(function(){
+            $('#login-form').submit(function(e){
+                e.preventDefault();
+
+                let formData = $(this).serialize();
+
+                $.ajax({
+                    method : 'post',
+                    url: '/kapcco/auth/login/sign-in/',
+                    data: formData,
+                    success: function(response){
+                        if(response.status == 200){
+                            alert("Logged In Now")
+
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown){
+                        if (jqXHR.status === 401) {
+
+                            $('#invalid-login').removeClass('d-none');
+                            $('#invalid-login').addClass('show');
+                            $('#invalid-login').fadeIn();
+                            $('#invalid-login span').text(jqXHR.responseJSON.message);
+                            
+                            setTimeout(function(){
+                                $('#invalid-login').fadeOut();
+                                $('#login-form')[0].reset();
+    
+                            }, 3000)
+                        }
+
+                    }
+                })
+            })
+        })
+    </script>
