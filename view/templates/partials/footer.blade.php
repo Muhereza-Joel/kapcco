@@ -12,6 +12,8 @@
 
 <!-- Template Main JS File -->
 <script src="/{{$appName}}/assets/js/main.js"></script>
+<script src="/{{$appName}}/assets/js/jquery.min.js"></script>
+<script src="/{{$appName}}/assets/js/moments.js"></script>
 
 </body>
 
