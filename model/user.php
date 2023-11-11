@@ -19,7 +19,7 @@ class User{
     }
 
 
-    public static function login(){
+    public  function login(){
         $request = Request::capture();
         
         $username = $request->input('username');
@@ -33,10 +33,10 @@ class User{
             if($user && password_verify($password, $user['password'])){
                 Session::start();
                 if($user['profile_created'] == true){
-                    $user_data = self::get_user_data($user['id']);
+                    $user_data = $this->get_user_data($user['id']);
                     Session::set('user_id', $user['id']);
                     Session::set('username', $user['username']);
-                    Session::set('avator', $user_data['photo']);
+                    Session::set('avator', $user_data['image_url']);
                     Session::set('role', $user['role']);
                     
                   } else{
@@ -51,7 +51,8 @@ class User{
                       'message' => 'Authentication successful',
                       'role' => $user['role'],
                       'profileCreated' => $user['profile_created'],
-                      'username' => $user['username']
+                      'username' => $user['username'],
+                      'approved' => $user['approved']
                   ];
                   $httpStatus = 200;
             } else{

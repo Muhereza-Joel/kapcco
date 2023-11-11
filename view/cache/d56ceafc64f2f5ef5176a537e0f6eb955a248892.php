@@ -52,7 +52,7 @@
                                                     <button class="btn btn-primary w-100" type="submit">Login</button>
                                                 </div>
                                                 <div class="col-12">
-                                                    <a href="/<?php echo e($appName); ?>/auth/create-profile/">Create Profile</a>
+                                                    
                                                     <p class="small mb-0">If you don't have account? <a href="/<?php echo e($appName); ?>/auth/register/">click here to</a> create an account</p>
                                                 </div>
                                             </form>
@@ -100,10 +100,18 @@
                     url: '/kapcco/auth/login/sign-in/',
                     data: formData,
                     success: function(response){
-                        if(response.status == 200){
-                            alert("Logged In Now")
+                        if(response.profileCreated == true){
+                            if(response.approved == true){
+                                alert('Your account is approved, you can go to dashboard')
+                            }else{
+                                alert('Your account is not approved, please contact the system administrator for approval. Then you will be granted access to login')
 
+                            }
+
+                        }else if(response.profileCreated == false){
+                            window.location.replace("http://localhost/kapcco/auth/create-profile/");
                         }
+                        
                     },
                     error: function(jqXHR, textStatus, errorThrown){
                         if (jqXHR.status === 401) {
@@ -115,7 +123,7 @@
                             
                             setTimeout(function(){
                                 $('#invalid-login').fadeOut();
-                                $('#login-form')[0].reset();
+                                // $('#login-form')[0].reset();
     
                             }, 3000)
                         }

@@ -37,7 +37,8 @@ class AuthController{
     }
 
     public function sign_in_user(){
-        User::login();
+        $user = new User();
+        $user->login();
     }
 
     public function create_account(){
