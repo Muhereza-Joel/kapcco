@@ -6,13 +6,15 @@ class Router{
     private $routes = [];
     
     private $defaultRoute;
-
+    
     public function init_routes(){
+
+        $app_name = getenv('APP_NAME');
 
         //routes for AuthController
         $this->setDefaultRoute('kapcco\controller\AuthController@index');
-        $this->addRoute('/kapcco/register/', 'kapcco\controller\AuthController@render_register_view');
-        $this->addRoute('/kapcco/create-profile/', 'kapcco\controller\AuthController@render_create_profile_view');
+        $this->addRoute('/'. $app_name. '/register/', 'kapcco\controller\AuthController@render_register_view');
+        $this->addRoute('/'. $app_name. '/create-profile/', 'kapcco\controller\AuthController@render_create_profile_view');
          
     }
 
