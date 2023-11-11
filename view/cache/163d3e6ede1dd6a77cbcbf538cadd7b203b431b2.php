@@ -67,7 +67,7 @@
                 </div>
                 <div class="col-sm-6 pt-5 mt-3" style="border-left: 1px solid #999;">
                     <div class="col">
-                        <h4 class="fw-bold text-info">Farmer account notices</h4>
+                        <h4 class="fw-bold text-info">Account notices</h4>
     
                         <h5 class="fw-bold text-dark">Collection center Information</h5>
                         With this account you will be able to view all collection centers where you can bring your coffee
@@ -78,7 +78,11 @@
                                                         
                         <h5 class="fw-bold text-dark mt-2">Account Approval</h5>
                         Once you sign up, your account will be pending until the validation ends and laiter it will be active
-                                                  
+                         
+                        <div class="alert alert-danger mt-2">
+                           <strong>Note your username and password,</strong> because you will use it all the time to login to your account
+                        </div>
+                     
                     </div>
                 </div>
               </div>
