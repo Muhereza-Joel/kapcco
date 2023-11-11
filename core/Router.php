@@ -8,13 +8,11 @@ class Router{
     private $defaultRoute;
     
     public function init_routes(){
-
-        $app_name = getenv('APP_NAME');
-
         //routes for AuthController
         $this->setDefaultRoute('kapcco\controller\AuthController@index');
-        $this->addRoute('/'. $app_name. '/register/', 'kapcco\controller\AuthController@render_register_view');
-        $this->addRoute('/'. $app_name. '/create-profile/', 'kapcco\controller\AuthController@render_create_profile_view');
+        $this->addRoute('/kapcco/auth/register/', 'kapcco\controller\AuthController@render_register_view');
+        $this->addRoute('/kapcco/auth/login/', 'kapcco\controller\AuthController@index');
+        $this->addRoute('/kapcco/auth/create-profile/', 'kapcco\controller\AuthController@render_create_profile_view');
          
     }
 
@@ -92,7 +90,7 @@ class Router{
             $this->handleRegularRouteLogic($path, $controllerName, $methodName);
         } else {
             // Handle unauthorized access (e.g., redirect to login page)
-            header('Location: /App/');
+            header('Location: /kapcco/auth/login/');
             exit();
         }
     }

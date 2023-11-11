@@ -112,7 +112,7 @@
                     
                     <div class="text-left pt-3">
                       <button type="submit" class="btn btn-primary btn-sm">Save Profile</button>
-                      <a href="/{{$appName}}/" class="btn btn-danger btn-sm">Cancel</a>
+                      <a href="/{{$appName}}/auth/login/" class="btn btn-danger btn-sm">Cancel</a>
                     </div>
                   
 

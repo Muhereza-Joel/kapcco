@@ -28,11 +28,6 @@
                   </div>
 
                   <form class="row g-3 needs-validation" novalidate>
-                    <div class="col-12">
-                      <label for="yourName" class="form-label">Your Name</label>
-                      <input type="text" name="name" class="form-control" id="yourName" required placeholder="Enter your full name here">
-                      <div class="invalid-feedback">Please, enter your name!</div>
-                    </div>
 
                     <div class="col-12">
                       <label for="yourEmail" class="form-label">Your Email</label>
@@ -60,7 +55,7 @@
                       <button class="btn btn-primary w-100" type="submit">Create Account</button>
                     </div>
                     <div class="col-12">
-                      <p class="small mb-0">If you have an account already? <a href="/<?php echo e($appName); ?>/">Click here</a> to login</p>
+                      <p class="small mb-0">If you have an account already? <a href="/<?php echo e($appName); ?>/auth/login/">Click here</a> to login</p>
                     </div>
                   </form>
 
@@ -70,11 +65,7 @@
                         <h4 class="fw-bold text-info">Account notices</h4>
     
                         <h5 class="fw-bold text-dark">Collection center Information</h5>
-                        With this account you will be able to view all collection centers where you can bring your coffee
-                        <h5 class="fw-bold text-dark mt-2">Collection Information</h5>
-                        With this account you will be able to view you supplies to the cooperative.
-
-                                                    
+                        With this account you will be able to view all collection centers where you can bring your coffee                        
                                                         
                         <h5 class="fw-bold text-dark mt-2">Account Approval</h5>
                         Once you sign up, your account will be pending until the validation ends and laiter it will be active

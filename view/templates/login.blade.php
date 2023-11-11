@@ -32,7 +32,7 @@
                                             <form class="row g-3 needs-validation" novalidate>
 
                                                 <div class="col-12">
-                                                    <label for="yourUsername" class="form-label">Username</label>
+                                                    <label for="yourUsername" class="form-label">Username or Email</label>
                                                     <div class="input-group has-validation">
                                                         <span class="input-group-text" id="inputGroupPrepend">@</span>
                                                         <input type="text" name="username" class="form-control" id="yourUsername" required>
@@ -50,8 +50,8 @@
                                                     <button class="btn btn-primary w-100" type="submit">Login</button>
                                                 </div>
                                                 <div class="col-12">
-                                                    <a href="/{{$appName}}/create-profile/">Create Profile</a>
-                                                    <p class="small mb-0">If you don't have account? <a href="/{{$appName}}/register/">click here to</a> create an account</p>
+                                                    <a href="/{{$appName}}/auth/create-profile/">Create Profile</a>
+                                                    <p class="small mb-0">If you don't have account? <a href="/{{$appName}}/auth/register/">click here to</a> create an account</p>
                                                 </div>
                                             </form>
                                         </div>
