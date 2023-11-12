@@ -18,6 +18,7 @@ class Router{
         $this->addRoute('/kapcco/image-upload/', 'kapcco\controller\AuthController@upload_photo');
         $this->addRoute('/kapcco/auth/check-nin/', 'kapcco\controller\AuthController@check_nin');
         $this->addRoute('/kapcco/auth/save-profile/', 'kapcco\controller\AuthController@save_profile');
+        $this->addRoute('/kapcco/auth/sign-out/', 'kapcco\controller\AuthController@sign_out');
 
         //routes for DashboardController
         $this->addRoute('/kapcco/dashboard/', 'kapcco\controller\DashboardController@index');

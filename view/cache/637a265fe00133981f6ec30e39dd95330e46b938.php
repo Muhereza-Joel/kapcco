@@ -21,9 +21,9 @@
 
       <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
         <li class="dropdown-header">
+          <span class="text-primary">Signed In As</span>
           <h6><?php echo e($username); ?></h6>
-          <span><?php echo e($role); ?></span>
-        </li>
+         
         <li>
           <hr class="dropdown-divider">
         </li>
@@ -54,7 +54,7 @@
         </li>
 
         <li>
-          <a class="dropdown-item d-flex align-items-center" href="#">
+          <a class="dropdown-item d-flex align-items-center" href="/<?php echo e($appName); ?>/auth/sign-out/">
             <i class="bi bi-box-arrow-right"></i>
             <span>Sign Out</span>
           </a>

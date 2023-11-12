@@ -2,6 +2,7 @@
 namespace kapcco\controller;
 
 use Illuminate\Support\Facades\URL;
+use kapcco\core\Session;
 use kapcco\core\Uploader;
 use kapcco\model\User;
 use kapcco\view\BladeView;
@@ -40,6 +41,11 @@ class AuthController{
     public function sign_in_user(){
         $user = new User();
         $user->login();
+    }
+
+    public function sign_out(){
+        Session::destroy();
+        header("location:/kapcco/auth/login/");
     }
 
     public function create_account(){
