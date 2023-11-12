@@ -22,6 +22,11 @@ class Router{
 
         //routes for DashboardController
         $this->addRoute('/kapcco/dashboard/', 'kapcco\controller\DashboardController@index');
+        $this->addRoute('/kapcco/dashboard/add-collection/', 'kapcco\controller\DashboardController@render_add_collection_view');
+        $this->addRoute('/kapcco/dashboard/collections/', 'kapcco\controller\DashboardController@render_collections_view');
+        $this->addRoute('/kapcco/dashboard/branches/', 'kapcco\controller\DashboardController@render_branches_view');
+        $this->addRoute('/kapcco/dashboard/zones/', 'kapcco\controller\DashboardController@render_zones_view');
+        $this->addRoute('/kapcco/dashboard/farmers/', 'kapcco\controller\DashboardController@render_farmers_view');
 
          
     }

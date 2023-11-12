@@ -4,41 +4,48 @@
 <ul class="sidebar-nav" id="sidebar-nav">
 
   <li class="nav-item">
-    <a class="nav-link " href="#">
+    <a class="nav-link " href="/{{$appName}}/dashboard/">
       <i class="bi bi-grid"></i>
       <span>Dashboard</span>
     </a>
-  </li><!-- End Dashboard Nav -->
+  </li>
 
-  <li class="nav-heading">Pages</li>
-
-  <li class="nav-item">
-    <a class="nav-link collapsed" href="#">
-      <i class="bi bi-person"></i>
-      <span>Profile</span>
-    </a>
-  </li><!-- End Profile Page Nav -->
+  <li class="nav-heading mb-3">Pages</li>
 
   <li class="nav-item">
-    <a class="nav-link collapsed" href="#">
-      <i class="bi bi-question-circle"></i>
-      <span>F.A.Q</span>
-    </a>
-  </li><!-- End F.A.Q Page Nav -->
-
-  <li class="nav-item">
-    <a class="nav-link collapsed" href="#">
-      <i class="bi bi-envelope"></i>
-      <span>Contact</span>
-    </a>
-  </li><!-- End Contact Page Nav -->
-
-  <li class="nav-item">
-    <a class="nav-link collapsed" href="#">
+    <a class="nav-link collapsed" href="/{{$appName}}/dashboard/add-collection/">
       <i class="bi bi-card-list"></i>
-      <span>Register</span>
+      <span>Add Collection</span>
     </a>
-  </li><!-- End Register Page Nav -->
+  </li>
+
+  <li class="nav-item pb-2">
+    <a class="nav-link collapsed" href="/{{$appName}}/dashboard/collections/">
+      <i class="bi bi-cart"></i>
+      <span>All Collections</span>
+    </a>
+  </li>
+
+  <li class="nav-item pb-2">
+    <a class="nav-link collapsed" href="/{{$appName}}/dashboard/branches/">
+      <i class="bi bi-shop-window"></i>
+      <span>Branches</span>
+    </a>
+  </li>
+
+  <li class="nav-item pb-2">
+    <a class="nav-link collapsed" href="/{{$appName}}/dashboard/zones/">
+      <i class="bi bi-shop-window"></i>
+      <span>Zones</span>
+    </a>
+  </li>
+
+  <li class="nav-item pb-2">
+    <a class="nav-link collapsed" href="/{{$appName}}/dashboard/farmers/">
+      <i class="bi bi-people"></i>
+      <span>Farmers</span>
+    </a>
+  </li>
 
 
 </ul>

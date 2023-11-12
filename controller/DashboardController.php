@@ -8,7 +8,75 @@ class DashboardController{
     public function index(){
         $blade_view = new BladeView();
         $html = $blade_view->render('dashboard', [
-            'pageTitle' => "KAPCCO-Dashboard",
+            'pageTitle' => "KAPCCO - Dashboard",
+            'appName' => getenv('APP_NAME'),
+            'username' => Session::get('username'),
+            'role' => Session::get('role'),
+            'avator' => Session::get('avator'),
+        ]);
+
+        echo ($html);
+    }
+
+    public function render_add_collection_view(){
+        $blade_view = new BladeView();
+        $html = $blade_view->render('addCollection', [
+            'pageTitle' => "KAPCCO - Add Collection",
+            'appName' => getenv('APP_NAME'),
+            'username' => Session::get('username'),
+            'role' => Session::get('role'),
+            'avator' => Session::get('avator'),
+        ]);
+
+        echo ($html);
+    }
+
+
+    public function render_collections_view(){
+        $blade_view = new BladeView();
+        $html = $blade_view->render('collections', [
+            'pageTitle' => "KAPCCO - Collections",
+            'appName' => getenv('APP_NAME'),
+            'username' => Session::get('username'),
+            'role' => Session::get('role'),
+            'avator' => Session::get('avator'),
+        ]);
+
+        echo ($html);
+    }
+
+
+    public function render_branches_view(){
+        $blade_view = new BladeView();
+        $html = $blade_view->render('branches', [
+            'pageTitle' => "KAPCCO - branches",
+            'appName' => getenv('APP_NAME'),
+            'username' => Session::get('username'),
+            'role' => Session::get('role'),
+            'avator' => Session::get('avator'),
+        ]);
+
+        echo ($html);
+    }
+
+    public function render_zones_view(){
+        $blade_view = new BladeView();
+        $html = $blade_view->render('zones', [
+            'pageTitle' => "KAPCCO - Zones",
+            'appName' => getenv('APP_NAME'),
+            'username' => Session::get('username'),
+            'role' => Session::get('role'),
+            'avator' => Session::get('avator'),
+        ]);
+
+        echo ($html);
+
+    }
+
+    public function render_farmers_view(){
+        $blade_view = new BladeView();
+        $html = $blade_view->render('farmers', [
+            'pageTitle' => "KAPCCO - farmers",
             'appName' => getenv('APP_NAME'),
             'username' => Session::get('username'),
             'role' => Session::get('role'),
