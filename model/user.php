@@ -132,6 +132,95 @@ class User{
         }
 
       }
+
+      public function check_nin(){
+        $request = Request::capture();
+        
+        $nin = $request->input('nin');
+
+        $query = "SELECT nin FROM user_profile WHERE nin LIKE ?";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param("s", $nin);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $nin_exists = $result->fetch_assoc();
+
+        $stmt->close();
+
+        if($nin_exists){
+            $response = ['message' => 'NIN exists already in the system'];
+            $httpStatus = 401;
+            
+            Request::send_response($httpStatus, $response);
+        }else{
+            $response = ['message' => 'No body has the same NIN in the system'];
+            $httpStatus = 200;
+            
+            Request::send_response($httpStatus, $response);
+        }
+
+      }
+
+      public function save_profile(){
+        $request = Request::capture();
+        
+        $image_url = $request->input('image_url');
+        $fullname = $request->input('fullName');
+        $nin = $request->input('nin');
+        $country = $request->input('country');
+        $district = $request->input('district');
+        $village= $request->input('village');
+        $phone = $request->input('phone');
+
+        $user_id = Session::get('user_id');
+
+        $insert_query = "INSERT INTO user_profile(fullname, nin, country, district, village, phone, image_url, user_id)
+                 VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+
+        $this->database->begin_transaction();
+
+        $stmt = $this->database->prepare($insert_query);
+        $stmt->bind_param("sssssssi", $fullname, $nin, $country, $district, $village, $phone, $image_url, $user_id);
+        $stmt->execute();
+
+        if($stmt->affected_rows > 0){
+            $stmt2 = $this->database->prepare("UPDATE app_users SET profile_created = 1 WHERE id = ?");
+            $stmt2->bind_param("i", $user_id);
+            $stmt2->execute();
+
+            if($stmt2->affected_rows > 0){
+                $this->database->commit();
+                Session::set('avator', $image_url);
+
+                $response = ['message' => 'Profile data saved successfully', 'status' => '200'];
+                $httpStatus = 200;
+                Request::send_response($httpStatus, $response);
+
+            } else{
+                $this->database->rollback();
+
+                $response = ['message' => 'Failed To Save Profile Data due to update failure'];
+                $httpStatus = 401;
+                Request::send_response($httpStatus, $response);
+
+            }
+
+            $stmt2->close();
+
+        }else{
+
+            $this->database->rollback();
+            $response = ['message' => 'Failed To Save Profile Data due to insert failure'];
+            $httpStatus = 401;
+            Request::send_response($httpStatus, $response);
+
+        }
+
+        $stmt->close();
+
+      }
 }
 
 ?>

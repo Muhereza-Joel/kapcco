@@ -2,6 +2,7 @@
 namespace kapcco\controller;
 
 use Illuminate\Support\Facades\URL;
+use kapcco\core\Uploader;
 use kapcco\model\User;
 use kapcco\view\BladeView;
 
@@ -44,6 +45,33 @@ class AuthController{
     public function create_account(){
         $user = new User();
         $user->add_user();
+    }
+
+    public function upload_photo(){
+        if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image'])){
+            $uploader = new Uploader('image');
+            $uploader->save_in("../kapcco/uploads/images/");
+
+            if ($uploader->save()) {
+                // Return the URL of the uploaded image
+                echo $uploader->get_file_name();
+            } else {
+                http_response_code(500);
+                echo 'Error uploading image.';
+            }
+        }
+    }
+
+    public function check_nin(){
+        $user = new User();
+        $user->check_nin();
+
+    }
+
+    public function save_profile(){
+        $user = new User();
+        $user->save_profile();
+
     }
 
 }

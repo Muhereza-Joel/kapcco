@@ -5,6 +5,7 @@ class Uploader{
     private $filename;
     private $file_data;
     private $file_destination;
+    private $new_file_name;
 
     public function __construct($key){
         $this->filename = basename($_FILES[$key]['name']);
@@ -17,6 +18,9 @@ class Uploader{
     private function generateUniqueFilename() {
         $originalExtension = pathinfo($this->filename, PATHINFO_EXTENSION);
         $uniqueFilename = uniqid() . '.' . $originalExtension;
+
+        $this->new_file_name = $uniqueFilename;
+        
         return $uniqueFilename;
     }
 
@@ -30,7 +34,7 @@ class Uploader{
     }
 
     public function get_file_name(){
-        return $this->filename;
+        return $this->new_file_name;
     }
 }
 ?>
