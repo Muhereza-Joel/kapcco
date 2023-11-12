@@ -102,7 +102,7 @@
                     success: function(response){
                         if(response.profileCreated == true){
                             if(response.approved == true){
-                                alert('Your account is approved, you can go to dashboard')
+                                window.location.replace("http://localhost/kapcco/dashboard/");
                             }else{
                                 alert('Your account is not approved, please contact the system administrator for approval. Then you will be granted access to login')
 

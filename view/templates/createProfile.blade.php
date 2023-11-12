@@ -206,11 +206,13 @@
               url: '/kapcco/auth/save-profile/',
               data: formData,
               success: function(response){
-
+                    setTimeout(function(){
+                    window.location.replace("http://localhost/kapcco/dashboard/")
+                  }, 3000)
               },
               error: function(jqXHR, textStatus, errorThrown){
                 if(jqXHR.status === 401){
-
+                  alert('An Error Occured, Failled to save your profile data...');
                 }
               }
             })
