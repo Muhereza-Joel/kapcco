@@ -30,6 +30,7 @@ class Router{
         
         //routes for BranchController
         $this->addRoute('/kapcco/dashboard/farmers/add/', 'kapcco\controller\BranchController@add_branch');
+        $this->addRoute('/kapcco/dashboard/farmers/edit/', 'kapcco\controller\BranchController@edit_branch');
 
          
     }

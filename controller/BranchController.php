@@ -9,6 +9,11 @@ class BranchController{
         $model = new Model();
         $model->add_branch();
     }
+
+    public function edit_branch(){
+        $model = new Model();
+        $model->update_branch();
+    }
 }
 
 ?>

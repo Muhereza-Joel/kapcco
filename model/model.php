@@ -40,5 +40,57 @@ class Model{
         }
 
     }
+
+    public function get_all_branches(){
+        $query = "SELECT * FROM branches";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $branches = $result->fetch_all(MYSQLI_ASSOC);
+
+        $stmt->close();
+
+        return $branches;
+    }
+
+    public function get_branch_details($id){
+
+        $query = "SELECT * FROM branches WHERE id = ?";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $branch_details = $result->fetch_assoc();
+
+        $stmt->close();
+
+        return $branch_details;
+
+    }
+
+    public function update_branch(){
+        $request = Request::capture();
+
+        $branch_name = $request->input('branch-name');
+        $branch_location = $request->input('branch-location');
+        $branch_id = $request->input('branch-edit-id');
+
+        $query = "UPDATE branches SET branch_name = ?, branch_location = ? WHERE id = ?";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param('ssi', $branch_name, $branch_location, $branch_id);
+        $stmt->execute();
+      
+        $response = ['message' => 'Branch details updated successfully', 'status' => '200'];
+        $httpStatus = 200;
+    
+        Request::send_response($httpStatus, $response);
+
+        $stmt->close();
+    }
 }
 ?>

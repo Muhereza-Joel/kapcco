@@ -2,6 +2,7 @@
 namespace kapcco\controller;
 
 use kapcco\core\Session;
+use kapcco\model\Model;
 use kapcco\view\BladeView;
 
 class DashboardController{
@@ -46,7 +47,11 @@ class DashboardController{
     }
 
 
-    public function render_branches_view(){
+    public function render_branches_view($action = null, $id = null){
+        $model = new Model();
+        $branches = $model->get_all_branches();
+        $branch_details = $model->get_branch_details($id);
+
         $blade_view = new BladeView();
         $html = $blade_view->render('branches', [
             'pageTitle' => "KAPCCO - branches",
@@ -54,6 +59,9 @@ class DashboardController{
             'username' => Session::get('username'),
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
+            'action' => $action,
+            'branches' => $branches,
+            'branchDetails' => $branch_details
         ]);
 
         echo ($html);
