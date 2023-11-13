@@ -2,9 +2,15 @@
                   
                   <div class="card-body">
                       <h5 class="card-title">Update Branch Details</h5>
-        
+                      <div id="create-at-timestamp" class="d-none">{{$branchDetails['created_at']}}</div>
+                      <div id="last-update-timestamp" class="d-none">{{$branchDetails['updated_at']}}</div>
+
+                      <div>
+                        <span id="added-at" class="badge bg-secondary ml-3"></span>
+                        <span id="last-update" class="badge bg-dark ml-3"></span>
+                      </div>
                       <!-- Vertical Form -->
-                      <form class="needs-validation" novalidate id="update-branch-form" class="row g-3">
+                      <form class="needs-validation row g-3 pt-2" novalidate id="update-branch-form">
                       <div id="edit-branch-success-alert" class="alert alert-success alert-dismissible fade d-none p-1" role="alert">
                         <i class="bi bi-check-circle me-1"></i>
                           <span></span>

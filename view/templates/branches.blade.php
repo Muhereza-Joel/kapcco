@@ -219,5 +219,17 @@
 
       })
 
+      let brachCreateTimestamp = $("#create-at-timestamp").text();
+      const addedTimestamp = moment(brachCreateTimestamp);
+      const relativeTimeWhenAdded = addedTimestamp.fromNow();
+      $("#added-at").text("added " + relativeTimeWhenAdded);
+
+
+
+      let branchUpdateTimestamp = $("#last-update-timestamp").text();
+      const momentTimestamp = moment(branchUpdateTimestamp);
+      const relativeTime = momentTimestamp.fromNow();
+      $("#last-update").text("updated " + relativeTime)
+
     })
   </script>
