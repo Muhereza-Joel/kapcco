@@ -19,7 +19,7 @@
 
     <section class="section">
     <div class="row">
-        <div class="col-lg-4">
+        <div class="col-lg-3">
         <div class="card">
             <div class="card-body">
               <h5 class="card-title">Add New Zone</h5>
@@ -54,7 +54,7 @@
           </div>
         </div>
         
-        <div class="col-lg-8">
+        <div class="col-lg-9">
         <div class="card">
             <div class="card-body">
               <h5 class="card-title">Showing All Zones</h5>
@@ -119,8 +119,8 @@
                   <tr>
                     <th scope="row">5</th>
                     <td>Raheem Lehner</td>
-                    <td>Dynamic Division Officer</td>
-                    <td>Dynamic Division Officer</td>
+                    <td>Dynamic Division Officer </td>
+                    <td class="text-truncate">BDG</td>
                     <td><span class="badge bg-success">open</span></td>
                     <td>
                       <a href="#" class="btn btn-primary btn-sm"><i class="bi bi-pencil-square"></i></a>

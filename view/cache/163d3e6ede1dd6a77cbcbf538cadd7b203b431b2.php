@@ -100,43 +100,47 @@
        $('#registration-form').submit(function(e){
           e.preventDefault();
 
-          let formData = $(this).serialize();
+          if(this.checkValidity() === true){
 
-          $.ajax({
-            method: 'post',
-            url: '/kapcco/auth/create-account/',
-            data: formData,
-            success: function(response){
-
-              $('#invalid-registration').removeClass('alert-danger')
-              $('#invalid-registration').removeClass('d-none')
-              $('#invalid-registration').addClass('alert-success')
-              $('#invalid-registration').addClass('show')
-              $('#invalid-registration').fadeIn();
-              $('#invalid-registration span').text(response.message);
-              $('#submit-button').prop('disabled', 'true');
-
-              setTimeout(function(){
-                window.location.replace("http://localhost/kapcco/")
-              }, 3000)
-
-              
-            },
-            error: function(jqXHR, textStatus, errorThrown){
-              if (jqXHR.status === 401) {
+            let formData = $(this).serialize();
+  
+            $.ajax({
+              method: 'post',
+              url: '/kapcco/auth/create-account/',
+              data: formData,
+              success: function(response){
+  
+                $('#invalid-registration').removeClass('alert-danger')
                 $('#invalid-registration').removeClass('d-none')
-                $('#invalid-registration').removeClass('alert-success')
-                $('#invalid-registration').addClass('alert-danger')
+                $('#invalid-registration').addClass('alert-success')
                 $('#invalid-registration').addClass('show')
                 $('#invalid-registration').fadeIn();
-                $('#invalid-registration span').text(jqXHR.responseJSON.message);
-
+                $('#invalid-registration span').text(response.message);
+                $('#submit-button').prop('disabled', 'true');
+  
                 setTimeout(function(){
-                  $('#invalid-registration').fadeOut();
-              }, 3000)
+                  window.location.replace("http://localhost/kapcco/")
+                }, 3000)
+  
+                
+              },
+              error: function(jqXHR, textStatus, errorThrown){
+                if (jqXHR.status === 401) {
+                  $('#invalid-registration').removeClass('d-none')
+                  $('#invalid-registration').removeClass('alert-success')
+                  $('#invalid-registration').addClass('alert-danger')
+                  $('#invalid-registration').addClass('show')
+                  $('#invalid-registration').fadeIn();
+                  $('#invalid-registration span').text(jqXHR.responseJSON.message);
+  
+                  setTimeout(function(){
+                    $('#invalid-registration').fadeOut();
+                }, 3000)
+                }
               }
-            }
-          })
+            })
+          }
+
        })
     })
   </script>

@@ -14,7 +14,7 @@ class User{
     }
 
     private function get_database_connection(){
-        $database_connection = new DatabaseConnection('localhost', 'kapcco_store_db', 'root', '');
+        $database_connection = new DatabaseConnection(getenv('DB_HOST'), getenv('DB_DATABASE'), getenv('DB_USERNAME'), getenv('DB_PASSWORD'));
         $this->database = $database_connection->get_connection();
     }
 
@@ -147,8 +147,7 @@ class User{
         $result = $stmt->get_result();
         $nin_exists = $result->fetch_assoc();
 
-        $stmt->close();
-
+        
         if($nin_exists){
             $response = ['message' => 'NIN exists already in the system'];
             $httpStatus = 401;
@@ -160,7 +159,8 @@ class User{
             
             Request::send_response($httpStatus, $response);
         }
-
+        
+        $stmt->close();
       }
 
       public function save_profile(){

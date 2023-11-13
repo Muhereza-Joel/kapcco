@@ -167,8 +167,9 @@
               $('#nin-status').text(response.message);
             },
             error: function(jqXHR, textStatus, errorThrown){
+              $('#nin-status').text(jqXHR.responseJSON.message);
               if(jqXHR.responseJSON.status === 401){
-                $('#nin-status').text(jqXHR.responseJSON.method);
+                $('#nin-status').text(jqXHR.responseJSON.message);
               }
             }
           })
@@ -199,23 +200,27 @@
         $('#create-profile-form').submit(function(e){
             e.preventDefault();
 
-            let formData = $(this).serialize();
+            if(this.checkValidity() === true){
 
-            $.ajax({
-              method: 'post',
-              url: '/kapcco/auth/save-profile/',
-              data: formData,
-              success: function(response){
-                    setTimeout(function(){
-                    window.location.replace("http://localhost/kapcco/dashboard/")
-                  }, 3000)
-              },
-              error: function(jqXHR, textStatus, errorThrown){
-                if(jqXHR.status === 401){
-                  alert('An Error Occured, Failled to save your profile data...');
+              let formData = $(this).serialize();
+  
+              $.ajax({
+                method: 'post',
+                url: '/kapcco/auth/save-profile/',
+                data: formData,
+                success: function(response){
+                      setTimeout(function(){
+                      window.location.replace("http://localhost/kapcco/dashboard/")
+                    }, 3000)
+                },
+                error: function(jqXHR, textStatus, errorThrown){
+                  if(jqXHR.status === 401){
+                    alert('An Error Occured, Failled to save your profile data...');
+                  }
                 }
-              }
-            })
+              })
+            }
+
         })
 
         

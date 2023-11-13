@@ -25,18 +25,25 @@
               <h5 class="card-title">Add New Branch</h5>
 
               <!-- Vertical Form -->
-              <form class="row g-3">
+              <form class="needs-validation" novalidate id="create-branch-form" class="row g-3">
+              <div id="add-branch-success-alert" class="alert alert-success alert-dismissible fade d-none p-1" role="alert">
+                <i class="bi bi-check-circle me-1"></i>
+                 <span></span>
+        
+              </div>
                 <div class="col-12">
                   <label for="branch-name" class="form-label">Branch Name</label>
-                  <input type="text" class="form-control" id="branch-name">
+                  <input oninput="capitalizeEveryWord(this)" name="branch-name" type="text" class="form-control" id="branch-name" placeholder="Enter branch name" required>
+                  <div class="invalid-feedback">Please enter the branch name.</div>
                 </div>
                 <div class="col-12">
                   <label for="branch-location" class="form-label">Branch Location</label>
-                  <input type="text" class="form-control" id="branch-location">
+                  <input oninput="capitalizeEveryWord(this)" type="text" name="branch-location" class="form-control" id="branch-location" placeholder="Enter branch location" required>
+                  <div class="invalid-feedback">Please enter the branch location.</div>
                 </div>
                
                 
-                <div class="text-left">
+                <div class="text-left mt-3">
                   <button type="submit" class="btn btn-primary btn-sm">Submit</button>
                   
                 </div>
@@ -126,4 +133,56 @@
 
   </main><!-- End #main -->
 
+  <script>
+    function capitalizeFirstLetter(input) {
+              input.value = input.value.charAt(0).toUpperCase() + input.value.slice(1);
+    }
+
+    function capitalizeEveryWord(input) {
+            var words = input.value.split(' ');
+
+            for (var i = 0; i < words.length; i++) {
+                words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1);
+            }
+
+            input.value = words.join(' ');
+        }
+  </script>
+
   <?php echo $__env->make('partials/footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
+  <script>
+    $(document).ready(function(){
+
+      $('#create-branch-form').submit(function(e){
+
+        e.preventDefault();
+
+        if(this.checkValidity() === true){
+
+          let formData = $(this).serialize();
+  
+          $.ajax({
+            method:'post',
+            url: '/kapcco/dashboard/farmers/add/',
+            data: formData,
+            success: function(response){
+              if(response.status === 200){
+                $('#add-branch-success-alert').removeClass('d-none');
+                $('#add-branch-success-alert').addClass('show');
+                $('#add-branch-success-alert span').text(response.message);
+    
+                setTimeout(function(){
+                  // window.location.reload();
+                }, 2000)
+  
+              }
+            },
+            error: function(){}
+          })
+        }
+
+      })
+
+    })
+  </script>
