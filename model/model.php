@@ -92,5 +92,25 @@ class Model{
 
         $stmt->close();
     }
+
+    public function delete_branch(){
+        $request = Request::capture();
+
+        $id = $request->input('branch-to-delete');
+
+        $query = "DELETE FROM branches WHERE id = ?";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param('i', $id);
+        $stmt->execute();
+
+        $response = ['message' => 'Branch deleted successfully', 'status' => '200'];
+        $httpStatus = 200;
+    
+        Request::send_response($httpStatus, $response);
+
+        $stmt->close();
+
+    }
 }
 ?>

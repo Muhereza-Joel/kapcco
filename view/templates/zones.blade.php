@@ -19,43 +19,8 @@
 
     <section class="section">
     <div class="row">
-        <div class="col-lg-3">
-        <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Add New Zone</h5>
-
-              <!-- Vertical Form -->
-              <form class="row g-3">
-                <div class="col-12">
-                  <label for="branch-name" class="form-label">Branch Name</label>
-                  <input type="text" class="form-control p-1" id="branch-name">
-                </div>
-                <div class="col-12">
-                  <label for="branch-location" class="form-label">Branch Location</label>
-                  <input type="text" class="form-control p-1" id="branch-location">
-                </div>
-
-                <div class="col-12">
-                  <label for="branch-location" class="form-label">Branch Location</label>
-                  <select name="" id="branch-location" class="form-control p-1">
-                    <option value="" >No brach selected</option>
-                  </select>
-                  
-                </div>
-               
-                
-                <div class="text-left">
-                  <button type="submit" class="btn btn-primary btn-sm">Submit</button>
-                  
-                </div>
-              </form><!-- Vertical Form -->
-
-            </div>
-          </div>
-        </div>
-        
-        <div class="col-lg-9">
-        <div class="card">
+    <div class="col-lg-9">
+          <div class="card">
             <div class="card-body">
               <h5 class="card-title">Showing All Zones</h5>
 
@@ -79,54 +44,15 @@
                     <td>Designer</td>
                     <td><span class="badge bg-success">open</span></td>
                     <td>
-                      <a href="#" class="btn btn-primary btn-sm"><i class="bi bi-pencil-square"></i></a>
-                      <a href="#" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i></a>
+                      <div class="d-flex">
+                        <a href="#" class="btn btn-primary btn-sm p-1"><i class="bi bi-pencil-square"></i></a>
+                        <a href="#" class="btn btn-danger btn-sm mx-1 p-1"><i class="bi bi-trash3"></i></a>
+                      </div>
                     </td>
                   </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>Bridie Kessler</td>
-                    <td>Developer</td>
-                    <td>Developer</td>
-                    <td><span class="badge bg-success">open</span></td>
-                    <td>
-                    <a href="#" class="btn btn-primary btn-sm"><i class="bi bi-pencil-square"></i></a>
-                      <a href="#" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td>Ashleigh Langosh</td>
-                    <td>Finance</td>
-                    <td>Finance</td>
-                    <td><span class="badge bg-success">open</span></td>
-                    <td>
-                    <a href="#" class="btn btn-primary btn-sm"><i class="bi bi-pencil-square"></i></a>
-                      <a href="#" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">4</th>
-                    <td>Angus Grady</td>
-                    <td>HR</td>
-                    <td>HR</td>
-                    <td><span class="badge bg-success">open</span></td>
-                    <td>
-                      <a href="#" class="btn btn-primary btn-sm"><i class="bi bi-pencil-square"></i></a>
-                      <a href="#" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i></a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">5</th>
-                    <td>Raheem Lehner</td>
-                    <td>Dynamic Division Officer </td>
-                    <td class="text-truncate">BDG</td>
-                    <td><span class="badge bg-success">open</span></td>
-                    <td>
-                      <a href="#" class="btn btn-primary btn-sm"><i class="bi bi-pencil-square"></i></a>
-                      <a href="#" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i></a>
-                    </td>
-                  </tr>
+                  
+                  
+                  
                 </tbody>
               </table>
               <!-- End Table with stripped rows -->
@@ -134,6 +60,44 @@
             </div>
           </div>
         </div>
+
+
+        <div class="col-lg-3">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Add New Zone</h5>
+
+              <!-- Vertical Form -->
+              <form class="row g-3">
+                <div class="col-12">
+                  <label for="branch-name" class="form-label">Zone Name</label>
+                  <input type="text" class="form-control p-1" id="branch-name">
+                </div>
+                <div class="col-12">
+                  <label for="branch-location" class="form-label">Zone Location</label>
+                  <input type="text" class="form-control p-1" id="branch-location">
+                </div>
+
+                <div class="col-12">
+                  <label for="branch-location" class="form-label">Parent Branch</label>
+                  <select name="" id="branch-location" class="form-control p-1">
+                    <option value="" >No branch selected</option>
+                  </select>
+                  
+                </div>
+               
+                
+                <div class="text-left">
+                  <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                  
+                </div>
+              </form><!-- Vertical Form -->
+
+            </div>
+          </div>
+        </div>
+    
+       
       </div>
     </section>
 

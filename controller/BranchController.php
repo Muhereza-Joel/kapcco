@@ -14,6 +14,11 @@ class BranchController{
         $model = new Model();
         $model->update_branch();
     }
+
+    public function delete_branch(){
+        $model = new Model();
+        $model->delete_branch();
+    }
 }
 
 ?>

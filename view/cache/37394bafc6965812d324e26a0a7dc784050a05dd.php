@@ -27,7 +27,7 @@
               <h5 class="card-title">Showing All Branches</h5>
 
               <!-- Table with stripped rows -->
-              <table class="table table-striped data">
+              <table class="table table-striped datatable">
                 <thead>
                   <tr>
                     <th scope="col">SNo</th>
@@ -47,7 +47,7 @@
                       <td>
                         <div class="d-flex">
                         <a href="?action=edit&id=<?php echo e($branch['id']); ?>" class="btn btn-secondary btn-sm p-1"><i class="bi bi-pencil-square"></i></a>
-                        <a href="#" class="btn btn-danger btn-sm p-1 mx-1"><i class="bi bi-trash3"></i></a>
+                        <a href="?action=delete&id=<?php echo e($branch['id']); ?>" class="btn btn-danger btn-sm p-1 mx-1"><i class="bi bi-trash3"></i></a>
                         </div>
                       </td>
                     </tr>
@@ -64,6 +64,11 @@
         <div class="col-lg-4">
 
           <div>
+            <div class="delete-form-container">
+              <?php if($action == 'delete'): ?>
+                <?php echo $__env->make('deleteBranch', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+              <?php endif; ?>
+            </div>
             <div id="update-form-container">
                 <!-- begin update form -->
                 <?php if($action == 'edit'): ?>
@@ -73,6 +78,7 @@
 
               </div>
 
+            
               <div class="card">
                 <div class="card-body">
                   <h5 class="card-title">Add New Branch</h5>
@@ -104,6 +110,8 @@
     
                 </div>
               </div>
+            
+
 
           </div>
    
@@ -135,15 +143,37 @@
   <script>
     $(document).ready(function(){
 
+      $('#delete-branch-form').submit(function(e){
+        e.preventDefault();
+
+        let formData = $(this).serialize();
+
+        $.ajax({
+          method: 'post',
+          url: '/kapcco/dashboard/branches/delete/',
+          data: formData,
+          success: function(response){
+            $('#delete-branch-success-alert').removeClass('d-none');
+            $('#delete-branch-success-alert').addClass('show');
+            $('#delete-branch-success-alert span').text(response.message);
+
+            setTimeout(function(){
+                  window.location.replace("http://localhost/kapcco/dashboard/branches/");
+            }, 2000)
+          }
+        })
+
+      })
+
       $('#update-branch-form').submit(function(e){
-          event.preventDefault();
+          e.preventDefault();
 
           if(this.checkValidity() === true){
             let formData = $(this).serialize();
 
             $.ajax({
               method: 'post',
-              url: '/kapcco/dashboard/farmers/edit/',
+              url: '/kapcco/dashboard/branches/edit/',
               data: formData,
               success: function(response){
                 $('#edit-branch-success-alert').removeClass('d-none');
@@ -169,7 +199,7 @@
   
           $.ajax({
             method:'post',
-            url: '/kapcco/dashboard/farmers/add/',
+            url: '/kapcco/dashboard/branches/add/',
             data: formData,
             success: function(response){
               
