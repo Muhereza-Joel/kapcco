@@ -53,8 +53,8 @@
                       <td><span class="badge bg-success"><?php echo e($zone['status']); ?></span></td>
                       <td>
                         <div class="d-flex">
-                          <a href="#" class="btn btn-primary btn-sm p-1"><i class="bi bi-pencil-square"></i></a>
-                          <a href="#" class="btn btn-danger btn-sm mx-1 p-1"><i class="bi bi-trash3"></i></a>
+                          <a href="?action=edit&id=<?php echo e($zone['id']); ?>" class="btn btn-secondary btn-sm p-1"><i class="bi bi-pencil-square"></i></a>
+                          <a href="?action=delete&id=<?php echo e($zone['id']); ?>" class="btn btn-danger btn-sm mx-1 p-1"><i class="bi bi-trash3"></i></a>
                         </div>
                       </td>
                     </tr>
@@ -71,6 +71,17 @@
 
         <div class="col-lg-3">
           <div style="position: sticky; top: 100px;">
+            <div id="edit-zone-container">
+              <?php if($action == 'edit'): ?>
+                <?php echo $__env->make('editZone', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+              <?php endif; ?>
+            
+            </div>
+          
+            <div id="delete-zone-container">
+
+            </div>
+
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">Add New Zone</h5>
@@ -84,12 +95,12 @@
                     </div>
                   <div class="col-12">
                     <label for="zone-name" class="form-label">Zone Name</label>
-                    <input oninput="capitalizeEveryWord(this)" type="text" class="form-control p-1" name="zone-name" id="zone-name" required>
+                    <input oninput="capitalizeEveryWord(this)" type="text" class="form-control p-1" name="zone-name" id="zone-name" required placeholder="Enter zone name">
                     <div class="invalid-feedback">Please enter zone name.</div>
                   </div>
                   <div class="col-12">
                     <label for="zone-location" class="form-label">Zone Location</label>
-                    <input oninput="capitalizeEveryWord(this)" type="text" class="form-control p-1" name="zone-location" id="zone-location" required>
+                    <input oninput="capitalizeEveryWord(this)" type="text" class="form-control p-1" name="zone-location" id="zone-location" required placeholder="Enter zone location">
                     <div class="invalid-feedback">Please enter zone location.</div>
                   </div>
   

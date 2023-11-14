@@ -156,5 +156,22 @@ class Model{
 
         return $zones;
     }
+
+    public function get_zone_details($id){
+
+        $query = "SELECT * FROM zones WHERE id = ?";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $zone_details = $result->fetch_assoc();
+
+        $stmt->close();
+
+        return $zone_details;
+
+    }
 }
 ?>

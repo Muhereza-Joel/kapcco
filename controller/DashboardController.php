@@ -67,10 +67,11 @@ class DashboardController{
         echo ($html);
     }
 
-    public function render_zones_view(){
+    public function render_zones_view($action = null, $id = null){
         $model = new Model();
         $branches = $model->get_all_branches();
         $zones = $model->get_all_zones();
+        $zone_details = $model->get_zone_details($id);
 
         $blade_view = new BladeView();
         $html = $blade_view->render('zones', [
@@ -79,8 +80,10 @@ class DashboardController{
             'username' => Session::get('username'),
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
+            'action' => $action,
             'branches' => $branches,
-            'zones' => $zones
+            'zones' => $zones,
+            'zoneDetails' => $zone_details
         ]);
 
         echo ($html);
