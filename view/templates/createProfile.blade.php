@@ -35,7 +35,7 @@
                       
                       <div class="col-md-12 col-lg-12 d-flex flex-column align-items-center justify-content-center">
                   
-                            <img id="profile-photo" src="/{{$appName}}/assets/img/avatar.png" class="rounded-circle" alt="Profile" style="border: 3px solid #999;">
+                            <img id="profile-photo" src="/{{$appName}}/assets/img/avatar.png" class="rounded-circle" alt="Profile" width="100px" height="100px" style="border: 3px solid #999;">
                             <div class="pt-2">
                             <input type="hidden" name="image_url" id="image_url">
                             <input  type="file" name="image" id="image" class="btn btn-outline btn-sm" required accept="image/jpeg">
@@ -210,7 +210,7 @@
                 data: formData,
                 success: function(response){
                       setTimeout(function(){
-                      window.location.replace("http://localhost/kapcco/dashboard/")
+                      window.location.replace("http://localhost/kapcco/auth/login/")
                     }, 3000)
                 },
                 error: function(jqXHR, textStatus, errorThrown){

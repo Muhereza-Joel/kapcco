@@ -221,7 +221,7 @@
 
         $.ajax({
           method : 'post',
-          url: '/kapcco/dashboard/zones/delete/',
+          url: '/<?php echo e($appName); ?>/dashboard/zones/delete/',
           data: formData,
           success: function(response){
             $('#delete-zone-success-alert').removeClass('d-none');

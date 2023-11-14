@@ -90,7 +90,12 @@ class DashboardController{
 
     }
 
-    public function render_farmers_view(){
+    public function render_farmers_view($action = null, $id = null){
+        $model = new Model();
+        $farmers = $model->get_all_farmers();
+        $user_details = $model->get_user_details($id);
+
+
         $blade_view = new BladeView();
         $html = $blade_view->render('farmers', [
             'pageTitle' => "KAPCCO - farmers",
@@ -98,6 +103,9 @@ class DashboardController{
             'username' => Session::get('username'),
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
+            'action' => $action,
+            'farmers' => $farmers,
+            'userDetails' => $user_details
         ]);
 
         echo ($html);

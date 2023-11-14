@@ -216,5 +216,37 @@ class Model{
         $stmt->close();
 
     }
+
+    public function get_all_farmers(){
+        $query = "SELECT user_profile.id, app_users.approved, user_profile.fullname, user_profile.phone, user_profile.image_url
+                  FROM app_users JOIN user_profile
+                  ON app_users.id = user_profile.user_id 
+                  WHERE app_users.role = 'Farmer'";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $zones = $result->fetch_all(MYSQLI_ASSOC);
+
+        $stmt->close();
+
+        return $zones;
+    }
+
+    public function get_user_details($id){
+        $query = "SELECT * FROM user_profile WHERE id = ?";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $user_details = $result->fetch_assoc();
+
+        $stmt->close();
+
+        return $user_details;
+    }
 }
 ?>

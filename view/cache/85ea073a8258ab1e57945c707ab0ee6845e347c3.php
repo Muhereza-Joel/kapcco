@@ -18,66 +18,63 @@
     </div><!-- End Page Title -->
 
     <section class="section">
-      <div class="col-lg-8">
-      <div class="card">
-            <div class="card-body">
-              <h5 class="card-title"></h5>
-
-              <!-- Table with stripped rows -->
-              <table class="table table-striped datatable">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Position</th>
-                    <th scope="col">Age</th>
-                    <th scope="col">Start Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>Brandon Jacob</td>
-                    <td>Designer</td>
-                    <td>28</td>
-                    <td>2016-05-25</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>Bridie Kessler</td>
-                    <td>Developer</td>
-                    <td>35</td>
-                    <td>2014-12-05</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td>Ashleigh Langosh</td>
-                    <td>Finance</td>
-                    <td>45</td>
-                    <td>2011-08-12</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">4</th>
-                    <td>Angus Grady</td>
-                    <td>HR</td>
-                    <td>34</td>
-                    <td>2012-06-11</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">5</th>
-                    <td>Raheem Lehner</td>
-                    <td>Dynamic Division Officer</td>
-                    <td>47</td>
-                    <td>2011-04-19</td>
-                  </tr>
-                </tbody>
-              </table>
-              <!-- End Table with stripped rows -->
-
+      <div class="row">
+        <div class="col-lg-8">
+        <div class="card">
+              <div class="card-body">
+                <h5 class="card-title"></h5>
+  
+                <!-- Table with stripped rows -->
+                <table class="table table-striped datatable">
+                  <thead>
+                    <tr>
+                      <th scope="col">SNo</th>
+                      <th scope="col">Full Name</th>
+                      <th scope="col">Phone</th>
+                      <th scope="col">Status</th>
+                      <th scope="col">Options</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php $__currentLoopData = $farmers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $farmer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                      <tr>
+                        <th scope="row"><?php echo e($loop->iteration); ?></th>
+                        <td><img src="<?php echo e($farmer['image_url']); ?>" alt="" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;"> <?php echo e($farmer['fullname']); ?></td>
+                        <td><?php echo e($farmer['phone']); ?></td>
+                        <td>
+                          <?php if($farmer['approved'] == 0): ?>
+                              <span class="badge bg-danger">Not Approved</span>
+                             <?php else: ?>
+                              <span class="badge bg-info">Approved</span>
+                          <?php endif; ?>
+                        </td>
+                        <td>
+                          <div class="d-flex">
+                              <a href="?action=view&id=<?php echo e($farmer['id']); ?>" class="btn btn-primary btn-sm mx-1 p-1"><i class="bi bi-eye"></i></a>
+                              <a href="?action=delete&id=<?php echo e($farmer['id']); ?>" class="btn btn-danger btn-sm mx-1 p-1"><i class="bi bi-trash3"></i></a>
+                            </div>
+                        </td>
+                      </tr>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    
+                    
+                  </tbody>
+                </table>
+                <!-- End Table with stripped rows -->
+  
+              </div>
             </div>
+        </div>
+        <div class="col-lg-4">
+          <div style="position: sticky; top: 100px;">
+              <div id="view-farmer-info-container">
+                  <?php if($action == 'view'): ?>
+                    <?php echo $__env->make('viewFarmer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+                  <?php endif; ?>
+              </div>
+
           </div>
-      </div>
-      <div class="col-lg-4">
+        </div>
 
       </div>
     </section>
