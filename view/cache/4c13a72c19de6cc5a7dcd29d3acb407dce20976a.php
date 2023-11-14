@@ -10,7 +10,8 @@
                       </div>
                     <div class="my-1">You are about to delete <strong class="text-dark fw-bold"><?php echo e($branchDetails['branch_name']); ?></strong> </div>
                     <div class="alert alert-danger alert-dismissible fade show p-1" role="alert">
-                      Are you sure you want to delete this branch because?. <strong>All data attached to this branch will be lost.</strong>
+                      Are you sure you want to delete this branch? <strong>This will set the parent branch for all zones attached to this branch to null.</strong>
+      
                       
                     </div>
                     <div class="d-flex">

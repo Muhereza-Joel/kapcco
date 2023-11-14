@@ -7,7 +7,10 @@
 
                       <div>
                         <span id="added-at" class="badge bg-secondary ml-3"></span>
-                        <span id="last-update" class="badge bg-dark ml-3"></span>
+                        @if($branchDetails['created_at'] != $branchDetails['updated_at'])
+                            <span id="last-update" class="badge bg-dark ml-3"></span>
+                        @endif
+                        
                       </div>
                       <!-- Vertical Form -->
                       <form class="needs-validation row g-3 pt-2" novalidate id="update-branch-form">

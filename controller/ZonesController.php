@@ -8,5 +8,15 @@ class ZonesController{
         $model = new Model();
         $model->add_zone();
     }
+
+    public function edit_zone(){
+        $model = new Model();
+        $model->edit_zone();
+    }
+
+    public function delete_zone(){
+        $model = new Model();
+        $model->delete_zone();
+    }
 }
 ?>

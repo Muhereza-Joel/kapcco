@@ -1,15 +1,25 @@
 <div class="card" style="background-color: rgb(223, 232, 225);">
                 <div class="card-body">
                   <h5 class="card-title">Edit Zone Details</h5>
+                  <div id="create-at-timestamp" class="d-none">{{$zoneDetails['created_at']}}</div>
+                      <div id="last-update-timestamp" class="d-none">{{$zoneDetails['updated_at']}}</div>
+
+                      <div>
+                        <span id="added-at" class="badge bg-secondary ml-3"></span>
+                          @if($zoneDetails['created_at'] != $zoneDetails['updated_at'])
+                            <span id="last-update" class="badge bg-dark ml-3"></span>
+                          @endif
+                      </div>
     
                   <!-- Vertical Form -->
-                  <form id="edit-zone-form" class="row g-3 needs-validation" novalidate>
+                  <form id="edit-zone-form" class="row g-3 needs-validation pt-2" novalidate>
                   <div id="edit-zone-success-alert" class="alert alert-success alert-dismissible fade d-none p-1" role="alert">
                         <i class="bi bi-check-circle me-1"></i>
                           <span></span>
                 
                       </div>
                     <div class="col-12">
+                      <input type="hidden" name="zone-id-to-edit" value="{{$zoneDetails['id']}}">  
                       <label for="zone-name" class="form-label fw-bold">Zone Name</label>
                       <input value="{{$zoneDetails['zone_name']}}" oninput="capitalizeEveryWord(this)" type="text" class="form-control p-1" name="zone-name" id="zone-name" required placeholder="Enter zone name">
                       <div class="invalid-feedback">Please enter zone name.</div>

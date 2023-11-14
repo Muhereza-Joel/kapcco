@@ -43,12 +43,20 @@
                       <td><?php echo e($zone['zone_name']); ?></td>
                       <td><?php echo e($zone['zone_location']); ?></td>
                       <td>
-                        <?php $__currentLoopData = $branches; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $branch): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                           <?php if($branch['id'] == $zone['parent_branch']): ?>
-                           <?php echo e($branch['branch_name']); ?>
+                      <?php if($zone['parent_branch'] != ""): ?>
+                          <?php $__currentLoopData = $branches; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $branch): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php if($branch['id'] == $zone['parent_branch']): ?>
+                                <?php echo e($branch['branch_name']); ?>
 
-                           <?php endif; ?>
-                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+                            <?php endif; ?>
+
+                          <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+                          <?php else: ?>
+                          <span class="badge bg-info">Branch Deleted</span>
+                              
+                      <?php endif; ?>
                       </td>
                       <td><span class="badge bg-success"><?php echo e($zone['status']); ?></span></td>
                       <td>
@@ -79,7 +87,9 @@
             </div>
           
             <div id="delete-zone-container">
-
+               <?php if($action == 'delete'): ?>
+                  <?php echo $__env->make('deleteZone', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+                <?php endif; ?>
             </div>
 
             <div class="card">
@@ -180,5 +190,64 @@
 
         }
       })
+
+      $('#edit-zone-form').submit(function(e){
+        e.preventDefault();
+        
+        if(this.checkValidity() === true){
+          let formData = $(this).serialize();
+          $.ajax({
+            method: 'post',
+            url: '/kapcco/dashboard/zones/edit/',
+            data: formData,
+            success: function(response){
+              $('#edit-zone-success-alert').removeClass('d-none');
+                $('#edit-zone-success-alert').addClass('show');
+                $('#edit-zone-success-alert span').text(response.message);
+
+                setTimeout(function(){
+                  window.location.reload();
+                }, 2000)
+            },
+            error: function(){}
+          })
+        }
+      })
+
+      $('#delete-zone-form').submit(function(e){
+        e.preventDefault();
+
+        let formData = $(this).serialize();
+
+        $.ajax({
+          method : 'post',
+          url: '/kapcco/dashboard/zones/delete/',
+          data: formData,
+          success: function(response){
+            $('#delete-zone-success-alert').removeClass('d-none');
+            $('#delete-zone-success-alert').addClass('show');
+            $('#delete-zone-success-alert span').text(response.message);
+
+            setTimeout(function(){
+                  window.location.replace("http://localhost/kapcco/dashboard/zones/");
+            }, 2000)
+          },
+          error: function(){}
+        })
+      })
+
+      let zoneCreateTimestamp = $("#create-at-timestamp").text();
+      const addedTimestamp = moment(zoneCreateTimestamp);
+      const relativeTimeWhenAdded = addedTimestamp.fromNow();
+      $("#added-at").text("added " + relativeTimeWhenAdded);
+
+
+
+      let zoneUpdateTimestamp = $("#last-update-timestamp").text();
+      const momentTimestamp = moment(zoneUpdateTimestamp);
+      const relativeTime = momentTimestamp.fromNow();
+      $("#last-update").text("updated " + relativeTime)
+
+
     })
   </script>

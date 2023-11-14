@@ -173,5 +173,48 @@ class Model{
         return $zone_details;
 
     }
+
+    public function edit_zone(){
+        $request = Request::capture();
+
+        $zone_name = $request->input('zone-name');
+        $zone_location = $request->input('zone-location');
+        $parent_branch = $request->input('parent-branch');
+        $zone_id = $request->input('zone-id-to-edit');
+
+        $query = "UPDATE zones SET zone_name = ?, zone_location = ?, parent_branch = ? WHERE id = ?";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param('sssi', $zone_name, $zone_location, $parent_branch, $zone_id);
+        $stmt->execute();
+      
+        $response = ['message' => 'Zone details updated', 'status' => '200'];
+        $httpStatus = 200;
+    
+        Request::send_response($httpStatus, $response);
+
+        $stmt->close();
+    }
+
+
+    public function delete_zone(){
+        $request = Request::capture();
+
+        $id = $request->input('zone-to-delete');
+
+        $query = "DELETE FROM zones WHERE id = ?";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param('i', $id);
+        $stmt->execute();
+
+        $response = ['message' => 'Zone deleted successfully', 'status' => '200'];
+        $httpStatus = 200;
+    
+        Request::send_response($httpStatus, $response);
+
+        $stmt->close();
+
+    }
 }
 ?>

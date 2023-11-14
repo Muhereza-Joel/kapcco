@@ -43,11 +43,19 @@
                       <td>{{ $zone['zone_name'] }}</td>
                       <td>{{ $zone['zone_location'] }}</td>
                       <td>
-                        @foreach($branches as $branch)
-                           @if($branch['id'] == $zone['parent_branch'])
-                           {{ $branch['branch_name'] }}
-                           @endif
-                        @endforeach
+                      @if($zone['parent_branch'] != "")
+                          @foreach($branches as $branch)
+                            @if($branch['id'] == $zone['parent_branch'])
+                                {{ $branch['branch_name'] }}
+
+                            @endif
+
+                          @endforeach
+
+                          @else
+                          <span class="badge bg-info">Branch Deleted</span>
+                              
+                      @endif
                       </td>
                       <td><span class="badge bg-success">{{ $zone['status'] }}</span></td>
                       <td>
@@ -78,7 +86,9 @@
             </div>
           
             <div id="delete-zone-container">
-
+               @if($action == 'delete')
+                  @include('deleteZone')
+                @endif
             </div>
 
             <div class="card">
@@ -179,5 +189,64 @@
 
         }
       })
+
+      $('#edit-zone-form').submit(function(e){
+        e.preventDefault();
+        
+        if(this.checkValidity() === true){
+          let formData = $(this).serialize();
+          $.ajax({
+            method: 'post',
+            url: '/kapcco/dashboard/zones/edit/',
+            data: formData,
+            success: function(response){
+              $('#edit-zone-success-alert').removeClass('d-none');
+                $('#edit-zone-success-alert').addClass('show');
+                $('#edit-zone-success-alert span').text(response.message);
+
+                setTimeout(function(){
+                  window.location.reload();
+                }, 2000)
+            },
+            error: function(){}
+          })
+        }
+      })
+
+      $('#delete-zone-form').submit(function(e){
+        e.preventDefault();
+
+        let formData = $(this).serialize();
+
+        $.ajax({
+          method : 'post',
+          url: '/kapcco/dashboard/zones/delete/',
+          data: formData,
+          success: function(response){
+            $('#delete-zone-success-alert').removeClass('d-none');
+            $('#delete-zone-success-alert').addClass('show');
+            $('#delete-zone-success-alert span').text(response.message);
+
+            setTimeout(function(){
+                  window.location.replace("http://localhost/kapcco/dashboard/zones/");
+            }, 2000)
+          },
+          error: function(){}
+        })
+      })
+
+      let zoneCreateTimestamp = $("#create-at-timestamp").text();
+      const addedTimestamp = moment(zoneCreateTimestamp);
+      const relativeTimeWhenAdded = addedTimestamp.fromNow();
+      $("#added-at").text("added " + relativeTimeWhenAdded);
+
+
+
+      let zoneUpdateTimestamp = $("#last-update-timestamp").text();
+      const momentTimestamp = moment(zoneUpdateTimestamp);
+      const relativeTime = momentTimestamp.fromNow();
+      $("#last-update").text("updated " + relativeTime)
+
+
     })
   </script>
