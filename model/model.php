@@ -39,6 +39,8 @@ class Model{
 
         }
 
+        $stmt->close();
+
     }
 
     public function get_all_branches(){
@@ -111,6 +113,48 @@ class Model{
 
         $stmt->close();
 
+    }
+
+    public function add_zone(){
+        $request = Request::capture();
+
+        $zone_name = $request->input('zone-name');
+        $zone_location = $request->input('zone-location');
+        $parent_branch_id = $request->input('parent-branch');
+
+        $user_id = Session::get('user_id');
+
+        $query = "INSERT INTO zones(zone_name, zone_location, parent_branch, user_id) VALUES(?, ?, ?, ?)";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param("ssii", $zone_name, $zone_location, $parent_branch_id, $user_id);
+        $stmt->execute();
+
+        echo $this->database->error;
+
+        if(!$this->database->error){
+            $response = ['message' => 'Zone added successfully', 'status' => '200'];
+            $httpStatus = 200;
+    
+            Request::send_response($httpStatus, $response);
+
+        }
+
+        $stmt->close();
+    }
+
+    public function get_all_zones(){
+        $query = "SELECT * FROM zones";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $zones = $result->fetch_all(MYSQLI_ASSOC);
+
+        $stmt->close();
+
+        return $zones;
     }
 }
 ?>

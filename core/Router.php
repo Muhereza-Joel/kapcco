@@ -33,6 +33,10 @@ class Router{
         $this->addRoute('/kapcco/dashboard/branches/edit/', 'kapcco\controller\BranchController@edit_branch');
         $this->addRoute('/kapcco/dashboard/branches/delete/', 'kapcco\controller\BranchController@delete_branch');
 
+        //routes for ZonesController
+        $this->addRoute('/kapcco/dashboard/zones/add/', 'kapcco\controller\ZonesController@add_zone');
+
+
          
     }
 

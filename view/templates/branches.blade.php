@@ -63,7 +63,7 @@
 
         <div class="col-lg-4">
 
-          <div>
+          <div style="position: sticky; top: 100px;">
             <div class="delete-form-container">
               @if($action == 'delete')
                 @include('deleteBranch')

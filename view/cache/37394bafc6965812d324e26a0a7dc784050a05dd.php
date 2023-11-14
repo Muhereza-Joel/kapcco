@@ -63,7 +63,7 @@
 
         <div class="col-lg-4">
 
-          <div>
+          <div style="position: sticky; top: 100px;">
             <div class="delete-form-container">
               <?php if($action == 'delete'): ?>
                 <?php echo $__env->make('deleteBranch', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

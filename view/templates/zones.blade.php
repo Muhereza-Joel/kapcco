@@ -25,10 +25,10 @@
               <h5 class="card-title">Showing All Zones</h5>
 
               <!-- Table with stripped rows -->
-              <table class="table table-striped">
+              <table class="table table-striped datatable">
                 <thead>
                   <tr>
-                    <th scope="col">#</th>
+                    <th scope="col">SNo</th>
                     <th scope="col">Zone Name</th>
                     <th scope="col">Zone Location</th>
                     <th scope="col">Branch</th>
@@ -37,22 +37,28 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>Brandon Jacob</td>
-                    <td>Designer</td>
-                    <td>Designer</td>
-                    <td><span class="badge bg-success">open</span></td>
-                    <td>
-                      <div class="d-flex">
-                        <a href="#" class="btn btn-primary btn-sm p-1"><i class="bi bi-pencil-square"></i></a>
-                        <a href="#" class="btn btn-danger btn-sm mx-1 p-1"><i class="bi bi-trash3"></i></a>
-                      </div>
-                    </td>
-                  </tr>
-                  
-                  
-                  
+                  @foreach($zones as $zone)
+                    <tr>
+                      <th scope="row">{{ $loop->iteration }}</th>
+                      <td>{{ $zone['zone_name'] }}</td>
+                      <td>{{ $zone['zone_location'] }}</td>
+                      <td>
+                        @foreach($branches as $branch)
+                           @if($branch['id'] == $zone['parent_branch'])
+                           {{ $branch['branch_name'] }}
+                           @endif
+                        @endforeach
+                      </td>
+                      <td><span class="badge bg-success">{{ $zone['status'] }}</span></td>
+                      <td>
+                        <div class="d-flex">
+                          <a href="#" class="btn btn-primary btn-sm p-1"><i class="bi bi-pencil-square"></i></a>
+                          <a href="#" class="btn btn-danger btn-sm mx-1 p-1"><i class="bi bi-trash3"></i></a>
+                        </div>
+                      </td>
+                    </tr>
+                  @endforeach
+                         
                 </tbody>
               </table>
               <!-- End Table with stripped rows -->
@@ -63,37 +69,51 @@
 
 
         <div class="col-lg-3">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Add New Zone</h5>
-
-              <!-- Vertical Form -->
-              <form class="row g-3">
-                <div class="col-12">
-                  <label for="branch-name" class="form-label">Zone Name</label>
-                  <input type="text" class="form-control p-1" id="branch-name">
-                </div>
-                <div class="col-12">
-                  <label for="branch-location" class="form-label">Zone Location</label>
-                  <input type="text" class="form-control p-1" id="branch-location">
-                </div>
-
-                <div class="col-12">
-                  <label for="branch-location" class="form-label">Parent Branch</label>
-                  <select name="" id="branch-location" class="form-control p-1">
-                    <option value="" >No branch selected</option>
-                  </select>
+          <div style="position: sticky; top: 100px;">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Add New Zone</h5>
+  
+                <!-- Vertical Form -->
+                <form id="add-zone-form" class="row g-3 needs-validation" novalidate>
+                <div id="add-zone-success-alert" class="alert alert-success alert-dismissible fade d-none p-1" role="alert">
+                      <i class="bi bi-check-circle me-1"></i>
+                        <span></span>
+              
+                    </div>
+                  <div class="col-12">
+                    <label for="zone-name" class="form-label">Zone Name</label>
+                    <input oninput="capitalizeEveryWord(this)" type="text" class="form-control p-1" name="zone-name" id="zone-name" required>
+                    <div class="invalid-feedback">Please enter zone name.</div>
+                  </div>
+                  <div class="col-12">
+                    <label for="zone-location" class="form-label">Zone Location</label>
+                    <input oninput="capitalizeEveryWord(this)" type="text" class="form-control p-1" name="zone-location" id="zone-location" required>
+                    <div class="invalid-feedback">Please enter zone location.</div>
+                  </div>
+  
+                  <div class="col-12">
+                    <label for="parent-branch" class="form-label">Parent Branch</label>
+                    <select name="parent-branch" id="parent-branch" class="form-control p-1" required>
+                      <option value="" >No branch selected</option>
+                      @foreach($branches as $branch)
+                          <option value="{{$branch['id']}}">{{$branch['branch_name']}}</option>
+                      @endforeach
+                    </select>
+                    <div class="invalid-feedback">Please enter the parent branch.</div>
+                    
+                  </div>
+                 
                   
-                </div>
-               
-                
-                <div class="text-left">
-                  <button type="submit" class="btn btn-primary btn-sm">Submit</button>
-                  
-                </div>
-              </form><!-- Vertical Form -->
-
+                  <div class="text-left">
+                    <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                    
+                  </div>
+                </form><!-- Vertical Form -->
+  
+              </div>
             </div>
+
           </div>
         </div>
     
@@ -103,4 +123,50 @@
 
   </main><!-- End #main -->
 
+  <script>
+    function capitalizeFirstLetter(input) {
+              input.value = input.value.charAt(0).toUpperCase() + input.value.slice(1);
+    }
+
+    function capitalizeEveryWord(input) {
+            var words = input.value.split(' ');
+
+            for (var i = 0; i < words.length; i++) {
+                words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1);
+            }
+
+            input.value = words.join(' ');
+    }
+  </script>
+
   @include('partials/footer')
+
+  <script>
+    $(document).ready(function(){
+      $('#add-zone-form').submit(function(e){
+        e.preventDefault();
+
+        if(this.checkValidity() === true){
+          let formData = $(this).serialize();
+
+          $.ajax({
+            method: 'post',
+            url: '/kapcco/dashboard/zones/add/',
+            data: formData,
+            success: function(response){
+
+              $('#add-zone-success-alert').removeClass('d-none');
+              $('#add-zone-success-alert').addClass('show');
+              $('#add-zone-success-alert span').text(response.message);
+                
+              setTimeout(function(){
+                window.location.reload();
+              }, 2000)
+            },
+            error: function(){}
+          })
+
+        }
+      })
+    })
+  </script>

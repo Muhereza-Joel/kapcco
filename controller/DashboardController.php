@@ -68,6 +68,10 @@ class DashboardController{
     }
 
     public function render_zones_view(){
+        $model = new Model();
+        $branches = $model->get_all_branches();
+        $zones = $model->get_all_zones();
+
         $blade_view = new BladeView();
         $html = $blade_view->render('zones', [
             'pageTitle' => "KAPCCO - Zones",
@@ -75,6 +79,8 @@ class DashboardController{
             'username' => Session::get('username'),
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
+            'branches' => $branches,
+            'zones' => $zones
         ]);
 
         echo ($html);
