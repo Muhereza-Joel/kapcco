@@ -20,33 +20,64 @@
     <section class="section">
       <div class="row">
         <div class="col-lg-3">
+
+        <?php if(!$currentSeason['id']): ?>
+
           <div class="card">
             <div class="card-body">
               <div class="card-title"></div>
               <div class="alert alert-danger fw-bold">You have not set the current season.</div>
             </div>
           </div>
+          <?php else: ?>
+          <div class="card">
+            <div class="card-body">
+              <div class="card-title">Current Season</div>
+              <div class="form-group">
+                <label for="" class="label fw-bold">Runs From</label>
+                <input id="set-season-start-date" type="text" value="<?php echo e($currentSeason['start_date']); ?>" class="form-control text-dark" readonly>
+              </div>
+              <div class="form-group my-3">
+                <label for="" class="label fw-bold">Up To</label>
+                <input id="set-season-end-date" type="text" value="<?php echo e($currentSeason['end_date']); ?>" class="form-control text-danger" readonly>
+              </div>
+
+              <div id="time-remaining" class="badge bg-dark"></div>
+            </div>
+          </div>
+
+        <?php endif; ?>
+
           <div class="card">
             <div class="card-body">
               <div class="card-title">Set Season of Collection</div>
               <div class="alert alert-warning alert-dismissible fade show p-1" role="alert">
                 <i class="bi bi-exclamation-triangle me-1"></i>
-                You can only set the dates of the season only three times in the current season.
+                You can only set new dates of the season if the on going season has ended
                 
+              </div>
+              <div id="add-season-success-alert" class="alert alert-success alert-dismissible fade d-none p-1" role="alert">
+                      <i class="bi bi-check-circle me-1"></i>
+                        <span></span>
+              
               </div>
               <form id="season-form" novalidate class="row g-3 needs-validation">
                 <div class="form-group">
                   <label for="start-date">Start Date of Season</label>
-                  <input type="text" id="start-date" required class="form-control mt-2" placeholder="Choose start date">
+                  <input type="text" id="start-date" required class="form-control mt-2" placeholder="Choose start date" name="start-date">
                   <div class="invalid-feedback">Please choose start date</div>
                 </div>
                 <div class="form-group mt-2">
                   <label for="start-date">End Date of Season</label>
-                  <input type="text" id="end-date" required class="form-control mt-2" placeholder="Choose end date">
+                  <input type="text" id="end-date" required class="form-control mt-2" placeholder="Choose end date" name="end-date">
                   <div class="invalid-feedback">Please choose end date</div>
                 </div>
                 <div class="my-2">
-                  <button class="btn btn-primary btn-sm" id="set-season">Set current season</button>
+                <?php if(!$currentSeason['id']): ?>
+                <button type="submit" class="btn btn-primary btn-sm" id="set-season">Set current season</button>
+                <?php else: ?>
+                <button type="submit" class="btn btn-primary btn-sm" id="set-season" disabled>Set current season</button>
+                <?php endif; ?>
                 </div>
               </form>
             </div>
@@ -88,7 +119,11 @@
         <div class="card">
             <div class="card-body">
               <h5 class="card-title">Price summary for the current season</h5>
-
+              <div class="alert alert-info alert-dismissible fade show p-1" role="alert">
+              
+                These prices only apply to the current season, you have to set new prices when you start a new season
+                Entering new prices updates the existing prices if previously added.
+              </div>
               <!-- Table with stripped rows -->
               <table class="table table-striped table-responsive">
                 <thead>
@@ -158,7 +193,51 @@
       $("#end-date").datepicker({
         minDate: new Date(),
         maxDate: "+5M"
-      }
-      )
+      })
+
+      $("#season-form").submit(function(e){
+        e.preventDefault();
+
+        if(this.checkValidity() === true){
+          let formData = $(this).serialize();
+
+          $.ajax({
+            method: 'post',
+            url: '/kapcco/dashboard/colllections/add-season/',
+            data: formData,
+            success: function(response){
+              $('#add-season-success-alert').removeClass('d-none');
+              $('#add-season-success-alert').addClass('show');
+              $('#add-season-success-alert span').text(response.message);
+                
+              setTimeout(function(){
+                window.location.reload();
+              }, 2000)
+
+            },
+            error: function(){}
+
+          })
+        }
+
+      })
+
+
+    const seasonStartDate = $("#set-season-start-date").val();
+    const seasonEndDate = $("#set-season-end-date").val();
+
+    let startDate = moment(seasonStartDate);
+    let endDate = moment(seasonEndDate);
+
+    // Calculate the difference in milliseconds
+    let duration = moment.duration(endDate.diff(startDate));
+
+    // Format and display the remaining time
+    let days = Math.floor(duration.asDays());
+    let hours = duration.hours();
+    let minutes = duration.minutes();
+    let seconds = duration.seconds();
+
+    $("#time-remaining").text('Remaining time: ' + days + ' days.')
     })
   </script>

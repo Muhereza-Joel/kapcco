@@ -34,6 +34,9 @@ class DashboardController{
 
 
     public function render_collections_view(){
+        $model = new Model();
+        $current_season = $model->get_current_season();
+
         $blade_view = new BladeView();
         $html = $blade_view->render('collections', [
             'pageTitle' => "KAPCCO - Collections",
@@ -41,6 +44,7 @@ class DashboardController{
             'username' => Session::get('username'),
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
+            'currentSeason' => $current_season
         ]);
 
         echo ($html);

@@ -38,6 +38,9 @@ class Router{
         $this->addRoute('/kapcco/dashboard/zones/edit/', 'kapcco\controller\ZonesController@edit_zone');
         $this->addRoute('/kapcco/dashboard/zones/delete/', 'kapcco\controller\ZonesController@delete_zone');
 
+        //routes for CollectionsController
+        $this->addRoute('/kapcco/dashboard/colllections/add-season/', 'kapcco\controller\CollectionsController@save_season');
+
     }
 
     // Define a default route

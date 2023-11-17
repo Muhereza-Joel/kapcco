@@ -248,5 +248,40 @@ class Model{
 
         return $user_details;
     }
+
+    public function set_current_season(){
+        $request = Request::capture();
+
+        $start_date = $request->input('start-date');
+        $end_date = $request->input('end-date');
+
+        $start_date_formatted = date('Y-m-d H:i:s', strtotime($start_date));
+        $end_date_formatted = date('Y-m-d H:i:s', strtotime($end_date));
+        
+        $stmt = $this->database->prepare('CALL SetCurrentSeason(?, ?)');
+        $stmt->bind_param("ss", $start_date_formatted, $end_date_formatted);
+        $stmt->execute();
+
+        $response = ['message' => 'Season Saved Successfully'];
+        $httpStatus = 200;
+        
+        Request::send_response($httpStatus, $response);
+
+        $stmt->close();
+    }
+
+    public function get_current_season(){
+        $query = "SELECT * FROM season WHERE status = 'Ongoing'";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $season = $result->fetch_assoc();
+
+        $stmt->close();
+
+        return $season;
+    }
 }
 ?>
