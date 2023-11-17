@@ -25,6 +25,7 @@
   <link href="/{{$appName}}/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
   <link href="/{{$appName}}/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
   <link href="/{{$appName}}/assets/vendor/simple-datatables/style.css" rel="stylesheet">
+  <link href="/{{$appName}}/assets/vendor/jquery-ui/jquery-ui.min.css" rel="stylesheet">
 
   <!-- Template Main CSS File -->
   <link href="/{{$appName}}/assets/css/style.css" rel="stylesheet">

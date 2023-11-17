@@ -22,7 +22,7 @@
   <li class="nav-item pb-2">
     <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/dashboard/collections/">
       <i class="bi bi-cart"></i>
-      <span>All Collections</span>
+      <span>Manage Collections</span>
     </a>
   </li>
 
@@ -36,7 +36,7 @@
   <li class="nav-item pb-2">
     <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/dashboard/zones/">
       <i class="bi bi-shop-window"></i>
-      <span>Zones</span>
+      <span>Stores</span>
     </a>
   </li>
 

@@ -7,11 +7,11 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Zones</h1>
+      <h1>Stores</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="/<?php echo e($appName); ?>/dashboard/">Dashboard</a></li>
-          <li class="breadcrumb-item">Zones</li>
+          <li class="breadcrumb-item">stores</li>
           <li class="breadcrumb-item active">All</li>
         </ol>
       </nav>
@@ -22,7 +22,7 @@
     <div class="col-lg-9">
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Showing All Zones</h5>
+              <h5 class="card-title">Showing All Stores</h5>
 
               <!-- Table with stripped rows -->
               <table class="table table-striped datatable">
@@ -94,7 +94,7 @@
 
             <div class="card">
               <div class="card-body">
-                <h5 class="card-title">Add New Zone</h5>
+                <h5 class="card-title">Add New Store</h5>
   
                 <!-- Vertical Form -->
                 <form id="add-zone-form" class="row g-3 needs-validation" novalidate>
@@ -104,14 +104,14 @@
               
                     </div>
                   <div class="col-12">
-                    <label for="zone-name" class="form-label">Zone Name</label>
-                    <input oninput="capitalizeEveryWord(this)" type="text" class="form-control p-1" name="zone-name" id="zone-name" required placeholder="Enter zone name">
-                    <div class="invalid-feedback">Please enter zone name.</div>
+                    <label for="zone-name" class="form-label">Store Name</label>
+                    <input oninput="capitalizeEveryWord(this)" type="text" class="form-control p-1" name="zone-name" id="zone-name" required placeholder="Enter store name">
+                    <div class="invalid-feedback">Please enter store name.</div>
                   </div>
                   <div class="col-12">
                     <label for="zone-location" class="form-label">Zone Location</label>
-                    <input oninput="capitalizeEveryWord(this)" type="text" class="form-control p-1" name="zone-location" id="zone-location" required placeholder="Enter zone location">
-                    <div class="invalid-feedback">Please enter zone location.</div>
+                    <input oninput="capitalizeEveryWord(this)" type="text" class="form-control p-1" name="zone-location" id="zone-location" required placeholder="Enter store location">
+                    <div class="invalid-feedback">Please enter store location.</div>
                   </div>
   
                   <div class="col-12">

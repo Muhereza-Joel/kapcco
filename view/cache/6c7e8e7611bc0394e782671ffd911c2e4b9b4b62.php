@@ -25,6 +25,7 @@
   <link href="/<?php echo e($appName); ?>/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
   <link href="/<?php echo e($appName); ?>/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
   <link href="/<?php echo e($appName); ?>/assets/vendor/simple-datatables/style.css" rel="stylesheet">
+  <link href="/<?php echo e($appName); ?>/assets/vendor/jquery-ui/jquery-ui.min.css" rel="stylesheet">
 
   <!-- Template Main CSS File -->
   <link href="/<?php echo e($appName); ?>/assets/css/style.css" rel="stylesheet">

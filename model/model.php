@@ -133,7 +133,7 @@ class Model{
         echo $this->database->error;
 
         if(!$this->database->error){
-            $response = ['message' => 'Zone added successfully', 'status' => '200'];
+            $response = ['message' => 'Store added successfully', 'status' => '200'];
             $httpStatus = 200;
     
             Request::send_response($httpStatus, $response);
@@ -188,7 +188,7 @@ class Model{
         $stmt->bind_param('sssi', $zone_name, $zone_location, $parent_branch, $zone_id);
         $stmt->execute();
       
-        $response = ['message' => 'Zone details updated', 'status' => '200'];
+        $response = ['message' => 'Store details updated', 'status' => '200'];
         $httpStatus = 200;
     
         Request::send_response($httpStatus, $response);
@@ -208,7 +208,7 @@ class Model{
         $stmt->bind_param('i', $id);
         $stmt->execute();
 
-        $response = ['message' => 'Zone deleted successfully', 'status' => '200'];
+        $response = ['message' => 'Store deleted successfully', 'status' => '200'];
         $httpStatus = 200;
     
         Request::send_response($httpStatus, $response);
