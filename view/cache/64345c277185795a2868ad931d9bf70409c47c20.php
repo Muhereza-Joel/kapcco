@@ -20,12 +20,12 @@
                       </div>
                     <div class="col-12">
                       <input type="hidden" name="zone-id-to-edit" value="<?php echo e($zoneDetails['id']); ?>">  
-                      <label for="zone-name" class="form-label fw-bold">Zone Name</label>
+                      <label for="zone-name" class="form-label fw-bold">Store Name</label>
                       <input value="<?php echo e($zoneDetails['zone_name']); ?>" oninput="capitalizeEveryWord(this)" type="text" class="form-control p-1" name="zone-name" id="zone-name" required placeholder="Enter zone name">
                       <div class="invalid-feedback">Please enter store name.</div>
                     </div>
                     <div class="col-12">
-                      <label for="zone-location" class="form-label fw-bold">Zone Location</label>
+                      <label for="zone-location" class="form-label fw-bold">Store Location</label>
                       <input value="<?php echo e($zoneDetails['zone_location']); ?>" oninput="capitalizeEveryWord(this)" type="text" class="form-control p-1" name="zone-location" id="zone-location" required placeholder="Enter zone location">
                       <div class="invalid-feedback">Please enter store location.</div>
                     </div>
