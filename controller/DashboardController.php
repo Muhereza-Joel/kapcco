@@ -36,6 +36,7 @@ class DashboardController{
     public function render_collections_view(){
         $model = new Model();
         $current_season = $model->get_current_season();
+        $scales = $model->get_scales_for_current_season($current_season['id']);
 
         $blade_view = new BladeView();
         $html = $blade_view->render('collections', [
@@ -44,7 +45,8 @@ class DashboardController{
             'username' => Session::get('username'),
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
-            'currentSeason' => $current_season
+            'currentSeason' => $current_season,
+            'scales' => $scales
         ]);
 
         echo ($html);

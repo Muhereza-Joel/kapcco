@@ -87,28 +87,37 @@
           <div class="card">
             <div class="card-body">
               <div class="card-title">Set Prices for the current season</div>
-              <form>
+              <form id="price-scales-form" novalidate class="row g-3 needs-validation">
+              <div id="add-scale-success-alert" class="alert alert-success alert-dismissible fade d-none p-1" role="alert">
+                      <i class="bi bi-check-circle me-1"></i>
+                        <span></span>
+              
+              </div>
                 <div class="form-group my-1">
                   <label for="product-name">Product Name</label>
-                  <input type="text" class="form-control my-1" value="Coffee">
+                  <input name="product-name" type="text" class="form-control my-1" value="Coffee" required>
+                  <input name="current-season-id" type="hidden" class="form-control my-1" value="<?php echo e($currentSeason['id']); ?>" required>
+                  <div class="invalid-feedback">Please provide product name</div>
                 </div>
                 <div class="form-control mt-2">
-                  <label for="product-name">Product Type</label>
-                  <select name="" id="product-name" class="form-control">
+                  <label for="product-type">Product Type</label>
+                  <select name="product-type" id="product-type" class="form-control" required>
                     <option value="">Select product type</option>
                     <option value="Parchment">Parchment</option>
                     <option value="Kiboko">Kiboko</option>
                     <option value="Red Cherry">Red Cherry</option>
                     <option value="FAQ">FAQ</option>
                   </select>
+                  <div class="invalid-feedback">Please select coffee type</div>
                 </div>
                 <div class="form-group mt-2">
-                  <label for="product-name">Unit Price per Kilogram</label>
-                  <input type="number" class="form-control my-1">
+                  <label for="unit-price">Unit Price per Kilogram</label>
+                  <input name="unit-price" id="unit-price" type="number" class="form-control my-1" required>
+                  <div class="invalid-feedback">Please enter unit price</div>
                 </div>
 
                 <div class="my-2">
-                  <button class="btn btn-primary btn-sm">Save Price Data</button>
+                  <button type="submit" class="btn btn-primary btn-sm">Save Price Data</button>
                 </div>
                 
               </form>
@@ -129,47 +138,23 @@
                 <thead>
                   <tr>
                     <th scope="col">Product</th>
-                    <th scope="col">Type</th>
-                    <th scope="col">Unit Price(UGX)</th>
-                    <th scope="col">Options</th>
+                    <th scope="col">Type / Category</th>
+                    <th scope="col">Unit Price(UGX) /kg</th>
+                    
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-               
-                    <td>Brandon Jacob</td>
-                    <td>Designer</td>
-                    <td>28</td>
-                    <td>2016-05-25</td>
-                  </tr>
-                  <tr>
-                 
-                    <td>Bridie Kessler</td>
-                    <td>Developer</td>
-                    <td>35</td>
-                    <td>2014-12-05</td>
-                  </tr>
-                  <tr>
-                
-                    <td>Ashleigh Langosh</td>
-                    <td>Finance</td>
-                    <td>45</td>
-                    <td>2011-08-12</td>
-                  </tr>
-                  <tr>
-                 
-                    <td>Angus Grady</td>
-                    <td>HR</td>
-                    <td>34</td>
-                    <td>2012-06-11</td>
-                  </tr>
-                  <tr>
+                  <?php $__currentLoopData = $scales; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $scale): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <tr>
+                      
+                      <td><?php echo e($scale['product_name']); ?></td>
+                      <td><?php echo e($scale['product_type']); ?></td>
+                      <td><?php echo e($scale['unit_price']); ?></td>
+                      
+                    </tr>
+                  <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                   
-                    <td>Raheem Lehner</td>
-                    <td>Dynamic Division Officer</td>
-                    <td>47</td>
-                    <td>2011-04-19</td>
-                  </tr>
+                  
                 </tbody>
               </table>
               <!-- End Table with stripped rows -->
@@ -222,11 +207,35 @@
 
       })
 
+      $("#price-scales-form").submit(function(e){
+        e.preventDefault();
 
-    const seasonStartDate = $("#set-season-start-date").val();
+        if(this.checkValidity() === true){
+          let formData = $(this).serialize();
+
+          $.ajax({
+            method: 'post',
+            url: '/kapcco/dashboard/colllections/set-price-scale/',
+            data: formData,
+            success: function(response){
+              $('#add-scale-success-alert').removeClass('d-none');
+              $('#add-scale-success-alert').addClass('show');
+              $('#add-scale-success-alert span').text(response.message);
+                
+              setTimeout(function(){
+                window.location.reload();
+              }, 2000)
+
+            },
+            error: function(){}
+          })
+        }
+      })
+
+
     const seasonEndDate = $("#set-season-end-date").val();
 
-    let startDate = moment(seasonStartDate);
+    let startDate = moment(new Date());
     let endDate = moment(seasonEndDate);
 
     // Calculate the difference in milliseconds

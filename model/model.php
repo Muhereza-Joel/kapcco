@@ -270,6 +270,29 @@ class Model{
         $stmt->close();
     }
 
+    public function set_scale(){
+        $request = Request::capture();
+
+        $product_name = $request->input('product-name');
+        $product_type = $request->input('product-type');
+        $unit_price = $request->input('unit-price');
+        $current_season = $request->input('current-season-id');
+        $user_id = Session::get('user_id');
+
+        $stmt = $this->database->prepare('CALL InsertOrUpdatePriceScales(?, ?, ?, ?, ?)');
+        $stmt->bind_param("ssiii", $product_name, $product_type, $unit_price, $current_season, $user_id);
+        $stmt->execute();
+
+
+        $response = ['message' => 'Scale Saved Successfully'];
+        $httpStatus = 200;
+        
+        Request::send_response($httpStatus, $response);
+
+        $stmt->close();
+
+    }
+
     public function get_current_season(){
         $query = "SELECT * FROM season WHERE status = 'Ongoing'";
 
@@ -282,6 +305,21 @@ class Model{
         $stmt->close();
 
         return $season;
+    }
+
+    public function get_scales_for_current_season($id){
+        $query = "SELECT * FROM price_scales WHERE season_id = ?";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $scales = $result->fetch_all(MYSQLI_ASSOC);
+
+        $stmt->close();
+
+        return $scales;
     }
 }
 ?>

@@ -10,5 +10,10 @@ class CollectionsController{
         $model->set_current_season();
 
     }
+
+    public function set_price_scale(){
+        $model = new Model();
+        $model->set_scale();
+    }
 }
 ?>
