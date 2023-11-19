@@ -41,6 +41,12 @@
       <span>Stores</span>
     </a>
   </li>
+  <li class="nav-item pb-2">
+    <a class="nav-link collapsed" href="#">
+      <i class="bi bi-shop-window"></i>
+      <span>Allocate Stores</span>
+    </a>
+  </li>
   
   <li class="nav-item pb-2">
     <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/dashboard/farmers/">
