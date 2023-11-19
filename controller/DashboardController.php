@@ -1,6 +1,7 @@
 <?php
 namespace kapcco\controller;
 
+use kapcco\core\Request;
 use kapcco\core\Session;
 use kapcco\model\Model;
 use kapcco\view\BladeView;
@@ -100,6 +101,8 @@ class DashboardController{
         $model = new Model();
         $farmers = $model->get_all_farmers();
         $user_details = $model->get_user_details($id);
+        $stores_to_assign = $model->get_stores_to_assign($id);
+        $assigned_stores = $model->get_farmer_assignments($id);
 
 
         $blade_view = new BladeView();
@@ -111,7 +114,9 @@ class DashboardController{
             'avator' => Session::get('avator'),
             'action' => $action,
             'farmers' => $farmers,
-            'userDetails' => $user_details
+            'userDetails' => $user_details,
+            'storesToAssign' => $stores_to_assign,
+            'assignedStores' => $assigned_stores
         ]);
 
         echo ($html);
@@ -120,6 +125,14 @@ class DashboardController{
     public function approve_all($ids){
         $model = new Model();
         $model->approve_all($ids);
+    }
+
+    public function assign_all($ids){
+        $model = new Model();
+        $request = Request::capture();
+        $farmer_id = $request->input('farmer_id');
+
+        $model->assign_stores_to_farmer($farmer_id, $ids);
     }
 }
 ?>

@@ -26,7 +26,7 @@
     <section class="section">
       <div class="row">
         <div class="col-lg-8">
-        <div class="card">
+        <div class="card" style="position: sticky; top: 70px;">
               <div class="card-body">
                 <h5 class="card-title"></h5>
   
@@ -52,7 +52,7 @@
                     <?php $__currentLoopData = $farmers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $farmer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                       <tr>
                         <th>
-                          <?php if($farmer['approved'] == 0): ?>
+                          <?php if($farmer['approved'] == 0 && $action == "view"): ?>
                             <input type="checkbox" class="row-select" value="<?php echo e($farmer['farmer_id']); ?>">
                           <?php endif; ?>
                         </th>
@@ -89,7 +89,15 @@
         </div>
         <div class="col-lg-4">
           <div style="position: sticky; top: 100px;">
+              <div class="assign-stores-container">
+                <?php if($action == 'allocate-store'): ?>
+                 <?php echo $__env->make('assignStore', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+                
+                <?php endif; ?>
+
+              </div>
               <div id="view-farmer-info-container">
+
                   <?php if($action == 'view'): ?>
                     <?php echo $__env->make('viewFarmer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
                   <?php endif; ?>
@@ -99,42 +107,109 @@
         </div>
 
       </div>
+      <!-- Bootstrap Modal for Confirmation -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+     <div class="modal-dialog" role="document">
+       <div class="modal-content">
+         <div class="modal-header">
+               <div>
+                 <h6 class="fw-bold">Confirm Approve Action</h6>
+               </div>
+             </div>
+             <div class="modal-body">
+           <div id="alert-success" class="alert alert-success alert-dismissible py-1 px-2 d-none fade" role="alert">
+                 <i class="bi bi-exclamation-octagon me-0"></i>
+                 <span></span>
+                           
+           </div>
+          <h6 id="confirmationModalLabel">Are you sure you want to approve selected farmers?. This will help each farmer to login.</h6>
+           
+         </div>
+         <div class="modal-footer">
+         <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+           <button type="button" class="btn btn-primary btn-sm" id="confirmApprove">Yes, Continue</button>
+         </div>
+       </div>
+     </div>
+    </div>
     </section>
 
   </main><!-- End #main -->
 
-   <!-- Bootstrap Modal for Confirmation -->
-<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-            <div>
-              <h6 class="fw-bold">Confirm Approve Action</h6>
-            </div>
-          </div>
-          <div class="modal-body">
-        <div id="alert-success" class="alert alert-success alert-dismissible py-1 px-2 d-none fade" role="alert">
-              <i class="bi bi-exclamation-octagon me-0"></i>
-              <span></span>
-                        
-        </div>
-       <h6 id="confirmationModalLabel">Are you sure you want to approve selected farmers?. This will help each farmer to login.</h6>
-        
-      </div>
-      <div class="modal-footer">
-      <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary btn-sm" id="confirmApprove">Yes, Continue</button>
-      </div>
-    </div>
-  </div>
-</div>
 
   <?php echo $__env->make('partials/footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 
   <script>
     $(document).ready(function(){
+
+      var selectedStoresToAssign = [];
+var maxSelection = 3;
+
+function updateButtons() {
+  var selectedCountToAssign = selectedStoresToAssign.length;
+
+  if (selectedCountToAssign > 0 && selectedCountToAssign <= maxSelection) {
+    $('#save-assignment-btn').show();
+ 
+  } else {
+    $('#save-assignment-btn').hide();
+
+  }
+}
+
+// Store initially selected rows
+$('table#store-to-allocate-table input.row-select:checked').each(function () {
+  selectedStoresToAssign.push($(this).val());
+});
+
+$('table#store-to-allocate-table input.row-select').change(function () {
+  var storeId = $(this).val();
+
+  if (this.checked) {
+    if (selectedStoresToAssign.length >= maxSelection) {
+      this.checked = false;
+      alert('You can only assign up to 3 stores per individual farmer.');
+    } else {
+      selectedStoresToAssign.push(storeId);
+    }
+  } else {
+    selectedStoresToAssign = selectedStoresToAssign.filter(function (id) {
+      return id !== storeId;
+    });
+  }
+  updateButtons();
+});
+
+// Function to handle the "Save Assignment" button click
+$('#save-assignment-btn').click(function() {
+    var idsString = encodeURIComponent(JSON.stringify(selectedStoresToAssign));
+    var farmer_to_assign = $("#farmer-to-assign").text();
+    
+    $.ajax({
+          method: 'post',
+          url: '/kapcco/dashboard/farmers/assign/?ids=' + idsString,
+          data: { ids: idsString, farmer_id : farmer_to_assign },
+          success: function(response) {
+            $("#alert-assignment-success").removeClass('d-none');
+            $("#alert-assignment-success").addClass('show');
+            $("#alert-assignment-success").text(response.message);
+            
+            setTimeout(function(){
+                window.location.reload();
+            }, 2000)
+          },
+          error: function(err) {
+            
+          }
+        });
+  });
+
+
+
+
+
       $("#farmers-table").on('change', 'input.row-select', function(){
-          let checkboxes = $('input.row-select:checked');
+          let checkboxes = $('#farmers-table input.row-select:checked');
           let approveButton = $('#approve-btn');
 
           if (checkboxes.length > 0) {
@@ -150,7 +225,7 @@
 
         let selectedValues = [];
 
-        $('input.row-select:checked').each(function(){
+        $('#farmers-table input.row-select:checked').each(function(){
           selectedValues.push($(this).val());
 
           if(selectedValues.length > 0){
@@ -178,5 +253,12 @@
           }
         })
       })
+
+      $('#confirmationModal').on('hidden.bs.modal', function() {
+        // Clear the selected checkboxes and the array
+        $('#farmers-table input.row-select:checked').prop('checked', false);
+        selectedValues = [];
+        $('#approve-btn').hide();
+      });
     })
   </script>

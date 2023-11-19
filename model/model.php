@@ -293,6 +293,7 @@ class Model{
 
     }
 
+
     public function get_current_season(){
         $query = "SELECT * FROM season WHERE status = 'Ongoing'";
 
@@ -343,5 +344,64 @@ class Model{
         
         $stmt->close();
     }
+
+    public function get_stores_to_assign($id){
+        $query = "SELECT z.id AS store_id, z.zone_name, b.branch_name
+                  FROM zones z
+                  LEFT JOIN store_assignments sa ON z.id = sa.store_id AND sa.farmer_id = ?
+                  LEFT JOIN branches b ON z.parent_branch = b.id
+                  WHERE sa.id IS NULL OR sa.farmer_id IS NULL
+                  ";
+
+         $stmt = $this->database->prepare($query);
+         $stmt->bind_param("i", $id);
+         $stmt->execute();
+ 
+         $result = $stmt->get_result();
+         $stores = $result->fetch_all(MYSQLI_ASSOC);
+ 
+         $stmt->close();
+ 
+         return $stores;
+
+    }
+
+    public function get_farmer_assignments($id){
+        $query = "SELECT sa.id AS store_id, z.zone_name, b.branch_name
+                  FROM zones z
+                  JOIN store_assignments sa ON z.id = sa.store_id AND sa.farmer_id = ?
+                  LEFT JOIN branches b ON z.parent_branch = b.id";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $stores = $result->fetch_all(MYSQLI_ASSOC);
+
+        $stmt->close();
+
+        return $stores;          
+    }
+
+    public function assign_stores_to_farmer($farmer_id, $Ids) {
+  
+        $ids = json_decode(urldecode($Ids), true);
+        $stmt = $this->database->prepare("CALL assignStoreToFarmer(?, ?)");
+        
+        foreach ($ids as $id) {
+            $stmt->bind_param('ii', $farmer_id, $id);
+            $stmt->execute();
+            $stmt->reset();
+        }
+  
+        $stmt->close();
+        $response = ['message' => 'Assignments Saved'];
+        $httpStatus = 200;
+  
+    Request::send_response($httpStatus, $response);
+    
+  }
+
 }
 ?>

@@ -1,5 +1,5 @@
 <div class="card">
-                      <div class="card-body" style="background-color: rgb(223, 232, 225); position: sticky; top: 100px;">
+                      <div class="card-body" style=" position: sticky; top: 100px;">
                           <div class="card-title">Farmer Information.</div>
                           <div class="d-flex justify-content-center mb-3">
                               <img src="{{$userDetails['image_url']}}" class="rounded-circle" alt="" width="150px" height="150px" style="object-fit: cover; border: 3px solid #fff;">

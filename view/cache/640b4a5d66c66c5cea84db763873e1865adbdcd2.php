@@ -1,4 +1,4 @@
-<div class="card" style="background-color: rgb(223, 232, 225);">
+<div class="card">
                   
                   <div class="card-body">
                       <h5 class="card-title">Update Branch Details</h5>
