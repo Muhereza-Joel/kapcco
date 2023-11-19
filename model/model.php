@@ -218,7 +218,7 @@ class Model{
     }
 
     public function get_all_farmers(){
-        $query = "SELECT user_profile.id, app_users.approved, user_profile.fullname, user_profile.phone, user_profile.image_url
+        $query = "SELECT user_profile.id, app_users.id AS farmer_id, app_users.approved, user_profile.fullname, user_profile.phone, user_profile.image_url
                   FROM app_users JOIN user_profile
                   ON app_users.id = user_profile.user_id 
                   WHERE app_users.role = 'Farmer'";
@@ -320,6 +320,28 @@ class Model{
         $stmt->close();
 
         return $scales;
+    }
+
+    public function approve_all($ids){
+        $ids = json_decode(urldecode($ids), true);
+
+        $query = "UPDATE app_users SET approved = '1' WHERE id = ?";
+
+        $stmt = $this->database->prepare($query);
+
+        foreach($ids as $id){
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+            $stmt->reset();
+        }
+
+        
+        $response = ['message' => 'Selected Farmers Approved'];
+        $httpStatus = 200;
+        
+        Request::send_response($httpStatus, $response);
+        
+        $stmt->close();
     }
 }
 ?>

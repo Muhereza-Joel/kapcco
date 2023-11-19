@@ -27,6 +27,7 @@ class Router{
         $this->addRoute('/kapcco/dashboard/branches/', 'kapcco\controller\DashboardController@render_branches_view');
         $this->addRoute('/kapcco/dashboard/zones/', 'kapcco\controller\DashboardController@render_zones_view');
         $this->addRoute('/kapcco/dashboard/farmers/', 'kapcco\controller\DashboardController@render_farmers_view');
+        $this->addRoute('/kapcco/dashboard/farmers/approve/', 'kapcco\controller\DashboardController@approve_all');
         
         //routes for BranchController
         $this->addRoute('/kapcco/dashboard/branches/add/', 'kapcco\controller\BranchController@add_branch');

@@ -116,5 +116,10 @@ class DashboardController{
 
         echo ($html);
     }
+
+    public function approve_all($ids){
+        $model = new Model();
+        $model->approve_all($ids);
+    }
 }
 ?>
