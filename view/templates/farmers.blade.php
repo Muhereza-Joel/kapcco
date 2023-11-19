@@ -52,7 +52,7 @@
                     @foreach($farmers as $farmer)
                       <tr>
                         <th>
-                          @if($farmer['approved'] == 0 && $action == "view")
+                          @if($farmer['approved'] == 0 && $action == "")
                             <input type="checkbox" class="row-select" value="{{$farmer['farmer_id']}}">
                           @endif
                         </th>

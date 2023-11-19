@@ -52,7 +52,7 @@
                     <?php $__currentLoopData = $farmers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $farmer): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                       <tr>
                         <th>
-                          <?php if($farmer['approved'] == 0 && $action == "view"): ?>
+                          <?php if($farmer['approved'] == 0 && $action == ""): ?>
                             <input type="checkbox" class="row-select" value="<?php echo e($farmer['farmer_id']); ?>">
                           <?php endif; ?>
                         </th>
