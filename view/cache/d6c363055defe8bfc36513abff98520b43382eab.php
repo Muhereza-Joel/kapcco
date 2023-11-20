@@ -44,10 +44,7 @@
                       </tr>
                       </thead>
                       <tbody>                 
-                          <tr> 
-                            <td><input type="checkbox" class="row-select" value="1"></td>                        
-                            <td>Muhereza Joel</td> 
-                          </tr>
+                          
                       </tbody>
                     </table>
               </div>
@@ -82,6 +79,37 @@
           // Add new options based on the response data
           $.each(data.stores, function (key, value) {
             $('#parent-store-drop-down').append('<option value="' + value.id + '">' + value.zone_name + '</option>');
+          });
+        },
+        error: function (error) {
+          console.log('Error fetching data:', error);
+        }
+      });
+    });
+
+
+    // Attach an event listener to the "Stores" dropdown
+    $('#parent-store-drop-down').on('change', function () {
+      // Get the selected store ID
+      var selectedStore = $(this).val();
+
+      // Perform an Ajax request to fetch data for the selected store
+      $.ajax({
+        url: '/kapcco/dashboard/zones/get-farmers-by-store-id/', // Replace with the actual server endpoint
+        method: 'GET',
+        data: { store_id: selectedStore },
+        success: function (data) {
+          // Clear existing rows in the table body
+          $('#farmers-to-allocate-table tbody').empty();
+
+          // Add new rows based on the response data
+          $.each(data.farmers, function (key, value) {
+            $('#farmers-to-allocate-table tbody').append(
+              '<tr>' +
+                '<td><input type="checkbox" class="row-select" value="' + value.user_id + '"></td>' +
+                '<td>' + '<img src='+value.image_url+"'/>" + value.fullname + '</td>' +
+              '</tr>'
+            );
           });
         },
         error: function (error) {

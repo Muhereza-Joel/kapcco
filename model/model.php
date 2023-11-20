@@ -418,7 +418,28 @@ class Model{
     $stmt->close();
 
     return $stores;
-}
+
+    }
+
+    public function get_farmers_by_store_id($id){
+        $query = "SELECT up.user_id, up.fullname, up.image_url
+                  FROM store_assignments sa
+                  JOIN user_profile up ON sa.farmer_id = up.user_id
+                  WHERE sa.store_id = ?";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $farmers = $result->fetch_all(MYSQLI_ASSOC);
+
+        $stmt->close();
+
+        return $farmers;
+    }
+
+
 
 }
 ?>

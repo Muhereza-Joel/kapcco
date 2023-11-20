@@ -20,11 +20,7 @@ class ZonesController{
         $model->delete_zone();
     }
 
-    public function get_zones_by_id(){
-        $request = Request::capture();
-        
-        $branch_id = $request->input('branch_id');
-
+    public function get_zones_by_id($branch_id){
         $model = new Model();
         $stores = $model->get_stores_by_parent_branch_id($branch_id);
 
@@ -33,6 +29,16 @@ class ZonesController{
   
         Request::send_response($httpStatus, $response);
 
+    }
+
+    public function get_farmers_by_store_id($store_id){
+        $model = new Model();
+        $farmers = $model->get_farmers_by_store_id($store_id);
+
+        $response = ['farmers' => $farmers];
+        $httpStatus = 200;
+  
+        Request::send_response($httpStatus, $response);
     }
 }
 ?>
