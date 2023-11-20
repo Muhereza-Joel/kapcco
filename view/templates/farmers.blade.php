@@ -71,8 +71,8 @@
                               <a href="?action=view&id={{$farmer['id']}}" class="btn btn-primary btn-sm mx-1 p-1"><i class="bi bi-eye"></i></a>
 
                               @if($farmer['approved'] == '1')
-                                <a href="?action=allocate-store&id={{$farmer['id']}}" class="btn btn-success btn-sm mx-1 p-1"><i class="bi bi-shop-window"></i></a>
-                                <a href="?action=drop-store-allocation&id={{$farmer['id']}}" class="btn btn-danger btn-sm mx-1 p-1"><i class="bi bi-shop-window"></i></a>
+                                <a href="/kapcco/dashboard/farmers/u/?action=allocate-store&id={{$farmer['id']}}" class="btn btn-success btn-sm mx-1 p-1"><i class="bi bi-shop-window"></i></a>
+                                <a href="/kapcco/dashboard/farmers/u/?action=drop-store-allocation&id={{$farmer['id']}}" class="btn btn-danger btn-sm mx-1 p-1"><i class="bi bi-shop-window"></i></a>
                               @endif  
                             </div>
                         </td>

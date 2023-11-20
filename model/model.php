@@ -367,10 +367,12 @@ class Model{
     }
 
     public function get_farmer_assignments($id){
+
         $query = "SELECT sa.id AS store_id, z.zone_name, b.branch_name
                   FROM zones z
                   JOIN store_assignments sa ON z.id = sa.store_id AND sa.farmer_id = ?
-                  LEFT JOIN branches b ON z.parent_branch = b.id";
+                  LEFT JOIN branches b ON z.parent_branch = b.id
+                  ";
 
         $stmt = $this->database->prepare($query);
         $stmt->bind_param("i", $id);
@@ -402,6 +404,21 @@ class Model{
     Request::send_response($httpStatus, $response);
     
   }
+
+  public function get_stores_by_parent_branch_id($id){
+    $query = "SELECT * FROM zones WHERE parent_branch = ?";
+
+    $stmt = $this->database->prepare($query);
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+    $stores = $result->fetch_all(MYSQLI_ASSOC);
+
+    $stmt->close();
+
+    return $stores;
+}
 
 }
 ?>

@@ -38,11 +38,11 @@
                 </thead>
                 <tbody>
                   <?php $__currentLoopData = $zones; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $zone): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <tr class="p-0">
+                    <tr>
                       <th scope="row"><?php echo e($loop->iteration); ?></th>
-                      <td class="p-0"><?php echo e($zone['zone_name']); ?></td>
-                      <td class="p-0"><?php echo e($zone['zone_location']); ?></td>
-                      <td class="p-0">
+                      <td><?php echo e($zone['zone_name']); ?></td>
+                      <td><?php echo e($zone['zone_location']); ?></td>
+                      <td>
                       <?php if($zone['parent_branch'] != ""): ?>
                           <?php $__currentLoopData = $branches; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $branch): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <?php if($branch['id'] == $zone['parent_branch']): ?>
@@ -58,8 +58,8 @@
                               
                       <?php endif; ?>
                       </td>
-                      <td class="p-0"><span class="badge bg-success"><?php echo e($zone['status']); ?></span></td>
-                      <td class="p-0">
+                      <td><span class="badge bg-success"><?php echo e($zone['status']); ?></span></td>
+                      <td>
                         <div class="d-flex">
                           <a href="?action=edit&id=<?php echo e($zone['id']); ?>" class="btn btn-secondary btn-sm p-1"><i class="bi bi-pencil-square"></i></a>
                           <a href="?action=delete&id=<?php echo e($zone['id']); ?>" class="btn btn-danger btn-sm mx-1 p-1"><i class="bi bi-trash3"></i></a>

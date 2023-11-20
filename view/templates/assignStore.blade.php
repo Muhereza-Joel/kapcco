@@ -18,7 +18,7 @@
                       <div id="alert-assignment-success" class="alert alert-success d-none p-1">
                         <span></span>
                       </div>
-                        <div id="farmer-to-assign" class="d-none">{{$userDetails['id']}}</div>
+                        <div id="farmer-to-assign" class="d-none">{{$userDetails['user_id']}}</div>
                         <div class="card"><button id="save-assignment-btn" class="btn btn-primary btn-sm " style="display: none;">Save</button></div>
                     <table id="store-to-allocate-table" class="table table-striped p-0">
                       <div class="table-header fw-bold">Stores to allocate</div>
@@ -77,6 +77,6 @@
                         @endforeach
                         
                       </tbody>
-                    </div>
+                    </table>
                   </div>
                   
