@@ -23,34 +23,87 @@
           <div class="col-lg-3">
 
             <?php echo $__env->make('season', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+
             <?php echo $__env->make('selectBranchAndStore', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 
           </div>
           <div class="col-lg-4">
+            <?php echo $__env->make('farmerCollectionTable', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
+          </div>
+          <div class="col-lg-5">
             <div class="card">
               <div class="card-body">
-                <div class="card-title">Farmers under selected store</div>
-                <table id="farmers-to-allocate-table" class="table table-striped">
-                      
-                      <thead>
-                        <tr>
-                          <th>
-                            <div class="icon">
-                              <i class="bi bi-check-square-fill"></i> 
-                            </div>
+                <div class="card-title">Collection form</div>
+                  <div class="alert alert-info p-1">
+                    Select farmers from the list to add collections. Selecting more than one will save the same collection to all of them forexample if the quantity is similar.
+                  </div>
 
-                          </th>
-                          <th scope="col">Full Name</th>
-                      </tr>
-                      </thead>
-                      <tbody>                 
-                          
-                      </tbody>
-                    </table>
+                  <small>Collection data</small>
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <div>
+                        <label for="product-type" class="fw-bold">Product Type</label>
+                        <select name="product-type" id="product-type" class="form-control" required>
+                          <option value="">Select product type</option>
+                          <option value="Parchment">Parchment</option>
+                          <option value="Kiboko">Kiboko</option>
+                          <option value="Red Cherry">Red Cherry</option>
+                          <option value="FAQ">FAQ</option>
+                        </select>
+                      <div class="invalid-feedback">Please select coffee type</div>
+                    </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <label for="unit-price" class="fw-bold">Unit Price /kg</label>
+                        <input type="number" readonly value="" class="form-control" required>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row mt-3">
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                          <label for="quantity" class="fw-bold">Quantity in Kilograms</label>
+                          <input type="number"  class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                          <label for="total" class="fw-bold">Total Amount</label>
+                          <input type="number"  class="form-control" required readonly>
+                      </div>
+                    </div>
+                  </div>
+
+                  <fieldset class="row mb-3 mt-3">
+                        <label for="" class="fw-bold">Mark collection as</label>
+                          <div class="col-sm-4">
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked="">
+                              <label class="form-check-label" for="gridRadios1">
+                                Payed
+                              </label>
+                            </div>
+                          </div>
+
+                          <div class="col-sm-4">
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
+                              <label class="form-check-label" for="gridRadios2">
+                                Not payed
+                              </label>
+                            </div>
+                          </div>
+                      </fieldset>
+
+                  <button type="submit" class="btn btn-primary btn-sm mt-3">Save Collection data</button>
+                  
+
               </div>
             </div>
           </div>
-          <div class="col-lg-5"></div>
         </div>
 
       </form>
@@ -76,7 +129,7 @@
           $('#parent-store-drop-down').empty();
            $('#parent-store-drop-down').append('<option value="">Select Store</option>');
 
-          // Add new options based on the response data
+         
           $.each(data.stores, function (key, value) {
             $('#parent-store-drop-down').append('<option value="' + value.id + '">' + value.zone_name + '</option>');
           });
@@ -88,26 +141,24 @@
     });
 
 
-    // Attach an event listener to the "Stores" dropdown
     $('#parent-store-drop-down').on('change', function () {
-      // Get the selected store ID
+     
       var selectedStore = $(this).val();
 
-      // Perform an Ajax request to fetch data for the selected store
+     
       $.ajax({
-        url: '/kapcco/dashboard/zones/get-farmers-by-store-id/', // Replace with the actual server endpoint
+        url: '/kapcco/dashboard/zones/get-farmers-by-store-id/', 
         method: 'GET',
         data: { store_id: selectedStore },
         success: function (data) {
-          // Clear existing rows in the table body
+         
           $('#farmers-to-allocate-table tbody').empty();
 
-          // Add new rows based on the response data
           $.each(data.farmers, function (key, value) {
             $('#farmers-to-allocate-table tbody').append(
               '<tr>' +
                 '<td><input type="checkbox" class="row-select" value="' + value.user_id + '"></td>' +
-                '<td>' + '<img src='+value.image_url+"'/>" + value.fullname + '</td>' +
+                '<td>'+ '<img width="40px" height="40px" class="rounded-circle mx-3" src = "'+value.image_url+'">' + value.fullname + '</td>' +
               '</tr>'
             );
           });

@@ -13,7 +13,7 @@
                         </div>
   
                         <div class="alert alert-info p-1">
-                          When recording collections, this farmer will be found under this store.
+                          When recording collections, this farmer will be attached stores assigned.
                       </div>
                       <div id="alert-assignment-success" class="alert alert-success d-none p-1">
                         <span></span>
