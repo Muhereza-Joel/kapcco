@@ -323,6 +323,23 @@ class Model{
         return $scales;
     }
 
+    public function get_product_scale($product_type){
+        $unit_price = "";
+        $current_season = $this->get_current_season();
+        $current_season_id = $current_season['id'];
+
+        $query = "SELECT unit_price FROM price_scales WHERE season_id = ? AND product_type = ?";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param("is", $current_season_id, $product_type);
+        $stmt->execute();
+        $stmt->bind_result($unit_price);
+        $stmt->fetch();
+
+        return $unit_price;
+
+    }
+
     public function approve_all($ids){
         $ids = json_decode(urldecode($ids), true);
 
@@ -438,6 +455,43 @@ class Model{
 
         return $farmers;
     }
+
+    public function save_collection_data(){
+        $request = Request::capture();
+
+        $current_season = $request->input('current-season');
+        $parent_branch = $request->input('parent-branch');
+        $parent_store = $request->input('parent-store');
+        $product_type = $request->input('product-type');
+        $unit_price = $request->input('unit-price');
+        $quantity = $request->input('quantity');
+        $total_amount = $request->input('total-amount');
+        $payed = $request->input('payed');
+        $checked_farmers_array = $request->input('checkedFarmers');
+
+        $checkedFarmers = json_decode(urldecode($checked_farmers_array), true);
+        
+        $query = "INSERT INTO collections (current_season, parent_branch, parent_store, product_type, unit_price, quantity, total_amount, payed, farmer_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        foreach ($checkedFarmers as $farmerId) {
+        
+            $stmt = $this->database->prepare($query);
+            $stmt->bind_param("iiisdddii", $current_season, $parent_branch, $parent_store, $product_type, $unit_price, $quantity, $total_amount, $payed, $farmerId);
+            
+            echo $this->database->error;
+
+            $stmt->execute();
+            $stmt->reset();
+            
+        }
+        $stmt->close();
+
+        $response = ['message' => 'Collection data saved successfully'];
+        $httpStatus = 200;
+  
+        Request::send_response($httpStatus, $response);
+    }
+
 
 
 

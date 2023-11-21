@@ -46,6 +46,8 @@ class Router{
         //routes for CollectionsController
         $this->addRoute('/kapcco/dashboard/colllections/add-season/', 'kapcco\controller\CollectionsController@save_season');
         $this->addRoute('/kapcco/dashboard/colllections/set-price-scale/', 'kapcco\controller\CollectionsController@set_price_scale');
+        $this->addRoute('/kapcco/dashboard/colllections/get-product-unit-price/', 'kapcco\controller\CollectionsController@get_product_unit_price');
+        $this->addRoute('/kapcco/dashboard/colllections/add/', 'kapcco\controller\CollectionsController@add_collection');
 
     }
 
