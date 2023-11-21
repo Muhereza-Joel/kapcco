@@ -67,6 +67,12 @@ class Router{
 
     private function handleRequest($requestedUrl, $middlewareClass = null)
     {
+        // Check if the user is logged in when accessing the base URL
+        if ($requestedUrl === '/kapcco/' && Session::isLoggedIn()) {
+            $this->handleRegularRouteLogic('/kapcco/dashboard/', 'kapcco\controller\DashboardController', 'index');
+            return;
+        }
+
         // Remove query string parameters from the URL
         $urlParts = explode('?', $requestedUrl);
         $path = $urlParts[0];
