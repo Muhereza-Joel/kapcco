@@ -493,17 +493,15 @@ class Model{
     }
 
     public function get_collections($branch_id = null, $store_id = null, $farmer_id = null){
-        $query = "SET @p0 = ?; 
-                  SET @p1 = ?; 
-                  SET @p2 = ?; 
-                  CALL GetCollections(@p0, @p1, @p2)";
+        $query = " CALL GetCollections(?, ?, ?)";
 
         $stmt = $this->database->prepare($query);     
         $stmt->bind_param("iii", $branch_id, $store_id, $farmer_id);
+        $stmt->execute();
         $result = $stmt->get_result();
         $collections = $result->fetch_all(MYSQLI_ASSOC);  
         
-        $stmt->close;
+        $stmt->close();
         
         return $collections;
 

@@ -24,7 +24,6 @@ class DashboardController{
         $model = new Model();
         $current_season = $model->get_current_season();
         $branches = $model->get_all_branches();
-        $current_season = $model->get_current_season();
         $scales = $model->get_scales_for_current_season($current_season['id']);
 
         $blade_view = new BladeView();
@@ -104,6 +103,26 @@ class DashboardController{
 
         echo ($html);
 
+    }
+
+    public function render_branch_stores_reports_view(){
+        $model = new Model();
+        $current_season = $model->get_current_season();
+        $branches = $model->get_all_branches();
+
+        $blade_view = new BladeView();
+        $html = $blade_view->render('branchStoreReports', [
+            'pageTitle' => "KAPCCO - Zones",
+            'appName' => getenv('APP_NAME'),
+            'username' => Session::get('username'),
+            'role' => Session::get('role'),
+            'avator' => Session::get('avator'),
+            'currentSeason' => $current_season,
+            'branches' => $branches,
+            
+        ]);
+
+        echo ($html);
     }
 
     public function get_all_farmers_view($action = null, $id = null){

@@ -23,8 +23,9 @@ class ZonesController{
     public function get_zones_by_id($branch_id){
         $model = new Model();
         $stores = $model->get_stores_by_parent_branch_id($branch_id);
+        $collections = $model->get_collections($branch_id);
 
-        $response = ['stores' => $stores];
+        $response = ['stores' => $stores, 'collections' => $collections];
         $httpStatus = 200;
   
         Request::send_response($httpStatus, $response);
@@ -34,8 +35,9 @@ class ZonesController{
     public function get_farmers_by_store_id($store_id){
         $model = new Model();
         $farmers = $model->get_farmers_by_store_id($store_id);
+        $collections = $model->get_collections(NULL, $store_id);
 
-        $response = ['farmers' => $farmers];
+        $response = ['farmers' => $farmers, 'collections' => $collections];
         $httpStatus = 200;
   
         Request::send_response($httpStatus, $response);

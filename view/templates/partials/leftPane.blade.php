@@ -50,6 +50,15 @@
     </a>
   </li>
   
+  <li class="nav-heading mb-3">Reports</li>
+
+  <li class="nav-item pb-2">
+    <a class="nav-link collapsed" href="/{{$appName}}/dashboard/reports/branch-store/">
+      <i class="bi bi-shop-window"></i>
+      <span>Branch - Store</span>
+    </a>
+  </li>
+  
   @endif
 
 </ul>
