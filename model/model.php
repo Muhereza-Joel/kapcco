@@ -507,6 +507,29 @@ class Model{
 
     }
 
+    public function get_last_collections(){
+        $query = "SELECT c.id,c.current_season,b.branch_name,z.zone_name,up.fullname,up.image_url,up.phone,c.product_type,c.unit_price,c.quantity,c.total_amount,c.payed,c.farmer_id
+                  FROM
+                    collections c
+                  LEFT JOIN
+                    branches b ON c.parent_branch = b.id
+                  LEFT JOIN
+                    zones z ON c.parent_store = z.id 
+                  LEFT JOIN
+                    user_profile up ON c.farmer_id = up.user_id 
+
+                  ORDER BY c.id DESC LIMIT 5";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $collections = $result->fetch_all(MYSQLI_ASSOC);  
+        
+        $stmt->close();
+        
+        return $collections;
+    }
+
 
 
 }

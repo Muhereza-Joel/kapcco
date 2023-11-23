@@ -8,6 +8,9 @@ use kapcco\view\BladeView;
 
 class DashboardController{
     public function index(){
+        $model = new Model();
+        $last_collections = $model->get_last_collections();
+
         $blade_view = new BladeView();
         $html = $blade_view->render('dashboard', [
             'pageTitle' => "KAPCCO - Dashboard",
@@ -15,6 +18,7 @@ class DashboardController{
             'username' => Session::get('username'),
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
+            'lastCollections' => $last_collections,
         ]);
 
         echo ($html);
@@ -109,6 +113,7 @@ class DashboardController{
         $model = new Model();
         $current_season = $model->get_current_season();
         $branches = $model->get_all_branches();
+        $last_collections = $model->get_last_collections();
 
         $blade_view = new BladeView();
         $html = $blade_view->render('branchStoreReports', [
@@ -119,6 +124,7 @@ class DashboardController{
             'avator' => Session::get('avator'),
             'currentSeason' => $current_season,
             'branches' => $branches,
+            'lastCollections' => $last_collections,
             
         ]);
 

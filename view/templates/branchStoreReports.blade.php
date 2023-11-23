@@ -18,16 +18,16 @@
     </div><!-- End Page Title -->
 
     <section class="section">
-        <div class="row">
-            <div class="col-sm-4">
+        <div class="row g-3">
+            <div class="col-lg-4">
                 @include('selectBranchAndStore')
                 @include('farmerCollectionTable')
             </div>
-            <div class="col-sm-8">
+            <div class="col-lg-8">
                 
                 <div class="card" style="position: sticky; top: 50px">
                     <div class="card-body">
-                        <div id="report-header" class="card-title fw-bold"></div>
+                        <div id="report-header" class="card-title fw-bold">Showing last {{count($lastCollections)}} collections.</div>
                         <table class="table table-striped datatable" id="reports-table">
                             <thead>
                                 <tr>
@@ -45,9 +45,30 @@
                                     <th scope="col">Unit Price</th>
                                     <th scope="col">Quantity</th>
                                     <th scope="col">Total</th>
+                                    <th scope="col">Status</th>
                                 </tr>
                             </thead>
-                            <tbody></tbody>
+                            <tbody>
+                              @foreach($lastCollections as $collection)
+                                <tr>
+                                  <td><input type="checkbox" class="row-select" value="{{$collection['id']}}"></td>
+                                  <td><img width="40px" height="40px" class="rounded-circle mx-3" src = "{{$collection['image_url']}}"></td>
+                                  <td>{{$collection['branch_name']}}</td>
+                                  <td>{{$collection['zone_name']}}</td>
+                                  <td>{{$collection['product_type']}}</td>
+                                  <td>{{$collection['unit_price']}}</td>
+                                  <td>{{$collection['quantity']}}</td>
+                                  <td>{{$collection['total_amount']}}</td>
+                                  <td>
+                                    @if($collection['payed'] == 1)
+                                        <span class = "badge bg-dark">Payed</span>
+                                        @else
+                                          <span class = "badge bg-danger">Not Payed</span>
+                                      @endif
+                                  </td>
+                                </tr>
+                              @endforeach
+                            </tbody>
                         </table>
 
                     </div>
@@ -93,11 +114,12 @@
                     '<td>' + value.unit_price + '</td>' +
                     '<td>' + value.quantity + '</td>' +
                     '<td>' + value.total_amount + '</td>' +
+                    '<td>' + (value.payed == 1 ? '<span class="badge bg-dark">Payed</span>' : '<span class="badge bg-danger">Not Payed</span>') + '</td>'+
                     '</tr>'
                 );
                 });
 
-                $('#report-header').text('Collection data for seleted branch in the current season')
+                $('#report-header').text('Collection data for seleted branch.')
             },
             error: function (error) {
                 console.log('Error fetching data:', error);
@@ -140,11 +162,12 @@
                     '<td>' + value.unit_price + '</td>' +
                     '<td>' + value.quantity + '</td>' +
                     '<td>' + value.total_amount + '</td>' +
+                    '<td>' + (value.payed == 1 ? '<span class="badge bg-dark">Payed</span>' : '<span class="badge bg-danger">Not Payed</span>') + '</td>'+
                     '</tr>'
                 );
                 });
 
-                $('#report-header').text('Collection data for seleted branch and store in the current season')
+                $('#report-header').text('Collection data for seleted branch and store.')
 
 
        },
