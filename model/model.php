@@ -530,6 +530,51 @@ class Model{
         return $collections;
     }
 
+    public function get_branches_total(){
+        $count = 0;
+        $query = "SELECT COUNT(*) FROM branches where branches.trash_status = 0";
+      
+        $stmt = $this->database->prepare($query);
+        $stmt->execute();
+        $stmt->bind_result($count);
+      
+        $stmt->fetch();
+      
+        $stmt->close();
+      
+        return $count;
+      }
+      
+
+      public function get_stores_total(){
+        $count = 0;
+        $query = "SELECT COUNT(*) FROM zones where zones.trash_status = 0";
+      
+        $stmt = $this->database->prepare($query);
+        $stmt->execute();
+        $stmt->bind_result($count);
+      
+        $stmt->fetch();
+      
+        $stmt->close();
+      
+        return $count;
+      }
+
+      public function get_farmers_total(){
+        $count = 0;
+        $query = "SELECT COUNT(*) FROM `app_users` WHERE app_users.approved = 1 AND app_users.role = 'Farmer'";
+      
+        $stmt = $this->database->prepare($query);
+        $stmt->execute();
+        $stmt->bind_result($count);
+      
+        $stmt->fetch();
+      
+        $stmt->close();
+      
+        return $count;
+      }
 
 
 }

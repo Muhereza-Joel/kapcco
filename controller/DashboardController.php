@@ -10,6 +10,9 @@ class DashboardController{
     public function index(){
         $model = new Model();
         $last_collections = $model->get_last_collections();
+        $branches_total = $model->get_branches_total();
+        $stores_total = $model->get_stores_total();
+        $farmers_total = $model->get_farmers_total();
 
         $blade_view = new BladeView();
         $html = $blade_view->render('dashboard', [
@@ -19,6 +22,9 @@ class DashboardController{
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
             'lastCollections' => $last_collections,
+            'branchesTotal' => $branches_total,
+            'storesTotal' => $stores_total,
+            'farmersTotal' => $farmers_total
         ]);
 
         echo ($html);
