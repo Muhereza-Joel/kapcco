@@ -21,8 +21,10 @@
 
     <!-- Left side columns -->
     <div class="col-lg-12">
+     
       <div class="row">
 
+      @if($role == 'Administrator')
         <!-- Sales Card -->
         <div class="col-xxl-4 col-md-6">
           <div class="card info-card sales-card">
@@ -44,8 +46,10 @@
 
           </div>
         </div><!-- End Sales Card -->
+      @endif
 
-        <!-- Revenue Card -->
+      @if($role == 'Administrator')
+        <!-- Stores Card -->
         <div class="col-xxl-4 col-md-6">
           <div class="card info-card revenue-card">
 
@@ -64,35 +68,42 @@
             </div>
 
           </div>
-        </div><!-- End Revenue Card -->
+        </div><!-- End Stores Card -->
+      @endif
 
-        <!-- Customers Card -->
-        <div class="col-xxl-4 col-xl-12">
+      @if($role == 'Administrator')
+      <!-- Customers Card -->
+      <div class="col-xxl-4 col-xl-12">
 
-          <div class="card info-card customers-card">
+        <div class="card info-card customers-card">
 
-            <div class="card-body">
-              <h5 class="card-title">All <span>| Approved Farmers</span></h5>
+          <div class="card-body">
+            <h5 class="card-title">All <span>| Approved Farmers</span></h5>
 
-              <div class="d-flex align-items-center">
-                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                  <i class="bi bi-people"></i>
-                </div>
-                <div class="ps-3">
-                  <h6>{{$farmersTotal}}</h6>
-                  
-                </div>
+            <div class="d-flex align-items-center">
+              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                <i class="bi bi-people"></i>
               </div>
-
+              <div class="ps-3">
+                <h6>{{$farmersTotal}}</h6>
+                
+              </div>
             </div>
-          </div>
 
-        </div><!-- End Customers Card -->
+          </div>
+        </div>
+
+      </div><!-- End Customers Card -->
+      @endif
 
 
       </div>
       <div class="row">
+       
         <div class="col-lg-8">
+
+        @if($role == 'Administrator')
+
         <div class="card" style="position: sticky; top: 50px">
                     <div class="card-body">
                         <div id="report-header" class="card-title fw-bold">Showing last {{count($lastCollections)}} collections.</div>
@@ -141,6 +152,8 @@
 
                     </div>
                 </div>
+
+                @endif
         </div>
         <div class="col-lg-4"></div>
       </div>
