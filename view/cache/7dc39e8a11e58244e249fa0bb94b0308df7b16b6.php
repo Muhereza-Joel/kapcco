@@ -72,7 +72,7 @@
           <div class="card info-card customers-card">
 
             <div class="card-body">
-              <h5 class="card-title">All <span>| Approved Customers</span></h5>
+              <h5 class="card-title">All <span>| Approved Farmers</span></h5>
 
               <div class="d-flex align-items-center">
                 <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">

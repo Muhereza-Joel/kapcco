@@ -38,6 +38,23 @@ class AuthController{
         echo ($html);
     }
 
+    public function render_show_profile_view(){
+        $model = new User();
+        $userDetails = $model->get_all_user_data(Session::get('user_id'));
+        
+        $blade_view = new BladeView();
+        $html = $blade_view->render('viewProfile', [
+            'pageTitle' => "KAPCCO - Dashboard",
+            'appName' => getenv('APP_NAME'),
+            'username' => Session::get('username'),
+            'role' => Session::get('role'),
+            'avator' => Session::get('avator'),
+            'userDetails' => $userDetails
+        ]);
+
+        echo ($html);
+    }
+
     public function sign_in_user(){
         $user = new User();
         $user->login();

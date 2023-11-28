@@ -98,6 +98,24 @@ class User{
         return $user_profile;
       }
 
+      public function get_all_user_data($id){
+        $query = "SELECT app_users.id, app_users.username, app_users.email, app_users.role, user_profile.fullname, user_profile.nin, user_profile.country, user_profile.district, user_profile.village, user_profile.phone, user_profile.image_url, user_profile.creared_at, user_profile.updated_at 
+                  FROM `app_users` LEFT JOIN user_profile 
+                  ON app_users.id = user_profile.user_id 
+                  WHERE app_users.id = ?";
+        
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+      
+        $result = $stmt->get_result();
+        $user_profile = $result->fetch_assoc();
+      
+        $stmt->close();
+      
+        return $user_profile;
+      }
+
       public function add_user(){
         $request = Request::capture();
         
