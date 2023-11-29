@@ -9,6 +9,10 @@
                   
                       </div>
                     <div class="my-1">You are about to delete <strong class="text-dark fw-bold"><?php echo e($branchDetails['branch_name']); ?></strong> </div>
+                    <div class="alert alert-info p-1">
+                      Branches that have collections attached to them will not be deleted.
+                    </div>
+
                     <div class="alert alert-danger alert-dismissible fade show p-1" role="alert">
                       Are you sure you want to delete this branch? <strong>This will set the parent branch for all zones attached to this branch to null.</strong>
       
