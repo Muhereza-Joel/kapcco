@@ -83,9 +83,16 @@
 
 <script>
     $(document).ready(function(){
+      var selectedFarmers = [];
+      var maxSelection = 1;
+      var selectedStore;
+      var selectedBranch;
+
         $('#parent-branch-drop-down').on('change', function () {
+          $('#farmers-to-allocate-table tbody').empty();
+          selectedFarmers = [];
     
-            var selectedBranch = $(this).val();
+            selectedBranch = $(this).val();
 
             $.ajax({
             url: '/kapcco/dashboard/zones/get-zones-by-id/', 
@@ -129,13 +136,15 @@
 
         $('#parent-store-drop-down').on('change', function () {
      
-     var selectedStore = $(this).val();
+        selectedStore = $(this).val();
+        selectedFarmers = [];
+    
 
     
      $.ajax({
        url: '/kapcco/dashboard/zones/get-farmers-by-store-id/', 
        method: 'GET',
-       data: { store_id: selectedStore },
+       data: { branch_id: selectedBranch ,store_id: selectedStore },
        success: function (data) {
         
          $('#farmers-to-allocate-table tbody').empty();
@@ -177,6 +186,63 @@
      });
    });
 
+    
+    $('#farmers-to-allocate-table tbody').on('change', 'input.row-select', function () {
+    var farmerId = $(this).val();
 
+    if (this.checked) {
+      if (selectedFarmers.length >= maxSelection) {
+        this.checked = false;
+        alert('You can only fetch recods for one farmer per selection.');
+      } else {
+        selectedFarmers.push(farmerId);
+        getSelectedFarmerCollections(selectedBranch, selectedStore, farmerId);
+      }
+    } else {
+      selectedFarmers = selectedFarmers.filter(function (id) {
+        return id !== farmerId;
+      });
+    }
+  });
+
+  function getSelectedFarmerCollections(branch, store, farmerId){
+    $.ajax({
+       url: '/kapcco/dashboard/zones/get-farmers-collections/', 
+       method: 'GET',
+       data: { 
+        branch : branch,
+        store: store,
+        farmer_id: farmerId
+      },
+
+      success: function(data){
+        $('#reports-table tbody').empty();
+
+                $.each(data.collections, function (key, value) {
+                $('#reports-table tbody').append(
+                    '<tr>' +
+                    '<td><input type="checkbox" class="row-select" value="' + value.user_id + '"></td>' +
+                    '<td>'+ '<img width="40px" height="40px" class="rounded-circle mx-3" src = "'+value.image_url+'"></td>' +
+                    '<td>' + value.branch_name + '</td>' +
+                    '<td>' + value.zone_name + '</td>' +
+                    '<td>' + value.product_type + '</td>' +
+                    '<td>' + value.unit_price + '</td>' +
+                    '<td>' + value.quantity + '</td>' +
+                    '<td>' + value.total_amount + '</td>' +
+                    '<td>' + (value.payed == 1 ? '<span class="badge bg-dark">Payed</span>' : '<span class="badge bg-danger">Not Payed</span>') + '</td>'+
+                    '</tr>'
+                );
+                });
+
+                $('#report-header').text('Collection data for seleted farmer under the selected branch and store')
+
+
+      }
     })
+  }
+
+
+});
+
+
 </script>

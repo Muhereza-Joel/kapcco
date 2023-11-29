@@ -49,6 +49,7 @@ class Router{
         $this->addRoute('/kapcco/dashboard/zones/delete/', 'kapcco\controller\ZonesController@delete_zone');
         $this->addRoute('/kapcco/dashboard/zones/get-zones-by-id/', 'kapcco\controller\ZonesController@get_zones_by_id');
         $this->addRoute('/kapcco/dashboard/zones/get-farmers-by-store-id/', 'kapcco\controller\ZonesController@get_farmers_by_store_id');
+        $this->addRoute('/kapcco/dashboard/zones/get-farmers-collections/', 'kapcco\controller\ZonesController@get_farmer_collections');
 
         //routes for CollectionsController
         $this->addRoute('/kapcco/dashboard/colllections/add-season/', 'kapcco\controller\CollectionsController@save_season');
