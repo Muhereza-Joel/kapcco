@@ -18,6 +18,22 @@ class User{
         $this->database = $database_connection->get_connection();
     }
 
+    public function check_password($password){
+            $new_user = new User();
+            $user = $new_user->get_user(Session::get('username'), Session::get('email'));
+
+            if($user && password_verify($password, $user['password'])){
+                $response = ['message' => 'Password matches your current password'];
+                $httpStatus = 200;
+                Request::send_response($httpStatus, $response);
+
+            } else {
+                $response = ['message' => 'Password does matches your current password'];
+                $httpStatus = 401;
+                Request::send_response($httpStatus, $response);
+            }
+    }
+
 
     public  function login(){
         $request = Request::capture();
@@ -36,12 +52,14 @@ class User{
                     $user_data = $this->get_user_data($user['id']);
                     Session::set('user_id', $user['id']);
                     Session::set('username', $user['username']);
+                    Session::set('email', $user['email']);
                     Session::set('avator', $user_data['image_url']);
                     Session::set('role', $user['role']);
                     
                   } else{
                     Session::set('user_id', $user['id']);
                     Session::set('username', $user['username']);
+                    Session::set('email', $user['email']);
                     Session::set('role', $user['role']);
       
                   }
@@ -151,6 +169,36 @@ class User{
 
       }
 
+      public function check_email(){
+        $request = Request::capture();
+
+        $email = $request->input('email');
+
+        $query = "SELECT email FROM app_users WHERE email LIKE ?";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $email_exists = $result->fetch_assoc();
+
+        
+        if($email_exists){
+            $response = ['message' => 'Email exists already in the system'];
+            $httpStatus = 401;
+            
+            Request::send_response($httpStatus, $response);
+        }else{
+            $response = ['message' => 'No body has the same email in the system'];
+            $httpStatus = 200;
+            
+            Request::send_response($httpStatus, $response);
+        }
+        
+        $stmt->close();
+      }
+
       public function check_nin(){
         $request = Request::capture();
         
@@ -238,6 +286,125 @@ class User{
 
         $stmt->close();
 
+      }
+
+      public function update_profile(){
+        $request = Request::capture();
+        
+        $user_id = $request->input('current-user-id');
+        $fullname = $request->input('fullName');
+        $nin = $request->input('nin');
+        $email = $request->input('email');
+        $country = $request->input('country');
+        $district = $request->input('district');
+        $village= $request->input('village');
+        $phone = $request->input('phone');
+
+        $email_update_query = "UPDATE app_users SET email = ? WHERE id = ?";
+
+        $this->database->begin_transaction();
+
+        $stmt = $this->database->prepare($email_update_query);
+        $stmt->bind_param("si", $email, $user_id);
+        $stmt->execute();
+
+        echo $this->database->error;
+
+        if($stmt->affected_rows >= 0){
+            $profile_update_query = "UPDATE user_profile
+                                     SET fullname = ?, nin = ?, country = ?, district = ?, village = ?, phone = ?
+                                     WHERE user_id = ?";
+
+            $stmt2 = $this->database->prepare($profile_update_query);
+            $stmt2->bind_param("ssssssi",$fullname, $nin, $country, $district, $village, $phone,  $user_id);
+            $stmt2->execute();
+
+            echo $this->database->error;
+
+                if($stmt2->affected_rows >= 0){
+                    $this->database->commit();
+
+                    $response = ['message' => 'Profile data updated successfully', 'status' => '200'];
+                    $httpStatus = 200;
+                    Request::send_response($httpStatus, $response);
+
+                } else{
+                    $this->database->rollback();
+
+                    $response = ['message' => 'Failed To Update Profile Data due to update failure'];
+                    $httpStatus = 401;
+                    Request::send_response($httpStatus, $response);
+
+                }
+
+                $stmt2->close();
+
+        }else{
+            $this->database->rollback();
+            $response = ['message' => 'Failed To Update Profile Data due to email update failure'];
+            $httpStatus = 401;
+            Request::send_response($httpStatus, $response);
+
+        }
+
+      }
+
+
+      public function update_photo(){
+        $request = Request::capture();
+        $image_url = $request->input("image_url");
+
+        $query = "UPDATE user_profile SET image_url = ? WHERE user_id = ?";
+        $current_user = Session::get('user_id');
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param("si", $image_url, $current_user);
+        $stmt->execute();
+
+        if($stmt->affected_rows > 0){
+            Session::set('avator', $image_url);
+            $response = ['message' => 'Profile Photo Updated Successfully'];
+            $httpStatus = 200;
+            
+        } else{
+            $response = ['message' => 'Profile Photo Update failed']; //TODO chage alert error class
+            $httpStatus = 401;
+
+        }
+
+        Request::send_response($httpStatus, $response);
+      }
+
+
+      public function change_password(){
+        $request = Request::capture();
+        $password = $request->input("newpassword");
+
+        if(!empty($password)){
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+            $current_user_id = Session::get('user_id');
+
+            $query = "UPDATE app_users SET password = ? WHERE id = ?";
+
+            $stmt = $this->database->prepare($query);
+            $stmt->bind_param("si", $hashed_password, $current_user_id);
+            $stmt->execute();
+
+            if($stmt->affected_rows > 0){
+                Session::destroy();
+
+                $response = ['message' => 'Password Updated Successfully'];
+                $httpStatus = 200;
+                Request::send_response($httpStatus, $response);
+
+            } else{
+                $response = ['message' => 'An Error Occured, Failed to Change Password!'];
+                $httpStatus = 401;
+                Request::send_response($httpStatus, $response);
+            }
+        }
+
+        
       }
 }
 

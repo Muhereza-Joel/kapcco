@@ -17,7 +17,12 @@ class Router{
         $this->addRoute('/kapcco/auth/create-account/', 'kapcco\controller\AuthController@create_account');
         $this->addRoute('/kapcco/image-upload/', 'kapcco\controller\AuthController@upload_photo');
         $this->addRoute('/kapcco/auth/check-nin/', 'kapcco\controller\AuthController@check_nin');
+        $this->addRoute('/kapcco/auth/check-email/', 'kapcco\controller\AuthController@check_email');
+        $this->addRoute('/kapcco/auth/check-password/', 'kapcco\controller\AuthController@check_password');
+        $this->addRoute('/kapcco/auth/change-password/', 'kapcco\controller\AuthController@change_password');
         $this->addRoute('/kapcco/auth/save-profile/', 'kapcco\controller\AuthController@save_profile');
+        $this->addRoute('/kapcco/auth/update-profile/', 'kapcco\controller\AuthController@update_profile');
+        $this->addRoute('/kapcco/auth/user/profile/update-photo/', 'kapcco\controller\AuthController@update_photo');
         $this->addRoute('/kapcco/auth/sign-out/', 'kapcco\controller\AuthController@sign_out');
         $this->addRoute('/kapcco/auth/user/profile/', 'kapcco\controller\AuthController@render_show_profile_view');
 

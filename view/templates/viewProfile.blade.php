@@ -117,63 +117,74 @@
                             
                           </div>
 
-                          <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+                          <div class="tab-pane fade profile-edit" id="profile-edit">
 
                             <!-- Profile Edit Form -->
-                            <form id="edit-profile-form" class=""  data-parsley-validate>
+                            <form id="edit-profile-form" class="needs-validation"  novalidate>
               <br>
               <div class="card-body">
-
+                            <div class="alert alert-success d-none p-1" id="alert-profile-upadte-success"><span></span></div>
                             <div class="row mb-3">
                               <label for="fullName" class=" col-md-4 col-lg-3 col-form-label">Full Name</label>
                               <div class="col-md-8 col-lg-9">
                                 <input id="carrent-user-id" name="current-user-id" type="hidden" value="{{$userDetails['id']}}">
-                                <input  name="fullName" type="text" class="form-control" id="fullName" required placeholder="Enter your full name" value="{{$userDetails['fullname']}}">
+                                <input oninput="capitalizeEveryWord(this)" name="fullName" type="text" class="form-control" id="fullName" required placeholder="Enter your full name" value="{{$userDetails['fullname']}}">
+                                <div class="invalid-feedback">Please enter your full name.</div>
                               </div>
                             </div>
                             
 
+                            
                             <div class="row mb-3">
                               <label for="nin" class="col-md-4 col-lg-3 col-form-label">NIN</label>
                               <div class="col-md-8 col-lg-9">
-                                <input  name="nin" type="text" class="form-control" id="nin" placeholder="Enter your nin number" required value="{{$userDetails['nin']}}">
+                                  <input pattern="[A-Z0-9]{14}" min="14"  name="nin" type="text" class="form-control" id="nin" placeholder="Enter your nin number" required value="{{$userDetails['nin']}}">
+                                  <div class="invalid-feedback">Please enter a valid NIN number with digits, letters, no spaces and 14 characters long.</div>
+                                  <small id="nin-status" class="text-success fw-bold"></small>
+                                </div>
                               </div>
-                            </div>
+    
                             <div class="row mb-3">
                               <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
                               <div class="col-md-8 col-lg-9">
                                 <input  name="email" type="text" class="form-control" id="email" placeholder="Enter your email address" required value="{{$userDetails['email']}}">
+                                <div class="invalid-feedback">Please enter your email address.</div>
+                                <small id="email-status" class="text-success fw-bold"></small>
                               </div>
                             </div>
 
                             <div class="row mb-3">
                               <label for="Country" class="col-md-4 col-lg-3 col-form-label">Country</label>
                               <div class="col-md-8 col-lg-9">
-                                <input  name="country" type="text" class="form-control" id="Country" placeholder="Enter Country of Origin" required value="{{$userDetails['country']}}">
+                                <input oninput="capitalizeFirstLetter(this)" name="country" type="text" class="form-control" id="Country" placeholder="Enter Country of Origin" required value="{{$userDetails['country']}}">
+                                <div class="invalid-feedback">Please enter your country of origin.</div>
                               </div>
                             </div>
                             
                             <div class="row mb-3">
                               <label for="district" class="col-md-4 col-lg-3 col-form-label">District</label>
                               <div class="col-md-8 col-lg-9">
-                                <input  name="district" type="text" class="form-control" id="district" placeholder="Enter your home district" required value="{{$userDetails['district']}}">
+                                <input oninput="capitalizeFirstLetter(this)" name="district" type="text" class="form-control" id="district" placeholder="Enter your home district" required value="{{$userDetails['district']}}">
+                                <div class="invalid-feedback">Please enter your home district.</div>
                               </div>
                             </div>
                             <div class="row mb-3">
                               <label for="village" class="col-md-4 col-lg-3 col-form-label">Village</label>
                               <div class="col-md-8 col-lg-9">
-                                <input name="village" type="text" class="form-control" id="village" placeholder="Enter your home village" required value="{{$userDetails['village']}}">
+                                <input oninput="capitalizeFirstLetter(this)" name="village" type="text" class="form-control" id="village" placeholder="Enter your home village" required value="{{$userDetails['village']}}">
+                                <div class="invalid-feedback">Please enter your home village.</div>
                               </div>
                             </div>
                             <div class="row mb-3">
                               <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
                               <div class="col-md-8 col-lg-9">
-                                <input  name="phone" type="text" class="form-control" id="Phone" placeholder="Phone Number Like +256 776579631" required value="{{$userDetails['phone']}}">
+                                <input pattern="[+]?[0-9]+" name="phone" type="text" class="form-control" id="Phone" placeholder="Phone Number Like +256 776579631" required value="{{$userDetails['phone']}}">
+                                <div class="invalid-feedback">Please enter a valid phone number.</div>
                               </div>
                             </div>
 
 
-                            <div class="text-center">
+                            <div class="text-left">
                               <button id="edit-profile-submit-button"  class="btn btn-primary btn-sm">Update Profile</button>
                             
                             </div>
@@ -187,31 +198,46 @@
 
                         <div class="tab-pane fade pt-3" id="profile-change-password">
                           <!-- Change Password Form -->
-                          <form>
+                          <div class="alert alert-warning p-2">
+                            After successfully changing your password, your account will be loged out and 
+                            then you have to log in again. You will be redirected to the login page automatically!
+                          </div>
+                          <form class="needs-validation" id="password-change-form" novalidate>
+
+                            <div class="alert alert-success p-1 d-none" id="alert-password-change-success">
+                               <span></span>
+                            </div>
 
                             <div class="row mb-3">
                               <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
                               <div class="col-md-8 col-lg-9">
-                                <input name="password" type="password" class="form-control" id="currentPassword">
+                                <input name="password" type="password" class="form-control" id="currentPassword" required>
+                                <div class="invalid-feedback">Please enter your current password.</div>
+                                <div class="text-danger" id="password-error"></div>
                               </div>
                             </div>
 
                             <div class="row mb-3">
                               <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
                               <div class="col-md-8 col-lg-9">
-                                <input name="newpassword" type="password" class="form-control" id="newPassword">
+                                <input name="newpassword" type="password" class="form-control" id="newPassword" required disabled>
+                                <div class="invalid-feedback">Please enter new password.</div>
                               </div>
                             </div>
 
                             <div class="row mb-3">
                               <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
                               <div class="col-md-8 col-lg-9">
-                                <input name="renewpassword" type="password" class="form-control" id="renewPassword">
+                                <input name="renewpassword" type="password" class="form-control" id="renewPassword" required disabled>
+                                <div class="invalid-feedback">Please re enter the new password.</div>
+                                <div class="renewPassword-feedback" id="renewPassword-feedback">
+                                  <span class="text-danger"></span>
+                                </div>
                               </div>
                             </div>
 
-                            <div class="text-center">
-                              <button type="submit" class="btn btn-primary">Change Password</button>
+                            <div class="text-left">
+                              <button type="submit" class="btn btn-primary btn-sm" id="change-password-btn" disabled>Change Password</button>
                             </div>
                           </form><!-- End Change Password Form -->
 
@@ -230,7 +256,7 @@
 
 @include('partials/footer')
 
-    <div class="modal fade" id="basicModal" tabindex="-1">
+           <div class="modal fade" id="basicModal" tabindex="-1">
                 <div class="modal-dialog">
                   <div class="modal-content">
                     
@@ -241,7 +267,7 @@
                             
                         </div>
 
-                          <form data-parsley-validate id="change-profile-pic-form" class="">
+                          <form  id="change-profile-pic-form" class="">
                               <div id="edit-photo-alert-success" class="alert alert-success alert-dismissible py-1 px-2  fade w-100" role="alert">
                                   <i class="bi bi-check-circle me-1"></i>
                                   <span></span>
@@ -257,30 +283,59 @@
                     
                   </div>
                 </div>
-              </div><!-- End Basic Modal-->
+          </div><!-- End Basic Modal-->
 
+
+          <script>
+          function capitalizeFirstLetter(input) {
+              input.value = input.value.charAt(0).toUpperCase() + input.value.slice(1);
+          }
+
+          function capitalizeEveryWord(input) {
+            var words = input.value.split(' ');
+
+            for (var i = 0; i < words.length; i++) {
+                words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1);
+            }
+
+            input.value = words.join(' ');
+        }
+  </script>
+
+    
 
     <script>
+      
   $(document).ready(function() {
+    $('#image').on('change', function(){
+          let formData = new FormData();
+          formData.append('image', this.files[0]);
 
+          $.ajax({
+            method: 'post',
+            url: '/kapcco/image-upload/',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response){
 
-    let editor;
+              $('#image_url').val("http://localhost/kapcco/uploads/images/" + response);
+              $('#profile-photo').attr('src', "http://localhost/kapcco/uploads/images/" + response);
 
-    ClassicEditor.create(document.querySelector('#about-textarea'))
-            .then(newEditor => {
-                editor = newEditor;
-            })
-            .catch(error => {
-                console.error(error);
-            });
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                alert('An Error occurred, failed to upload image')
+            }
+          })
+        })
 
-            $('#change-profile-pic-form').submit(function(event){
+        $('#change-profile-pic-form').submit(function(event){
               event.preventDefault();
 
               let formData = new FormData(this);
               $.ajax({
                     method: "POST", 
-                    url: "/App/UserManagement/User/Photo/Update/", 
+                    url: "/kapcco/auth/user/profile/update-photo/", 
                     data: formData, 
                     processData: false,
                     contentType: false,
@@ -301,60 +356,169 @@
                   })
             })
 
-            $('#edit-profile-form').submit(function(event){
-                event.preventDefault();
 
-                $("#edit-profile-form").parsley();
-                const isValid = $("#edit-profile-form").parsley().isValid();
+    $('#currentPassword').on('input', function(){
+      let password = $(this).val();
 
-                if(isValid){
-                  const editorContent = editor.getData();
-                  const userID = $("#carrent-user-id").val();
+      $.ajax({
+        url: '/kapcco/auth/check-password/', 
+        method: 'GET',
+        data: { password: password },
+        success: function (response) {
+          $('#password-error').removeClass('text-danger');
+          $('#password-error').addClass('text-success');
+          $('#password-error').text(response.message);
 
-                  let formData = new FormData(this);
-                  formData.append('editorContent', editorContent);
+          $('#newPassword').removeAttr('disabled');
+          $('#renewPassword').removeAttr('disabled');
+          $('#change-password-btn').removeAttr('disabled');
 
-                  $.ajax({
-                    method: "POST", 
-                    url: "/App/UserManagement/User/Update/", 
-                    data: formData, 
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                      $("#alert-success").removeClass('d-none');
-                      $("#alert-success").addClass('show');
-                      $('#alert-success span').text(response.message);
-                  
-                      setTimeout(function() {
-                            $("#alert-success").addClass('d-none');
-                            window.location.reload();
-                          }, 3000);
-                        },
-                    error: function(jqXHR, textStatus, errorThrown){}
-                  })
-                 }
-              })
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+          if(jqXHR.status === 401){
+            $('#password-error').removeClass('text-success');
+            $('#password-error').addClass('text-danger');
+            $('#password-error').text(jqXHR.responseJSON.message);
 
-    $('#image').on('change', function() {
-        var formData = new FormData();
-        formData.append('image', this.files[0]);
+            $('#newPassword').attr('disabled', true);
+            $('#renewPassword').attr('disabled', true);
+            $('#change-password-btn').attr('disabled', true);
+          }
+        }
+      })
+    })        
 
-        $.ajax({
-            url: '/App/ImageUpload/', 
-            method: 'POST',
+
+
+    $('#nin').on('input', function(){
+          let ninValue = $(this).val();
+
+          $.ajax({
+            method: 'post',
+            url: '/kapcco/auth/check-nin/',
+            data: {nin : ninValue},
+            success: function(response){
+              $('#nin-status').text(response.message);
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+              $('#nin-status').text(jqXHR.responseJSON.message);
+              if(jqXHR.responseJSON.status === 401){
+                $('#nin-status').text(jqXHR.responseJSON.message);
+              }
+            }
+          })
+        })
+
+    $('#email').on('input', function(){
+          let emailValue = $(this).val();
+
+          $.ajax({
+            method: 'post',
+            url: '/kapcco/auth/check-email/',
+            data: {email : emailValue},
+            success: function(response){
+              $('#email-status').text(response.message);
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+              $('#email-status').text(jqXHR.responseJSON.message);
+              if(jqXHR.responseJSON.status === 401){
+                $('#email-status').text(jqXHR.responseJSON.message);
+              }
+            }
+          })
+        })
+
+    $('#image').on('change', function(){
+          let formData = new FormData();
+          formData.append('image', this.files[0]);
+
+          $.ajax({
+            method: 'post',
+            url: '/kapcco/image-upload/',
             data: formData,
             processData: false,
             contentType: false,
-            success: function(response) {
-                $('#image_url').val("http://localhost/App/Uploads/Images/" + response);
+            success: function(response){
 
-                $('#profile-photo').attr('src', "http://localhost/App/Uploads/Images/" + response);
+              $('#image_url').val("http://localhost/kapcco/uploads/images/" + response);
+              $('#profile-photo').attr('src', "http://localhost/kapcco/uploads/images/" + response);
+
             },
-            error: function() {
-                alert('Error uploading image.');
+            error: function(jqXHR, textStatus, errorThrown){
+                alert('An Error occurred, failed to upload image')
             }
-        });
-    });
+          })
+        })
+
+
+        $('#edit-profile-form').submit(function(e){
+          e.preventDefault();
+
+          if(this.checkValidity() === true){
+
+              let formData = $(this).serialize();
+
+              $.ajax({
+                method: 'post',
+                url: '/kapcco/auth/update-profile/',
+                data: formData,
+                success: function(response){
+                  $('#alert-profile-upadte-success').removeClass('d-none');
+                  $('#alert-profile-upadte-success').addClass('show');
+                  $('#alert-profile-upadte-success span').text(response.message);
+
+                      setTimeout(function(){
+                      window.location.reload();
+                    }, 3000)
+                },
+                error: function(jqXHR, textStatus, errorThrown){
+                  if(jqXHR.status === 401){
+                    alert('An Error Occured, Failled to update your profile data...');
+                  }
+                }
+              })
+            }
+        })
+
+        $('#password-change-form').submit(function(event) {
+            var newPassword = $('#newPassword').val();
+            var renewPassword = $('#renewPassword').val();
+
+            if (newPassword !== renewPassword) {
+           
+              $('#renewPassword-feedback span').text('Passwords do not match.');
+              event.preventDefault();
+              
+
+            } else {
+              event.preventDefault()
+              
+              if(this.checkValidity() === true){
+
+                  let formData = $(this).serialize();
+
+                  $.ajax({
+                    method: 'post',
+                    url: '/kapcco/auth/change-password/',
+                    data: formData,
+                    success: function(response){
+                      $('#alert-password-change-success').removeClass('d-none');
+                      $('#alert-password-change-success').addClass('show');
+                      $('#alert-password-change-success span').text(response.message);
+
+                          setTimeout(function(){
+                            window.location.replace("http://localhost/kapcco/auth/login/");
+                        }, 3000)
+                    },
+                    error: function(jqXHR, textStatus, errorThrown){
+                      if(jqXHR.status === 401){
+                        alert('An Error Occured, Failled to change your password');
+                      }
+                    }
+                  })
+              }
+            }
+          });
 
     let profileUpdateTimestamp = $("#last-update-timestamp").text();
     const momentTimestamp = moment(profileUpdateTimestamp);

@@ -89,11 +89,41 @@ class AuthController{
         $user = new User();
         $user->check_nin();
 
+
+    }
+    public function check_email(){
+        $user = new User();
+        $user->check_email();
+
     }
 
     public function save_profile(){
         $user = new User();
         $user->save_profile();
+
+    }
+
+    public function update_profile(){
+        $user = new User();
+        $user->update_profile();
+
+    }
+
+    public function update_photo(){
+        $user = new User();
+        $user->update_photo();
+
+    }
+
+    public function check_password($password){
+        $user = new User();
+        $user->check_password($password);
+
+    }
+
+    public function change_password(){
+        $user = new User();
+        $user->change_password();
 
     }
 
