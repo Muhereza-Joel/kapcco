@@ -34,10 +34,10 @@ class ZonesController{
     }
 
     //This function also returns collections fo the store
-    public function get_farmers_by_store_id($branch_id, $store_id){
+    public function get_farmers_by_store_id($store_id){
         $model = new Model();
         $farmers = $model->get_farmers_by_store_id($store_id);
-        $collections = $model->get_collections($branch_id, $store_id);
+        $collections = $model->get_collections(NULL, $store_id);
 
         $response = ['farmers' => $farmers, 'collections' => $collections];
         $httpStatus = 200;

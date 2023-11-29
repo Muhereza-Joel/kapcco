@@ -37,6 +37,7 @@ class Router{
         $this->addRoute('/kapcco/dashboard/farmers/u/', 'kapcco\controller\DashboardController@render_farmers_view');
         $this->addRoute('/kapcco/dashboard/farmers/approve/', 'kapcco\controller\DashboardController@approve_all');
         $this->addRoute('/kapcco/dashboard/farmers/assign/', 'kapcco\controller\DashboardController@assign_all');
+        $this->addRoute('/kapcco/dashboard/farmers/drop-assignments/', 'kapcco\controller\DashboardController@drop_all_assignments');
         
         //routes for BranchController
         $this->addRoute('/kapcco/dashboard/branches/add/', 'kapcco\controller\BranchController@add_branch');

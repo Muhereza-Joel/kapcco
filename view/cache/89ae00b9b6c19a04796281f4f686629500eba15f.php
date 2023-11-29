@@ -144,7 +144,7 @@
      $.ajax({
        url: '/kapcco/dashboard/zones/get-farmers-by-store-id/', 
        method: 'GET',
-       data: { branch_id: selectedBranch ,store_id: selectedStore },
+       data: {store_id: selectedStore },
        success: function (data) {
         
          $('#farmers-to-allocate-table tbody').empty();

@@ -385,7 +385,7 @@ class Model{
 
     public function get_farmer_assignments($id){
 
-        $query = "SELECT sa.id AS store_id, z.zone_name, b.branch_name
+        $query = "SELECT sa.id AS assignment_id, z.zone_name, b.branch_name
                   FROM zones z
                   JOIN store_assignments sa ON z.id = sa.store_id AND sa.farmer_id = ?
                   LEFT JOIN branches b ON z.parent_branch = b.id
@@ -420,6 +420,23 @@ class Model{
   
     Request::send_response($httpStatus, $response);
     
+  }
+
+  public function drop_farmer_assignments($farmer_id, $Ids){
+        $ids = json_decode(urldecode($Ids), true);
+        $stmt = $this->database->prepare("DELETE FROM store_assignments WHERE farmer_id = ? AND id = ?");
+        
+        foreach ($ids as $id) {
+            $stmt->bind_param('ii', $farmer_id, $id);
+            $stmt->execute();
+            $stmt->reset();
+        }
+  
+        $stmt->close();
+        $response = ['message' => 'Assignments Deleted'];
+        $httpStatus = 200;
+  
+        Request::send_response($httpStatus, $response);
   }
 
   public function get_stores_by_parent_branch_id($id){

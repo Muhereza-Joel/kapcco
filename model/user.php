@@ -28,7 +28,7 @@ class User{
                 Request::send_response($httpStatus, $response);
 
             } else {
-                $response = ['message' => 'Password does matches your current password'];
+                $response = ['message' => 'Password does not match your current password'];
                 $httpStatus = 401;
                 Request::send_response($httpStatus, $response);
             }

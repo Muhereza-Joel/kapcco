@@ -95,6 +95,72 @@
                 
                 @endif
 
+                @if($action == 'drop-store-allocation')
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title">Drop Store Allocation</div>
+
+                        <div class="d-flex justify-content-center mb-3">
+                            <img src="{{$userDetails['image_url']}}" class="rounded-circle" alt="" width="150px" height="150px" style="object-fit: cover; border: 3px solid #fff;">
+                        </div>
+      
+                        <div class="row px-2">
+                          <div class="col-lg-5 col-md-5 label fw-bold ">Full Name</div>
+                          <div class="col-lg-7 col-md-7 form-control mb-2">{{$userDetails['fullname']}}</div>
+                        </div>
+                        @if(count($assignedStores) > 0)
+                        
+                        <div class="alert alert-warning p-1">
+                          You have to assign this farmer new stores if you delete these assignments,
+                           else you will not be able to record collections this farmer
+                      </div>
+                      <div id="alert-assignment-drop-success" class="alert alert-success d-none p-1">
+                        <span></span>
+                      </div>
+
+                      <div id="farmer-to-drop-assignments" class="d-none">{{$userDetails['user_id']}}</div>
+                        <div class="card"><button id="drop-assignment-btn" class="btn btn-danger btn-sm " style="display: none;">Drop Assignments</button></div>
+
+                    <table id="assignments-to-drop-table" class="table table-striped">
+                      
+                      <thead>
+                        <tr>
+                        <th>
+                          <div class="icon">
+                            <i class="bi bi-check-square-fill"></i>
+                          </div>
+                        </th>
+                    
+                        <th scope="col">Store Name</th>
+                        <th scope="col">Parent Branch</th>
+                       
+                      </tr>
+                      </thead>
+                      <tbody>
+                        @foreach($assignedStores as $store)
+                          <tr>
+                            <td>
+                                <input type="checkbox" class="row-select" value="{{$store['assignment_id']}}">
+                            </td>
+                            <td>{{$store['zone_name']}}</td>
+                            <td>{{$store['branch_name']}}</td>
+  
+                          </tr>
+                        @endforeach
+                        
+                      </tbody>
+                    </table>
+
+                    @else
+                       <div class="alert alert-info p-2">You have not assigned this farmer any stores. 
+                         <strong>You cannot record collections for farmers who do not have stores assigned to them</strong>
+                       </div>
+
+                    @endif
+                  </div>
+                </div> 
+                @endif
+
               </div>
               <div id="view-farmer-info-container">
 
@@ -143,7 +209,8 @@
     $(document).ready(function(){
 
       var selectedStoresToAssign = [];
-var maxSelection = 3;
+      var selectedAssignmentsToDrop = [];
+      var maxSelection = 3;
 
 function updateButtons() {
   var selectedCountToAssign = selectedStoresToAssign.length;
@@ -180,6 +247,25 @@ $('table#store-to-allocate-table input.row-select').change(function () {
   updateButtons();
 });
 
+$('table#assignments-to-drop-table input.row-select').change(function(){
+  let assignmentId = $(this).val();
+
+  if(this.checked){
+    selectedAssignmentsToDrop.push(assignmentId);
+
+    console.log(selectedAssignmentsToDrop);
+  } else{
+    selectedAssignmentsToDrop = selectedAssignmentsToDrop.filter(function(id){return id !== assignmentId});
+  }
+
+  if(selectedAssignmentsToDrop.length > 0){
+        $('#drop-assignment-btn').show();
+
+    } else{
+        $('#drop-assignment-btn').hide();
+    }
+})
+
 // Function to handle the "Save Assignment" button click
 $('#save-assignment-btn').click(function() {
     var idsString = encodeURIComponent(JSON.stringify(selectedStoresToAssign));
@@ -204,6 +290,28 @@ $('#save-assignment-btn').click(function() {
         });
   });
 
+  $('#drop-assignment-btn').click(function(){
+    var idsString = encodeURIComponent(JSON.stringify(selectedAssignmentsToDrop));
+    var farmerToDropAssignment = $("#farmer-to-drop-assignments").text();
+
+    $.ajax({
+      method: 'post',
+      url: '/kapcco/dashboard/farmers/drop-assignments/?ids=' + idsString,
+      data: { ids: idsString, farmer_id : farmerToDropAssignment },
+      success: function(response) {
+        $("#alert-assignment-drop-success").removeClass('d-none');
+        $("#alert-assignment-drop-success").addClass('show');
+        $("#alert-assignment-drop-success span").text(response.message);
+            
+          setTimeout(function(){
+              window.location.reload();
+          }, 2000)
+        },
+        error: function(err) {
+            
+        }
+    })
+  })
 
 
 

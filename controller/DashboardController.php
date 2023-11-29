@@ -195,5 +195,13 @@ class DashboardController{
 
         $model->assign_stores_to_farmer($farmer_id, $ids);
     }
+
+    public function drop_all_assignments($ids){
+        $model = new Model();
+        $request = Request::capture();
+        $farmer_id = $request->input('farmer_id');
+
+        $model->drop_farmer_assignments($farmer_id, $ids);
+    }
 }
 ?>
