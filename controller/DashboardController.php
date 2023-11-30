@@ -1,4 +1,5 @@
 <?php
+
 namespace kapcco\controller;
 
 use kapcco\core\Request;
@@ -6,8 +7,10 @@ use kapcco\core\Session;
 use kapcco\model\Model;
 use kapcco\view\BladeView;
 
-class DashboardController{
-    public function index(){
+class DashboardController
+{
+    public function index()
+    {
         $model = new Model();
         $last_collections = $model->get_last_collections();
         $branches_total = $model->get_branches_total();
@@ -30,7 +33,8 @@ class DashboardController{
         echo ($html);
     }
 
-    public function render_add_collection_view(){
+    public function render_add_collection_view()
+    {
         $model = new Model();
         $current_season = $model->get_current_season();
         $branches = $model->get_all_branches();
@@ -52,7 +56,8 @@ class DashboardController{
     }
 
 
-    public function render_collections_view(){
+    public function render_collections_view()
+    {
         $model = new Model();
         $current_season = $model->get_current_season();
         $scales = $model->get_scales_for_current_season($current_season['id']);
@@ -72,7 +77,8 @@ class DashboardController{
     }
 
 
-    public function render_branches_view($action = null, $id = null){
+    public function render_branches_view($action = null, $id = null)
+    {
         $model = new Model();
         $branches = $model->get_all_branches();
         $branch_details = $model->get_branch_details($id);
@@ -92,7 +98,8 @@ class DashboardController{
         echo ($html);
     }
 
-    public function render_zones_view($action = null, $id = null){
+    public function render_zones_view($action = null, $id = null)
+    {
         $model = new Model();
         $branches = $model->get_all_branches();
         $zones = $model->get_all_zones();
@@ -112,10 +119,10 @@ class DashboardController{
         ]);
 
         echo ($html);
-
     }
 
-    public function render_branch_stores_reports_view(){
+    public function render_branch_stores_reports_view()
+    {
         $model = new Model();
         $current_season = $model->get_current_season();
         $branches = $model->get_all_branches();
@@ -131,17 +138,18 @@ class DashboardController{
             'currentSeason' => $current_season,
             'branches' => $branches,
             'lastCollections' => $last_collections,
-            
+
         ]);
 
         echo ($html);
     }
 
-    public function get_all_farmers_view($action = null, $id = null){
+    public function get_all_farmers_view($action = null, $id = null)
+    {
         $model = new Model();
         $farmers = $model->get_all_farmers();
         $user_details = $model->get_user_details($id);
-        
+
 
         $blade_view = new BladeView();
         $html = $blade_view->render('farmers', [
@@ -156,16 +164,16 @@ class DashboardController{
         ]);
 
         echo ($html);
-      
     }
 
-    public function render_farmers_view($action = null, $id = null){
+    public function render_farmers_view($action = null, $id = null)
+    {
         $model = new Model();
         $farmers = $model->get_all_farmers();
         $user_details = $model->get_user_details($id);
         $stores_to_assign = $model->get_stores_to_assign($id);
         $assigned_stores = $model->get_farmer_assignments($user_details['user_id']);
-        
+
         $blade_view = new BladeView();
         $html = $blade_view->render('farmers', [
             'pageTitle' => "KAPCCO - farmers",
@@ -183,7 +191,8 @@ class DashboardController{
         echo ($html);
     }
 
-    public function render_my_collections_view(){
+    public function render_my_collections_view()
+    {
         $blade_view = new BladeView();
         $html = $blade_view->render('myCollections', [
             'pageTitle' => "KAPCCO - farmers",
@@ -196,7 +205,8 @@ class DashboardController{
         echo ($html);
     }
 
-    public function render_my_collections_info_view(){
+    public function render_my_collections_info_view()
+    {
         $model = new Model();
         $current_season = $model->get_current_season();
         $scales = $model->get_scales_for_current_season($current_season['id']);
@@ -217,12 +227,14 @@ class DashboardController{
         echo ($html);
     }
 
-    public function approve_all($ids){
+    public function approve_all($ids)
+    {
         $model = new Model();
         $model->approve_all($ids);
     }
 
-    public function assign_all($ids){
+    public function assign_all($ids)
+    {
         $model = new Model();
         $request = Request::capture();
         $farmer_id = $request->input('farmer_id');
@@ -230,7 +242,8 @@ class DashboardController{
         $model->assign_stores_to_farmer($farmer_id, $ids);
     }
 
-    public function drop_all_assignments($ids){
+    public function drop_all_assignments($ids)
+    {
         $model = new Model();
         $request = Request::capture();
         $farmer_id = $request->input('farmer_id');
@@ -238,4 +251,3 @@ class DashboardController{
         $model->drop_farmer_assignments($farmer_id, $ids);
     }
 }
-?>

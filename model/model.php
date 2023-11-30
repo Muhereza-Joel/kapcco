@@ -1,11 +1,13 @@
 <?php
+
 namespace kapcco\model;
 
 use kapcco\core\DatabaseConnection;
 use kapcco\core\Request;
 use kapcco\core\Session;
 
-class Model{
+class Model
+{
     private $database;
 
     public function __construct()
@@ -13,12 +15,14 @@ class Model{
         $this->get_database_connection();
     }
 
-    private function get_database_connection(){
+    private function get_database_connection()
+    {
         $database_connection = new DatabaseConnection(getenv('DB_HOST'), getenv('DB_DATABASE'), getenv('DB_USERNAME'), getenv('DB_PASSWORD'));
         $this->database = $database_connection->get_connection();
     }
 
-    public function add_branch(){
+    public function add_branch()
+    {
         $request = Request::capture();
 
         $branch_name = $request->input('branch-name');
@@ -31,19 +35,18 @@ class Model{
         $stmt->bind_param("ssi", $branch_name, $branch_location, $user_id);
         $stmt->execute();
 
-        if(!$this->database->error){
+        if (!$this->database->error) {
             $response = ['message' => 'Branch added successfully', 'status' => '200'];
             $httpStatus = 200;
-    
-            Request::send_response($httpStatus, $response);
 
+            Request::send_response($httpStatus, $response);
         }
 
         $stmt->close();
-
     }
 
-    public function get_all_branches(){
+    public function get_all_branches()
+    {
         $query = "SELECT * FROM branches";
 
         $stmt = $this->database->prepare($query);
@@ -57,7 +60,8 @@ class Model{
         return $branches;
     }
 
-    public function get_branch_details($id){
+    public function get_branch_details($id)
+    {
 
         $query = "SELECT * FROM branches WHERE id = ?";
 
@@ -71,10 +75,10 @@ class Model{
         $stmt->close();
 
         return $branch_details;
-
     }
 
-    public function update_branch(){
+    public function update_branch()
+    {
         $request = Request::capture();
 
         $branch_name = $request->input('branch-name');
@@ -86,16 +90,17 @@ class Model{
         $stmt = $this->database->prepare($query);
         $stmt->bind_param('ssi', $branch_name, $branch_location, $branch_id);
         $stmt->execute();
-      
+
         $response = ['message' => 'Branch details updated successfully', 'status' => '200'];
         $httpStatus = 200;
-    
+
         Request::send_response($httpStatus, $response);
 
         $stmt->close();
     }
 
-    public function delete_branch(){
+    public function delete_branch()
+    {
         $request = Request::capture();
 
         $id = $request->input('branch-to-delete');
@@ -108,14 +113,14 @@ class Model{
 
         $response = ['message' => 'Branch deleted successfully', 'status' => '200'];
         $httpStatus = 200;
-    
+
         Request::send_response($httpStatus, $response);
 
         $stmt->close();
-
     }
 
-    public function add_zone(){
+    public function add_zone()
+    {
         $request = Request::capture();
 
         $zone_name = $request->input('zone-name');
@@ -132,18 +137,18 @@ class Model{
 
         echo $this->database->error;
 
-        if(!$this->database->error){
+        if (!$this->database->error) {
             $response = ['message' => 'Store added successfully', 'status' => '200'];
             $httpStatus = 200;
-    
-            Request::send_response($httpStatus, $response);
 
+            Request::send_response($httpStatus, $response);
         }
 
         $stmt->close();
     }
 
-    public function get_all_zones(){
+    public function get_all_zones()
+    {
         $query = "SELECT * FROM zones";
 
         $stmt = $this->database->prepare($query);
@@ -157,7 +162,8 @@ class Model{
         return $zones;
     }
 
-    public function get_zone_details($id){
+    public function get_zone_details($id)
+    {
 
         $query = "SELECT * FROM zones WHERE id = ?";
 
@@ -171,10 +177,10 @@ class Model{
         $stmt->close();
 
         return $zone_details;
-
     }
 
-    public function edit_zone(){
+    public function edit_zone()
+    {
         $request = Request::capture();
 
         $zone_name = $request->input('zone-name');
@@ -187,17 +193,18 @@ class Model{
         $stmt = $this->database->prepare($query);
         $stmt->bind_param('sssi', $zone_name, $zone_location, $parent_branch, $zone_id);
         $stmt->execute();
-      
+
         $response = ['message' => 'Store details updated', 'status' => '200'];
         $httpStatus = 200;
-    
+
         Request::send_response($httpStatus, $response);
 
         $stmt->close();
     }
 
 
-    public function delete_zone(){
+    public function delete_zone()
+    {
         $request = Request::capture();
 
         $id = $request->input('zone-to-delete');
@@ -210,14 +217,14 @@ class Model{
 
         $response = ['message' => 'Store deleted successfully', 'status' => '200'];
         $httpStatus = 200;
-    
+
         Request::send_response($httpStatus, $response);
 
         $stmt->close();
-
     }
 
-    public function get_all_farmers(){
+    public function get_all_farmers()
+    {
         $query = "SELECT user_profile.id, app_users.id AS farmer_id, app_users.approved, user_profile.fullname, user_profile.phone, user_profile.image_url
                   FROM app_users JOIN user_profile
                   ON app_users.id = user_profile.user_id 
@@ -234,7 +241,8 @@ class Model{
         return $zones;
     }
 
-    public function get_user_details($id){
+    public function get_user_details($id)
+    {
         $query = "SELECT * FROM user_profile WHERE id = ?";
 
         $stmt = $this->database->prepare($query);
@@ -249,7 +257,8 @@ class Model{
         return $user_details;
     }
 
-    public function set_current_season(){
+    public function set_current_season()
+    {
         $request = Request::capture();
 
         $start_date = $request->input('start-date');
@@ -257,20 +266,21 @@ class Model{
 
         $start_date_formatted = date('Y-m-d H:i:s', strtotime($start_date));
         $end_date_formatted = date('Y-m-d H:i:s', strtotime($end_date));
-        
+
         $stmt = $this->database->prepare('CALL SetCurrentSeason(?, ?)');
         $stmt->bind_param("ss", $start_date_formatted, $end_date_formatted);
         $stmt->execute();
 
         $response = ['message' => 'Season Saved Successfully'];
         $httpStatus = 200;
-        
+
         Request::send_response($httpStatus, $response);
 
         $stmt->close();
     }
 
-    public function set_scale(){
+    public function set_scale()
+    {
         $request = Request::capture();
 
         $product_name = $request->input('product-name');
@@ -286,15 +296,15 @@ class Model{
 
         $response = ['message' => 'Scale Saved Successfully'];
         $httpStatus = 200;
-        
+
         Request::send_response($httpStatus, $response);
 
         $stmt->close();
-
     }
 
 
-    public function get_current_season(){
+    public function get_current_season()
+    {
         $query = "SELECT * FROM season WHERE status = 'Ongoing'";
 
         $stmt = $this->database->prepare($query);
@@ -308,7 +318,8 @@ class Model{
         return $season;
     }
 
-    public function get_scales_for_current_season($id){
+    public function get_scales_for_current_season($id)
+    {
         $query = "SELECT * FROM price_scales WHERE season_id = ?";
 
         $stmt = $this->database->prepare($query);
@@ -323,7 +334,8 @@ class Model{
         return $scales;
     }
 
-    public function get_product_scale($product_type){
+    public function get_product_scale($product_type)
+    {
         $unit_price = "";
         $current_season = $this->get_current_season();
         $current_season_id = $current_season['id'];
@@ -337,32 +349,33 @@ class Model{
         $stmt->fetch();
 
         return $unit_price;
-
     }
 
-    public function approve_all($ids){
+    public function approve_all($ids)
+    {
         $ids = json_decode(urldecode($ids), true);
 
         $query = "UPDATE app_users SET approved = '1' WHERE id = ?";
 
         $stmt = $this->database->prepare($query);
 
-        foreach($ids as $id){
+        foreach ($ids as $id) {
             $stmt->bind_param("i", $id);
             $stmt->execute();
             $stmt->reset();
         }
 
-        
+
         $response = ['message' => 'Selected Farmers Approved'];
         $httpStatus = 200;
-        
+
         Request::send_response($httpStatus, $response);
-        
+
         $stmt->close();
     }
 
-    public function get_stores_to_assign($id){
+    public function get_stores_to_assign($id)
+    {
         $query = "SELECT z.id AS store_id, z.zone_name, b.branch_name
                   FROM zones z
                   LEFT JOIN store_assignments sa ON z.id = sa.store_id AND sa.farmer_id = ?
@@ -370,20 +383,20 @@ class Model{
                   WHERE sa.id IS NULL OR sa.farmer_id IS NULL
                   ";
 
-         $stmt = $this->database->prepare($query);
-         $stmt->bind_param("i", $id);
-         $stmt->execute();
- 
-         $result = $stmt->get_result();
-         $stores = $result->fetch_all(MYSQLI_ASSOC);
- 
-         $stmt->close();
- 
-         return $stores;
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
 
+        $result = $stmt->get_result();
+        $stores = $result->fetch_all(MYSQLI_ASSOC);
+
+        $stmt->close();
+
+        return $stores;
     }
 
-    public function get_farmer_assignments($id){
+    public function get_farmer_assignments($id)
+    {
 
         $query = "SELECT sa.id AS assignment_id, z.zone_name, b.branch_name
                   FROM zones z
@@ -400,62 +413,64 @@ class Model{
 
         $stmt->close();
 
-        return $stores;          
+        return $stores;
     }
 
-    public function assign_stores_to_farmer($farmer_id, $Ids) {
-  
+    public function assign_stores_to_farmer($farmer_id, $Ids)
+    {
+
         $ids = json_decode(urldecode($Ids), true);
         $stmt = $this->database->prepare("CALL assignStoreToFarmer(?, ?)");
-        
+
         foreach ($ids as $id) {
             $stmt->bind_param('ii', $farmer_id, $id);
             $stmt->execute();
             $stmt->reset();
         }
-  
+
         $stmt->close();
         $response = ['message' => 'Assignments Saved'];
         $httpStatus = 200;
-  
-    Request::send_response($httpStatus, $response);
-    
-  }
 
-  public function drop_farmer_assignments($farmer_id, $Ids){
+        Request::send_response($httpStatus, $response);
+    }
+
+    public function drop_farmer_assignments($farmer_id, $Ids)
+    {
         $ids = json_decode(urldecode($Ids), true);
         $stmt = $this->database->prepare("DELETE FROM store_assignments WHERE farmer_id = ? AND id = ?");
-        
+
         foreach ($ids as $id) {
             $stmt->bind_param('ii', $farmer_id, $id);
             $stmt->execute();
             $stmt->reset();
         }
-  
+
         $stmt->close();
         $response = ['message' => 'Assignments Deleted'];
         $httpStatus = 200;
-  
+
         Request::send_response($httpStatus, $response);
-  }
-
-  public function get_stores_by_parent_branch_id($id){
-    $query = "SELECT * FROM zones WHERE parent_branch = ?";
-
-    $stmt = $this->database->prepare($query);
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
-
-    $result = $stmt->get_result();
-    $stores = $result->fetch_all(MYSQLI_ASSOC);
-
-    $stmt->close();
-
-    return $stores;
-
     }
 
-    public function get_farmers_by_store_id($id){
+    public function get_stores_by_parent_branch_id($id)
+    {
+        $query = "SELECT * FROM zones WHERE parent_branch = ?";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $stores = $result->fetch_all(MYSQLI_ASSOC);
+
+        $stmt->close();
+
+        return $stores;
+    }
+
+    public function get_farmers_by_store_id($id)
+    {
         $query = "SELECT up.user_id, up.fullname, up.image_url
                   FROM store_assignments sa
                   JOIN user_profile up ON sa.farmer_id = up.user_id
@@ -473,7 +488,8 @@ class Model{
         return $farmers;
     }
 
-    public function save_collection_data(){
+    public function save_collection_data()
+    {
         $request = Request::capture();
 
         $current_season = $request->input('current-season');
@@ -487,44 +503,44 @@ class Model{
         $checked_farmers_array = $request->input('checkedFarmers');
 
         $checkedFarmers = json_decode(urldecode($checked_farmers_array), true);
-        
+
         $query = "INSERT INTO collections (current_season, parent_branch, parent_store, product_type, unit_price, quantity, total_amount, payed, farmer_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         foreach ($checkedFarmers as $farmerId) {
-        
+
             $stmt = $this->database->prepare($query);
             $stmt->bind_param("iiisdddii", $current_season, $parent_branch, $parent_store, $product_type, $unit_price, $quantity, $total_amount, $payed, $farmerId);
-            
+
             echo $this->database->error;
 
             $stmt->execute();
             $stmt->reset();
-            
         }
         $stmt->close();
 
         $response = ['message' => 'Collection data saved successfully'];
         $httpStatus = 200;
-  
+
         Request::send_response($httpStatus, $response);
     }
 
-    public function get_collections($branch_id = null, $store_id = null, $farmer_id = null){
+    public function get_collections($branch_id = null, $store_id = null, $farmer_id = null)
+    {
         $query = " CALL GetCollections(?, ?, ?)";
 
-        $stmt = $this->database->prepare($query);     
+        $stmt = $this->database->prepare($query);
         $stmt->bind_param("iii", $branch_id, $store_id, $farmer_id);
         $stmt->execute();
         $result = $stmt->get_result();
-        $collections = $result->fetch_all(MYSQLI_ASSOC);  
-        
-        $stmt->close();
-        
-        return $collections;
+        $collections = $result->fetch_all(MYSQLI_ASSOC);
 
+        $stmt->close();
+
+        return $collections;
     }
 
-    public function get_last_collections(){
+    public function get_last_collections()
+    {
         $query = "SELECT c.id,c.current_season,b.branch_name,z.zone_name,up.fullname,up.image_url,up.phone,c.product_type,c.unit_price,c.quantity,c.total_amount,c.payed,c.farmer_id
                   FROM
                     collections c
@@ -540,59 +556,59 @@ class Model{
         $stmt = $this->database->prepare($query);
         $stmt->execute();
         $result = $stmt->get_result();
-        $collections = $result->fetch_all(MYSQLI_ASSOC);  
-        
+        $collections = $result->fetch_all(MYSQLI_ASSOC);
+
         $stmt->close();
-        
+
         return $collections;
     }
 
-    public function get_branches_total(){
+    public function get_branches_total()
+    {
         $count = 0;
         $query = "SELECT COUNT(*) FROM branches where branches.trash_status = 0";
-      
+
         $stmt = $this->database->prepare($query);
         $stmt->execute();
         $stmt->bind_result($count);
-      
-        $stmt->fetch();
-      
-        $stmt->close();
-      
-        return $count;
-      }
-      
 
-      public function get_stores_total(){
+        $stmt->fetch();
+
+        $stmt->close();
+
+        return $count;
+    }
+
+
+    public function get_stores_total()
+    {
         $count = 0;
         $query = "SELECT COUNT(*) FROM zones where zones.trash_status = 0";
-      
+
         $stmt = $this->database->prepare($query);
         $stmt->execute();
         $stmt->bind_result($count);
-      
-        $stmt->fetch();
-      
-        $stmt->close();
-      
-        return $count;
-      }
 
-      public function get_farmers_total(){
+        $stmt->fetch();
+
+        $stmt->close();
+
+        return $count;
+    }
+
+    public function get_farmers_total()
+    {
         $count = 0;
         $query = "SELECT COUNT(*) FROM `app_users` WHERE app_users.approved = 1 AND app_users.role = 'Farmer'";
-      
+
         $stmt = $this->database->prepare($query);
         $stmt->execute();
         $stmt->bind_result($count);
-      
+
         $stmt->fetch();
-      
+
         $stmt->close();
-      
+
         return $count;
-      }
-
-
+    }
 }
-?>
