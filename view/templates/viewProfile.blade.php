@@ -9,7 +9,9 @@
                       <h1 class="py-1">Your Profile Information</h1>
                           <nav>
                             <ol class="breadcrumb">
-                              <li class="breadcrumb-item"><a href="/{{$appName}}/dashboard/">Dashboard</a></li>
+                              @if($role == 'Administrator')
+                                <li class="breadcrumb-item"><a href="/{{$appName}}/dashboard/">Dashboard</a></li>
+                              @endif
                               <li class="breadcrumb-item">Users</li>
                               <li class="breadcrumb-item active">My Profile</li><br>
                               <div style="width: 10px;"></div>

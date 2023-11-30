@@ -3,6 +3,9 @@
 
 <ul class="sidebar-nav" id="sidebar-nav">
 
+  
+  @if($role == 'Administrator')
+  
   <li class="nav-item">
     <a class="nav-link " href="/{{$appName}}/dashboard/">
       <i class="bi bi-grid"></i>
@@ -10,7 +13,6 @@
     </a>
   </li>
 
-  @if($role == 'Administrator')
   <li class="nav-heading mb-3">Pages</li>
 
   <li class="nav-item">
@@ -60,6 +62,36 @@
   </li>
   
   @endif
+
+  @if($role == 'Farmer')
+
+  <li class="nav-heading mb-3">Pages</li>
+
+  <li class="nav-item pb-2">
+    <a class="nav-link collapsed" href="/kapcco/collections/u/my-collections/">
+      <i class="bi bi-shop-window"></i>
+      <span>My Collections</span>
+    </a>
+  </li>
+
+  <li class="nav-item pb-2">
+    <a class="nav-link collapsed" href="/kapcco/collections/info/">
+      <i class="bi bi-shop-window"></i>
+      <span>Collections Info</span>
+    </a>
+  </li>
+  
+    <li class="nav-item pb-2">
+      <a class="nav-link collapsed" href="/kapcco/auth/user/profile/">
+        <i class="bi bi-shop-window"></i>
+        <span>My Profile</span>
+      </a>
+    </li>
+  @endif
+
+  
+
+
 
 </ul>
 

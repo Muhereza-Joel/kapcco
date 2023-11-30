@@ -183,6 +183,40 @@ class DashboardController{
         echo ($html);
     }
 
+    public function render_my_collections_view(){
+        $blade_view = new BladeView();
+        $html = $blade_view->render('myCollections', [
+            'pageTitle' => "KAPCCO - farmers",
+            'appName' => getenv('APP_NAME'),
+            'username' => Session::get('username'),
+            'role' => Session::get('role'),
+            'avator' => Session::get('avator'),
+        ]);
+
+        echo ($html);
+    }
+
+    public function render_my_collections_info_view(){
+        $model = new Model();
+        $current_season = $model->get_current_season();
+        $scales = $model->get_scales_for_current_season($current_season['id']);
+        $assigned_stores = $model->get_farmer_assignments(Session::get('user_id'));
+
+        $blade_view = new BladeView();
+        $html = $blade_view->render('myCollectionsInfo', [
+            'pageTitle' => "KAPCCO - farmers",
+            'appName' => getenv('APP_NAME'),
+            'username' => Session::get('username'),
+            'role' => Session::get('role'),
+            'avator' => Session::get('avator'),
+            'currentSeason' => $current_season,
+            'scales' => $scales,
+            'assignedStores' => $assigned_stores
+        ]);
+
+        echo ($html);
+    }
+
     public function approve_all($ids){
         $model = new Model();
         $model->approve_all($ids);

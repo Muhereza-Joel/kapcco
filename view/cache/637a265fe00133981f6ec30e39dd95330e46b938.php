@@ -28,15 +28,17 @@
           <hr class="dropdown-divider">
         </li>
 
-        <li>
-          <a class="dropdown-item d-flex align-items-center" href="/<?php echo e($appName); ?>/auth/user/profile/">
-            <i class="bi bi-person"></i>
-            <span>My Profile</span>
-          </a>
-        </li>
-        <li>
-          <hr class="dropdown-divider">
-        </li>
+        <?php if($role == 'Administrator'): ?>
+          <li>
+            <a class="dropdown-item d-flex align-items-center" href="/<?php echo e($appName); ?>/auth/user/profile/">
+              <i class="bi bi-person"></i>
+              <span>My Profile</span>
+            </a>
+          </li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+        <?php endif; ?>
 
         <li>
           <a class="dropdown-item d-flex align-items-center" href="#">

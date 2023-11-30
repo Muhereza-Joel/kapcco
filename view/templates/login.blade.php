@@ -102,7 +102,13 @@
                     success: function(response){
                         if(response.profileCreated == true){
                             if(response.approved == true){
-                                window.location.replace("http://localhost/kapcco/dashboard/");
+                                if(response.role == 'Administrator'){
+                                    window.location.replace("http://localhost/kapcco/dashboard/");
+                                    
+                                } else if(response.role == 'Farmer'){
+                                    window.location.replace("http://localhost/kapcco/collections/u/my-collections/");
+
+                                }
                             }else{
                                 alert('Your account is not approved, please contact the system administrator for approval. Then you will be granted access to login')
 
