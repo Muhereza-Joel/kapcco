@@ -52,7 +52,7 @@
                                                     <button class="btn btn-primary w-100" type="submit">Login</button>
                                                 </div>
                                                 <div class="col-12">
-                                                    
+
                                                     <p class="small mb-0">If you don't have account? <a href="/<?php echo e($appName); ?>/auth/register/">click here to</a> create an account</p>
                                                 </div>
                                             </form>
@@ -65,11 +65,11 @@
 
                                                 <h5 class="fw-bold text-dark">Password Safety</h5>
                                                 Do not share your password or have it stored on a browser by default unless necessary.
-                                                
-                                                       
+
+
                                                 <h5 class="fw-bold text-dark mt-2">Always Logout</h5>
                                                 Once done, always logout so that no one gains access to your account without your knowledge.
-                                                  
+
                                             </div>
 
                                         </div>
@@ -89,48 +89,48 @@
     <?php echo $__env->make('partials/footer', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 
     <script>
-        $(document).ready(function(){
-            $('#login-form').submit(function(e){
+        $(document).ready(function() {
+            $('#login-form').submit(function(e) {
                 e.preventDefault();
 
                 let formData = $(this).serialize();
 
                 $.ajax({
-                    method : 'post',
+                    method: 'post',
                     url: '/kapcco/auth/login/sign-in/',
                     data: formData,
-                    success: function(response){
-                        if(response.profileCreated == true){
-                            if(response.approved == true){
-                                if(response.role == 'Administrator'){
+                    success: function(response) {
+                        if (response.profileCreated == true) {
+                            if (response.approved == true) {
+                                if (response.role == 'Administrator') {
                                     window.location.replace("http://localhost/kapcco/dashboard/");
-                                    
-                                } else if(response.role == 'Farmer'){
+
+                                } else if (response.role == 'Farmer') {
                                     window.location.replace("http://localhost/kapcco/collections/u/my-collections/");
 
                                 }
-                            }else{
+                            } else {
                                 alert('Your account is not approved, please contact the system administrator for approval. Then you will be granted access to login')
 
                             }
 
-                        }else if(response.profileCreated == false){
+                        } else if (response.profileCreated == false) {
                             window.location.replace("http://localhost/kapcco/auth/create-profile/");
                         }
-                        
+
                     },
-                    error: function(jqXHR, textStatus, errorThrown){
+                    error: function(jqXHR, textStatus, errorThrown) {
                         if (jqXHR.status === 401) {
 
                             $('#invalid-login').removeClass('d-none');
                             $('#invalid-login').addClass('show');
                             $('#invalid-login').fadeIn();
                             $('#invalid-login span').text(jqXHR.responseJSON.message);
-                            
-                            setTimeout(function(){
+
+                            setTimeout(function() {
                                 $('#invalid-login').fadeOut();
                                 // $('#login-form')[0].reset();
-    
+
                             }, 3000)
                         }
 
