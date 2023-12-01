@@ -195,7 +195,7 @@ class DashboardController
     {
         $model = new Model();
         $assigned_stores = $model->get_farmer_assignments(Session::get('user_id'));
-        $last_collections = $model->get_last_collections();
+        $last_collections = $model->get_farmer_last_collections(Session::get('user_id'));
 
         $blade_view = new BladeView();
         $html = $blade_view->render('myCollections', [

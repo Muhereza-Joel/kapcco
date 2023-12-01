@@ -55,7 +55,7 @@
         <div class="col-lg-8">
             <div class="card" style="position: sticky; top: 50px">
                 <div class="card-body">
-                    <div id="report-header" class="card-title fw-bold">Showing last {{count($lastCollections)}} collections.</div>
+                    <div id="report-header" class="card-title fw-bold">Showing last {{count($lastCollections)}} collections, you supplied to your stores</div>
                     <table class="table table-striped datatable" id="reports-table">
                         <thead>
                             <tr>
