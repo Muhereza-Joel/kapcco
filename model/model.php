@@ -398,7 +398,7 @@ class Model
     public function get_farmer_assignments($id)
     {
 
-        $query = "SELECT sa.id AS assignment_id, z.zone_name, b.branch_name
+        $query = "SELECT sa.id AS assignment_id, z.zone_name, b.branch_name, sa.store_id
                   FROM zones z
                   JOIN store_assignments sa ON z.id = sa.store_id AND sa.farmer_id = ?
                   LEFT JOIN branches b ON z.parent_branch = b.id

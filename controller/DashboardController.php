@@ -171,7 +171,7 @@ class DashboardController
         $model = new Model();
         $farmers = $model->get_all_farmers();
         $user_details = $model->get_user_details($id);
-        $stores_to_assign = $model->get_stores_to_assign($id);
+        $stores_to_assign = $model->get_stores_to_assign($user_details['user_id']);
         $assigned_stores = $model->get_farmer_assignments($user_details['user_id']);
 
         $blade_view = new BladeView();
@@ -193,6 +193,10 @@ class DashboardController
 
     public function render_my_collections_view()
     {
+        $model = new Model();
+        $assigned_stores = $model->get_farmer_assignments(Session::get('user_id'));
+        $last_collections = $model->get_last_collections();
+
         $blade_view = new BladeView();
         $html = $blade_view->render('myCollections', [
             'pageTitle' => "KAPCCO - farmers",
@@ -200,6 +204,10 @@ class DashboardController
             'username' => Session::get('username'),
             'role' => Session::get('role'),
             'avator' => Session::get('avator'),
+            'userId' => Session::get('user_id'),
+            'assignedStores' => $assigned_stores,
+            'lastCollections' => $last_collections,
+
         ]);
 
         echo ($html);

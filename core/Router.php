@@ -1,13 +1,16 @@
 <?php
+
 namespace kapcco\core;
 
-class Router{
+class Router
+{
 
     private $routes = [];
-    
+
     private $defaultRoute;
-    
-    public function init_routes(){
+
+    public function init_routes()
+    {
         //routes for AuthController
         $this->setDefaultRoute('kapcco\controller\AuthController@index');
         $this->addRoute('/kapcco/auth/register/', 'kapcco\controller\AuthController@render_register_view');
@@ -40,7 +43,7 @@ class Router{
         $this->addRoute('/kapcco/dashboard/farmers/drop-assignments/', 'kapcco\controller\DashboardController@drop_all_assignments');
         $this->addRoute('/kapcco/collections/u/my-collections/', 'kapcco\controller\DashboardController@render_my_collections_view');
         $this->addRoute('/kapcco/collections/info/', 'kapcco\controller\DashboardController@render_my_collections_info_view');
-        
+
         //routes for BranchController
         $this->addRoute('/kapcco/dashboard/branches/add/', 'kapcco\controller\BranchController@add_branch');
         $this->addRoute('/kapcco/dashboard/branches/edit/', 'kapcco\controller\BranchController@edit_branch');
@@ -53,23 +56,24 @@ class Router{
         $this->addRoute('/kapcco/dashboard/zones/get-zones-by-id/', 'kapcco\controller\ZonesController@get_zones_by_id');
         $this->addRoute('/kapcco/dashboard/zones/get-farmers-by-store-id/', 'kapcco\controller\ZonesController@get_farmers_by_store_id');
         $this->addRoute('/kapcco/dashboard/zones/get-farmers-collections/', 'kapcco\controller\ZonesController@get_farmer_collections');
+        $this->addRoute('/kapcco/dashboard/zones/get-farmers-collections-only/', 'kapcco\controller\ZonesController@get_farmer_collections_only');
 
         //routes for CollectionsController
         $this->addRoute('/kapcco/dashboard/colllections/add-season/', 'kapcco\controller\CollectionsController@save_season');
         $this->addRoute('/kapcco/dashboard/colllections/set-price-scale/', 'kapcco\controller\CollectionsController@set_price_scale');
         $this->addRoute('/kapcco/dashboard/colllections/get-product-unit-price/', 'kapcco\controller\CollectionsController@get_product_unit_price');
         $this->addRoute('/kapcco/dashboard/colllections/add/', 'kapcco\controller\CollectionsController@add_collection');
-
     }
 
     // Define a default route
-    public function setDefaultRoute($controllerMethod) {
+    public function setDefaultRoute($controllerMethod)
+    {
         $this->defaultRoute = $controllerMethod;
     }
 
-    public function addRoute($path, $controllerMethod){
+    public function addRoute($path, $controllerMethod)
+    {
         $this->routes[$path] = $controllerMethod;
-
     }
 
     public function routeRequest($path, $middlewareClass)
@@ -149,7 +153,8 @@ class Router{
 
 
     // Extract route parameters from the URL
-    private function extractRouteParameters($routePath, $requestedUrl) {
+    private function extractRouteParameters($routePath, $requestedUrl)
+    {
         $routeParams = [];
 
         // Remove the base route path to get only the parameters
@@ -161,7 +166,7 @@ class Router{
         // Define placeholders in the route path
         $routeSegments = explode('/', $routePath);
 
-       // Add each segment as a parameter or extract variable from placeholder
+        // Add each segment as a parameter or extract variable from placeholder
         foreach ($pathSegments as $index => $segment) {
             $placeholder = trim($routeSegments[$index], "{}");
 
@@ -180,10 +185,4 @@ class Router{
 
         return $routeParams;
     }
-
-   
-
-
 }
-
-?>

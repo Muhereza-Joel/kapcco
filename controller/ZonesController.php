@@ -61,4 +61,15 @@ class ZonesController
 
         Request::send_response($httpStatus, $response);
     }
+
+    public function get_farmer_collections_only($store_id, $farmer_id)
+    {
+        $model = new Model();
+        $collections = $model->get_collections(NULL, $store_id, $farmer_id);
+
+        $response = ['collections' => $collections];
+        $httpStatus = 200;
+
+        Request::send_response($httpStatus, $response);
+    }
 }
