@@ -4,85 +4,25 @@ namespace kapcco\core;
 
 class Router
 {
-
     private $routes = [];
-
     private $defaultRoute;
 
-    public function init_routes()
-    {
-        //routes for AuthController
-        $this->setDefaultRoute('kapcco\controller\AuthController@index');
-        $this->addRoute('/kapcco/auth/register/', 'kapcco\controller\AuthController@render_register_view');
-        $this->addRoute('/kapcco/auth/login/', 'kapcco\controller\AuthController@index');
-        $this->addRoute('/kapcco/auth/create-profile/', 'kapcco\controller\AuthController@render_create_profile_view');
-        $this->addRoute('/kapcco/auth/login/sign-in/', 'kapcco\controller\AuthController@sign_in_user');
-        $this->addRoute('/kapcco/auth/create-account/', 'kapcco\controller\AuthController@create_account');
-        $this->addRoute('/kapcco/image-upload/', 'kapcco\controller\AuthController@upload_photo');
-        $this->addRoute('/kapcco/auth/check-nin/', 'kapcco\controller\AuthController@check_nin');
-        $this->addRoute('/kapcco/auth/check-email/', 'kapcco\controller\AuthController@check_email');
-        $this->addRoute('/kapcco/auth/check-password/', 'kapcco\controller\AuthController@check_password');
-        $this->addRoute('/kapcco/auth/change-password/', 'kapcco\controller\AuthController@change_password');
-        $this->addRoute('/kapcco/auth/save-profile/', 'kapcco\controller\AuthController@save_profile');
-        $this->addRoute('/kapcco/auth/update-profile/', 'kapcco\controller\AuthController@update_profile');
-        $this->addRoute('/kapcco/auth/user/profile/update-photo/', 'kapcco\controller\AuthController@update_photo');
-        $this->addRoute('/kapcco/auth/sign-out/', 'kapcco\controller\AuthController@sign_out');
-        $this->addRoute('/kapcco/auth/user/profile/', 'kapcco\controller\AuthController@render_show_profile_view');
-
-        //routes for DashboardController
-        $this->addRoute('/kapcco/dashboard/', 'kapcco\controller\DashboardController@index');
-        $this->addRoute('/kapcco/dashboard/add-collection/', 'kapcco\controller\DashboardController@render_add_collection_view');
-        $this->addRoute('/kapcco/dashboard/collections/', 'kapcco\controller\DashboardController@render_collections_view');
-        $this->addRoute('/kapcco/dashboard/branches/', 'kapcco\controller\DashboardController@render_branches_view');
-        $this->addRoute('/kapcco/dashboard/zones/', 'kapcco\controller\DashboardController@render_zones_view');
-        $this->addRoute('/kapcco/dashboard/reports/branch-store/', 'kapcco\controller\DashboardController@render_branch_stores_reports_view');
-        $this->addRoute('/kapcco/dashboard/farmers/', 'kapcco\controller\DashboardController@get_all_farmers_view');
-        $this->addRoute('/kapcco/dashboard/farmers/u/', 'kapcco\controller\DashboardController@render_farmers_view');
-        $this->addRoute('/kapcco/dashboard/farmers/approve/', 'kapcco\controller\DashboardController@approve_all');
-        $this->addRoute('/kapcco/dashboard/farmers/assign/', 'kapcco\controller\DashboardController@assign_all');
-        $this->addRoute('/kapcco/dashboard/farmers/drop-assignments/', 'kapcco\controller\DashboardController@drop_all_assignments');
-        $this->addRoute('/kapcco/collections/u/my-collections/', 'kapcco\controller\DashboardController@render_my_collections_view');
-        $this->addRoute('/kapcco/collections/info/', 'kapcco\controller\DashboardController@render_my_collections_info_view');
-
-        //routes for BranchController
-        $this->addRoute('/kapcco/dashboard/branches/add/', 'kapcco\controller\BranchController@add_branch');
-        $this->addRoute('/kapcco/dashboard/branches/edit/', 'kapcco\controller\BranchController@edit_branch');
-        $this->addRoute('/kapcco/dashboard/branches/delete/', 'kapcco\controller\BranchController@delete_branch');
-
-        //routes for ZonesController
-        $this->addRoute('/kapcco/dashboard/zones/add/', 'kapcco\controller\ZonesController@add_zone');
-        $this->addRoute('/kapcco/dashboard/zones/edit/', 'kapcco\controller\ZonesController@edit_zone');
-        $this->addRoute('/kapcco/dashboard/zones/delete/', 'kapcco\controller\ZonesController@delete_zone');
-        $this->addRoute('/kapcco/dashboard/zones/get-zones-by-id/', 'kapcco\controller\ZonesController@get_zones_by_id');
-        $this->addRoute('/kapcco/dashboard/zones/get-farmers-by-store-id/', 'kapcco\controller\ZonesController@get_farmers_by_store_id');
-        $this->addRoute('/kapcco/dashboard/zones/get-farmers-collections/', 'kapcco\controller\ZonesController@get_farmer_collections');
-        $this->addRoute('/kapcco/dashboard/zones/get-farmers-collections-only/', 'kapcco\controller\ZonesController@get_farmer_collections_only');
-
-        //routes for CollectionsController
-        $this->addRoute('/kapcco/dashboard/colllections/add-season/', 'kapcco\controller\CollectionsController@save_season');
-        $this->addRoute('/kapcco/dashboard/colllections/set-price-scale/', 'kapcco\controller\CollectionsController@set_price_scale');
-        $this->addRoute('/kapcco/dashboard/colllections/get-product-unit-price/', 'kapcco\controller\CollectionsController@get_product_unit_price');
-        $this->addRoute('/kapcco/dashboard/colllections/add/', 'kapcco\controller\CollectionsController@add_collection');
-    }
-
-    // Define a default route
     public function setDefaultRoute($controllerMethod)
     {
         $this->defaultRoute = $controllerMethod;
     }
 
-    public function addRoute($path, $controllerMethod)
+    public function setRoutes($routes)
     {
-        $this->routes[$path] = $controllerMethod;
+        $this->routes = $routes;
     }
 
-    public function routeRequest($path, $middlewareClass)
+    public function routeRequest($path, $middlewareClass, $method = 'POST')
     {
-        $this->handleRequest($path, $middlewareClass);
+        $this->handleRequest($path, $middlewareClass, $method);
     }
 
-
-    private function handleRequest($requestedUrl, $middlewareClass = null)
+    private function handleRequest($requestedUrl, $middlewareClass = null, $method = 'GET')
     {
         // Check if the user is logged in when accessing the base URL
         if ($requestedUrl === '/kapcco/' && Session::isLoggedIn()) {
@@ -94,17 +34,25 @@ class Router
         $urlParts = explode('?', $requestedUrl);
         $path = $urlParts[0];
 
-        // Check if the route exists
-        if (array_key_exists($path, $this->routes)) {
+        // Check if the route exists for the given HTTP method
+        $matchingRoutes = array_filter($this->routes, function ($route) use ($path, $method) {
+            return $route['path'] === $path && in_array($method, $route['methods']);
+        });
+
+        if (!empty($matchingRoutes)) {
+            $route = reset($matchingRoutes);
             // Split the controller and method
-            list($controllerName, $methodName) = explode('@', $this->routes[$path]);
+            list($controllerName, $methodName) = explode('@', $route['controllerMethod']);
 
             // Apply middleware if provided
             if ($middlewareClass !== null) {
                 $this->applyMiddlewareLogic($middlewareClass, $path, $controllerName, $methodName);
             } else {
                 // No middleware, proceed with regular route logic
-                $this->handleRegularRouteLogic($path, $controllerName, $methodName);
+                // $this->handleRegularRouteLogic($path, $controllerName, $methodName);
+                echo $path;
+                echo $controllerName;
+                echo $methodName;
             }
         } else {
             // Use the default route if no matching route is found
@@ -120,20 +68,42 @@ class Router
         }
     }
 
-    private function handleRegularRouteLogic($path, $controllerName, $methodName)
+    private function handleRegularRouteLogic($path)
     {
-        // Split the controller and method
-        list($controllerName, $methodName) = explode('@', $this->routes[$path]);
+        // Find the route that matches the specified path
+        $matchingRoute = null;
+        foreach ($this->routes as $route) {
+            if ($route['path'] === $path) {
+                $matchingRoute = $route;
+                break;
+            }
+        }
 
-        // Create an instance of the controller
-        $controller = new $controllerName();
+        // Check if a matching route was found
+        if ($matchingRoute !== null) {
+            // Extract individual details
+            $controllerMethod = $matchingRoute['controllerMethod'];
+            $methods = $matchingRoute['methods'];
 
-        // Extract route parameters from the URL
-        $routeParams = $this->extractRouteParameters($path, $_SERVER['REQUEST_URI']);
+            // Split the controller and method
+            list($controllerName, $methodName) = explode('@', $controllerMethod);
 
-        // Call the controller method and pass route parameters
-        call_user_func_array([$controller, $methodName], $routeParams);
+            if (!empty($controllerName) && class_exists($controllerName)) {
+                $controller = new $controllerName();
+
+                // Extract route parameters from the URL
+                $routeParams = $this->extractRouteParameters($path, $_SERVER['REQUEST_URI']);
+
+                // Call the controller method and pass route parameters
+                call_user_func_array([$controller, $methodName], $routeParams);
+            }
+        } else {
+            // If the route is not found, return a 404 response
+            header("HTTP/1.0 404 Not Found");
+            echo "404 Not Found";
+        }
     }
+
 
     private function applyMiddlewareLogic($middlewareClass, $path, $controllerName, $methodName)
     {
@@ -150,7 +120,6 @@ class Router
             exit();
         }
     }
-
 
     // Extract route parameters from the URL
     private function extractRouteParameters($routePath, $requestedUrl)
