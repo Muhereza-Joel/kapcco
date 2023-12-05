@@ -11,10 +11,10 @@
 <script src="/{{$appName}}/assets/vendor/php-email-form/validate.js"></script>
 
 <!-- Template Main JS File -->
-<script src="/{{$appName}}/assets/js/main.js"></script>
 <script src="/{{$appName}}/assets/js/jquery.min.js"></script>
 <script src="/{{$appName}}/assets/js/moments.js"></script>
 <script src="/{{$appName}}/assets/vendor/jquery-ui/jquery-ui.min.js"></script>
+<script src="/{{$appName}}/assets/js/main.js"></script>
 
 <script>
   function showLoadingOverlay() {

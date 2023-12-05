@@ -85,11 +85,13 @@
 
 <script>
   $(document).ready(function() {
-    
+
     var selectedFarmers = [];
     var maxSelection = 1;
     var selectedStore;
     var selectedBranch;
+    var datatable = $('#reports-table.datatable');
+    
 
     $('#parent-branch-drop-down').on('change', function() {
       $('#farmers-to-allocate-table tbody').empty();
@@ -106,7 +108,7 @@
           branch_id: selectedBranch
         },
         success: function(data) {
-          
+
           $('#parent-store-drop-down').empty();
           $('#parent-store-drop-down').append('<option >Select Store</option>');
 
@@ -135,6 +137,8 @@
 
           $('#report-header').text('Collection data for seleted branch.')
           hideLoadingOverlay();
+
+          
         },
         error: function(error) {
           hideLoadingOverlay();
@@ -189,7 +193,8 @@
 
           $('#report-header').text('Collection data for seleted branch and store.')
           hideLoadingOverlay();
-
+         
+         ;
         },
         error: function(error) {
           console.log('Error fetching data:', error);
