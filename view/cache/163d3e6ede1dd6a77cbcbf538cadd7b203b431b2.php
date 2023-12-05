@@ -103,6 +103,9 @@
 
         if (this.checkValidity() === true) {
 
+          $("#submit-button").attr('disabled', 'true')
+          $("#submit-button").text("Please wait...")
+
           let formData = $(this).serialize();
 
           $.ajax({
@@ -111,6 +114,8 @@
             data: formData,
             success: function(response) {
 
+              $("#submit-button").attr('disabled', 'true')
+              $("#submit-button").text("Registered successfully, redirecting...")
               $('#invalid-registration').removeClass('alert-danger')
               $('#invalid-registration').removeClass('d-none')
               $('#invalid-registration').addClass('alert-success')
@@ -135,6 +140,8 @@
                 $('#invalid-registration span').text(jqXHR.responseJSON.message);
 
                 setTimeout(function() {
+                  $("#submit-button").removeAttr('disabled');
+                  $("#submit-button").text("Create Account");
                   $('#invalid-registration').fadeOut();
                 }, 3000)
               }

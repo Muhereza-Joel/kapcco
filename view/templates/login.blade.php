@@ -49,7 +49,7 @@
                                                 </div>
 
                                                 <div class="col-12">
-                                                    <button class="btn btn-primary w-100" type="submit">Login</button>
+                                                    <button id="login-button" class="btn btn-primary w-100" type="submit">Login</button>
                                                 </div>
                                                 <div class="col-12">
 
@@ -93,6 +93,9 @@
             $('#login-form').submit(function(e) {
                 e.preventDefault();
 
+                $("#login-button").attr('disabled', 'true');
+                $("#login-button").text("Please wait...");
+
                 let formData = $(this).serialize();
 
                 $.ajax({
@@ -100,6 +103,10 @@
                     url: '/kapcco/auth/login/sign-in/',
                     data: formData,
                     success: function(response) {
+
+                        $("#login-button").attr('disabled', 'true');
+                        $("#login-button").text("Authentication Successful, redirecting...");
+
                         if (response.profileCreated == true) {
                             if (response.approved == true) {
                                 if (response.role == 'Administrator') {
@@ -111,6 +118,8 @@
                                 }
                             } else {
                                 alert('Your account is not approved, please contact the system administrator for approval. Then you will be granted access to login')
+                                $("#login-button").removeAttr('disabled');
+                                $("#login-button").text("Login");
 
                             }
 
@@ -127,9 +136,12 @@
                             $('#invalid-login').fadeIn();
                             $('#invalid-login span').text(jqXHR.responseJSON.message);
 
+                            
                             setTimeout(function() {
                                 $('#invalid-login').fadeOut();
-                                // $('#login-form')[0].reset();
+                                $("#login-button").removeAttr('disabled');
+                                $("#login-button").text("Login");
+                              
 
                             }, 3000)
                         }
