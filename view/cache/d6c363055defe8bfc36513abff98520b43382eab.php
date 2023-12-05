@@ -5,7 +5,9 @@
 <?php echo $__env->make('partials/leftPane', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>;
 
 <main id="main" class="main">
-
+  <div id="loading-overlay">
+    <div id="loading-indicator"></div>
+  </div>
   <div class="pagetitle">
     <h1>Add New Collection</h1>
     <nav>
@@ -150,6 +152,7 @@
 
       var selectedStore = $(this).val();
 
+      showLoadingOverlay();
 
       $.ajax({
         url: '/kapcco/dashboard/zones/get-farmers-by-store-id/',
@@ -169,9 +172,12 @@
               '</tr>'
             );
           });
+
+          hideLoadingOverlay();
         },
         error: function(error) {
           console.log('Error fetching data:', error);
+          hideLoadingOverlay();
         }
       });
     });
@@ -179,6 +185,7 @@
     $('#product-type').change(function() {
 
       let productTypeId = $(this).val();
+      showLoadingOverlay();
 
       $.ajax({
         url: '/kapcco/dashboard/colllections/get-product-unit-price/',
@@ -189,9 +196,11 @@
         success: function(response) {
 
           $('#unit-price').val(response.price);
+          hideLoadingOverlay();
         },
         error: function(error) {
           console.error('Error fetching price:', error);
+          hideLoadingOverlay();
         }
       });
     });

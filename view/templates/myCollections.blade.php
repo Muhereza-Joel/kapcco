@@ -5,6 +5,9 @@
 @include('partials/leftPane');
 
 <main id="main" class="main">
+    <div id="loading-overlay">
+        <div id="loading-indicator"></div>
+    </div>
     <div class="row">
         <div class="col-lg-4">
             <div class="card">
@@ -123,6 +126,7 @@
                     alert('You can only fetch recods for one store per selection.');
                 } else {
                     selectedStores.push(storeId);
+                    showLoadingOverlay();
                     getSelectedFarmerCollections(storeId, currentFarmer);
                 }
             } else {
@@ -161,8 +165,11 @@
                     });
 
                     $('#report-header').text('Your collection data for selected store')
+                    hideLoadingOverlay();
 
-
+                },
+                error: function(){
+                    hideLoadingOverlay();
                 }
             })
         }

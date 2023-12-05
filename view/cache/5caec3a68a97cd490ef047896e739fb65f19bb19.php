@@ -16,6 +16,17 @@
 <script src="/<?php echo e($appName); ?>/assets/js/moments.js"></script>
 <script src="/<?php echo e($appName); ?>/assets/vendor/jquery-ui/jquery-ui.min.js"></script>
 
+<script>
+  function showLoadingOverlay() {
+    $('#loading-overlay').fadeIn();
+  }
+
+  // Hide loading overlay
+  function hideLoadingOverlay() {
+    $('#loading-overlay').fadeOut();
+  }
+</script>
+
 </body>
 
 </html>
