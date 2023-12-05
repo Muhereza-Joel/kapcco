@@ -26,7 +26,14 @@ class Router
     {
         // Check if the user is logged in when accessing the base URL
         if ($requestedUrl === '/kapcco/' && Session::isLoggedIn()) {
-            $this->handleRegularRouteLogic('/kapcco/dashboard/', 'kapcco\controller\DashboardController', 'index');
+            if (Session::get('role') == 'Administrator') {
+                header('Location: /kapcco/dashboard/');
+                
+            } else if (Session::get('role') == 'Farmer') {
+                header('Location: /kapcco/collections/u/my-collections/');
+            
+            }
+
             return;
         }
 
