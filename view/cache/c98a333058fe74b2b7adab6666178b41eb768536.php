@@ -18,7 +18,7 @@
   </div><!-- End Page Title -->
 
   <section class="section">
-    <div class="row">
+    <div class="row g-1">
       <div class="col-lg-3 tour-step-1">
 
         <?php echo $__env->make('season', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

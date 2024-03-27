@@ -20,7 +20,7 @@
   </div><!-- End Page Title -->
 
   <section class="section">
-    <div class="row g-3">
+    <div class="row g-1">
       <div class="col-lg-4">
         @include('selectBranchAndStore')
         @include('farmerCollectionTable')

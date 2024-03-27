@@ -20,7 +20,7 @@
   </div><!-- End Page Title -->
 
   <section class="section">
-    <div class="row g-3">
+    <div class="row g-1">
       <div class="col-lg-4">
         <?php echo $__env->make('selectBranchAndStore', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
         <?php echo $__env->make('farmerCollectionTable', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

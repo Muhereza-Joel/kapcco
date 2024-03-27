@@ -24,7 +24,7 @@
   </div><!-- End Page Title -->
 
   <section class="section">
-    <div class="row">
+    <div class="row g-1">
       <div class="col-lg-8">
         <div class="card" style="position: sticky; top: 70px;">
           <div class="card-body">

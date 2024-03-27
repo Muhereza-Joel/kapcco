@@ -21,7 +21,7 @@
 
   <section class="section">
     <form id="add-collection-form" class="row g-3 needs-validation my-3" novalidate>
-      <div class="row">
+      <div class="row g-1">
         <div class="col-lg-3 tour-step-1">
 
           @include('season')
