@@ -22,14 +22,14 @@
   <section class="section">
     <form id="add-collection-form" class="row g-3 needs-validation my-3" novalidate>
       <div class="row">
-        <div class="col-lg-3">
+        <div class="col-lg-3 tour-step-1">
 
           <?php echo $__env->make('season', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 
           <?php echo $__env->make('selectBranchAndStore', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-4 tour-step-2">
           <?php echo $__env->make('farmerCollectionTable', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
         </div>
         <div class="col-lg-5">
@@ -45,7 +45,7 @@
               </div>
 
               <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-6 tour-step-3">
                   <div>
                     <label for="product-type" class="fw-bold">Product Type</label>
                     <select name="product-type" id="product-type" class="form-control" required>
@@ -85,7 +85,7 @@
               <fieldset class="row mb-3 mt-3">
                 <label for="" class="fw-bold">Mark collection as</label>
                 <div class="col-sm-4">
-                  <div class="form-check">
+                  <div class="form-check tour-step-4">
                     <input class="form-check-input" type="radio" name="payed" id="gridRadios1" value="1" checked="" required>
                     <label class="form-check-label" for="gridRadios1">
                       Payed
@@ -103,7 +103,7 @@
                 </div>
               </fieldset>
 
-              <button type="submit" class="btn btn-primary btn-sm mt-3" disabled>Save Collection data</button>
+              <button type="submit" class="btn btn-primary btn-sm mt-3 tour-step-5" disabled>Save Collection data</button>
 
 
             </div>
@@ -294,4 +294,136 @@
 
     $("#time-remaining").text('Remaining time: ' + days + ' days.')
   })
+</script>
+
+<script>
+  const tour = new Shepherd.Tour({
+    useModalOverlay: true,
+    defaultStepOptions: {
+      classes: 'shadow-md bg-purple-dark',
+      scrollTo: true
+    }
+  });
+
+  tour.addStep({
+    id: 'step-0',
+    text: '<h4><strong>Hello <?php echo e($username); ?>, Take a brief tour on how to add collections to your store</strong></h4> <h6>I will guide you through a few steps to achieve this task</h6>',
+    buttons: [{
+      text: 'No, I already no',
+      action: tour.cancel,
+      classes: 'shepherd-button-secondary',
+    }, {
+      text: 'Yeah, Lets Start',
+      action: tour.next,
+    }],
+  });
+
+  tour.addStep({
+    id: 'step-1',
+    text: 'To record collections, set the current season if there is no season which is running, then proceed and select the branch, after select the store to get a list of approved farmers',
+    attachTo: {
+      element: 'div.tour-step-1', // Target the element you want to highlight
+      on: 'bottom',
+    },
+    buttons: [{
+      text: 'Back',
+      action: tour.back,
+      classes: 'shepherd-button-secondary',
+    }, {
+      text: 'Next',
+      action: tour.next,
+    }],
+  });
+
+  tour.addStep({
+    id: 'step-2',
+    text: 'All Farmers you assigned to the store you selected will appear in this table, you can use the checkboxes to select the farmer, you can select one or many if the quantity to record is the same for each, then proceed',
+    attachTo: {
+      element: 'div.tour-step-2', // Target the element you want to highlight
+      on: 'top',
+    },
+    buttons: [{
+      text: 'Back',
+      action: tour.back,
+      classes: 'shepherd-button-secondary',
+    }, {
+      text: 'Next',
+      action: tour.next,
+    }],
+  });
+
+  tour.addStep({
+    id: 'step-3',
+    text: 'Then select the product type from this drop down, this will fetch the unit price automatically.. then go ahead and add the quantiy, this will calculate the total amount automatically basing on the unit price',
+    attachTo: {
+      element: 'div.tour-step-3', // Target the element you want to highlight
+      on: 'bottom',
+    },
+    buttons: [{
+      text: 'Back',
+      action: tour.back,
+      classes: 'shepherd-button-secondary',
+    }, {
+      text: 'Next',
+      action: tour.next,
+    }],
+  });
+
+  tour.addStep({
+    id: 'step-4',
+    text: 'You can then mark this collection as paid if you have paid the farmer, or mark it as not paid if no payment is made, then proceed <strong>Please note that this will be the same for all farmers you selected</strong>',
+    attachTo: {
+      element: 'div.tour-step-4', // Target the element you want to highlight
+      on: 'bottom',
+    },
+    buttons: [{
+      text: 'Back',
+      action: tour.back,
+      classes: 'shepherd-button-secondary',
+    }, {
+      text: 'Next',
+      action: tour.next,
+    }],
+  });
+
+  tour.addStep({
+    id: 'step-5',
+    text: 'Click this button to save the record... Please note that this will save this record agains all the farmers you have selected.',
+    attachTo: {
+      element: 'button.tour-step-5', // Target the element you want to highlight
+      on: 'top',
+    },
+    buttons: [{
+      text: 'Back',
+      action: tour.back,
+      classes: 'shepherd-button-secondary',
+    }, {
+      text: 'Next',
+      action: tour.next,
+    }],
+  });
+
+  tour.addStep({
+    id: 'step-6',
+    text: 'Follow these steps in order to record collections for your store.',
+    buttons: [{
+      text: 'Back',
+      action: tour.back,
+      classes: 'shepherd-button-secondary',
+    }, {
+      text: 'Got It',
+      action: function() {
+        setCookie('addCollectionTourFinished', 'true', 7); // Set cookie with expiry of 7 days
+        tour.complete();
+      },
+    }],
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    if (getCookie('addCollectionTourFinished') === 'true') {
+      tour.cancel();
+    } else {
+      tour.start();
+    }
+  });
 </script>

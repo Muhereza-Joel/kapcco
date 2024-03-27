@@ -42,7 +42,7 @@
                         <div class="col-12">
                           <label for="yourUsername" class="form-label">Username</label>
                           <div class="input-group has-validation">
-                            <span class="input-group-text" id="inputGroupPrepend">@</span>
+                            
                             <input type="text" name="username" class="form-control" id="yourUsername" required placeholder="Enter a login username to use">
                             <div class="invalid-feedback">Please choose a username.</div>
                           </div>

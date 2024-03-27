@@ -113,7 +113,7 @@
                       </div>
 
                       <div class="text-left pt-3">
-                        <button type="submit" class="btn btn-primary btn-sm">Save Profile</button>
+                        <button id="save-profile-button" type="submit" class="btn btn-primary btn-sm">Save Profile</button>
                         <a href="/<?php echo e($appName); ?>/auth/login/" class="btn btn-danger btn-sm">Cancel</a>
                       </div>
 
@@ -204,6 +204,9 @@
 
         if (this.checkValidity() === true) {
 
+          $("#save-profile-button").attr('disabled', true);
+          $("#save-profile-button").text('Please wait...');
+
           let formData = $(this).serialize();
 
           $.ajax({
@@ -211,12 +214,17 @@
             url: '/kapcco/auth/save-profile/',
             data: formData,
             success: function(response) {
+              $("#save-profile-button").attr('disabled', true);
+              $("#save-profile-button").text('Profile created, redirecting...');
+
               setTimeout(function() {
                 window.location.replace("http://localhost/kapcco/auth/login/")
               }, 3000)
             },
             error: function(jqXHR, textStatus, errorThrown) {
               if (jqXHR.status === 401) {
+                $("#save-profile-button").removeAttr('disabled');
+                $("#save-profile-button").text('Save Profile');
                 alert('An Error Occured, Failled to save your profile data...');
               }
             }

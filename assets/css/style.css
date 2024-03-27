@@ -16,7 +16,7 @@
 body {
   font-family: "Open Sans", sans-serif;
   background: #f7f7f9;
-  color: #444444;
+  color: #075E54;
   overflow-x: hidden;
 }
 
@@ -220,7 +220,8 @@ h6 {
 /* Card */
 .card {
   margin-bottom: 10px;
-  border: none;
+  border: 1px solid #9ab0ad;
+  background-color: #faf5f5;
   border-radius: 5px;
   box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
 }
@@ -613,7 +614,7 @@ h6 {
   scrollbar-width: thin;
   scrollbar-color: #aab7cf transparent;
   box-shadow: 0px 0px 20px rgba(1, 41, 112, 0.1);
-  background-color: rgb(70, 17, 9);
+  background-color: #075E54;
 }
 
 @media (max-width: 1199px) {
@@ -691,7 +692,8 @@ h6 {
   transition: 0.3;
   background: #f6f9ff;
   padding: 10px 15px;
-  border-radius: 4px;
+  border-radius: 50px;
+  border-bottom-left-radius: 20px;
 }
 
 .sidebar-nav .nav-link i {

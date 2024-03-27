@@ -18,8 +18,8 @@
       </nav>
 
     </div>
-    <div class="align-self-center w-50" style="display: flex; justify-content: right;">
-      <button id="approve-btn" class="btn btn-primary btn-sm" style="display: none;">Approve selected farmers</button>
+    <div class="align-self-center w-50 tour-step-2" style="display: flex; justify-content: right;">
+      <button id="approve-btn" class="approve-btn btn btn-primary btn-sm" style="display: none;">Approve selected farmers</button>
     </div>
   </div><!-- End Page Title -->
 
@@ -67,13 +67,19 @@
                     @endif
                   </td>
                   <td>
-                    <div class="d-flex">
-                      <a href="?action=view&id={{$farmer['id']}}" class="btn btn-primary btn-sm mx-1 p-1"><i class="bi bi-eye"></i></a>
+                    <div class="dropdown">
+                      <button class="btn btn-outline btn-sm dropdown-toggle" type="button" id="actionDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Select Action
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="actionDropdown">
+                        <a class="dropdown-item" href="?action=view&id={{$farmer['id']}}" class="mx-1 p-1">View Farmer Details</i></a>
 
-                      @if($farmer['approved'] == '1')
-                      <a href="/kapcco/dashboard/farmers/u/?action=allocate-store&id={{$farmer['id']}}" class="btn btn-success btn-sm mx-1 p-1"><i class="bi bi-shop-window"></i></a>
-                      <a href="/kapcco/dashboard/farmers/u/?action=drop-store-allocation&id={{$farmer['id']}}" class="btn btn-danger btn-sm mx-1 p-1"><i class="bi bi-shop-window"></i></a>
-                      @endif
+                        @if($farmer['approved'] == '1')
+                        <a class="dropdown-item" href="/kapcco/dashboard/farmers/u/?action=allocate-store&id={{$farmer['id']}}" class="mx-1 p-1">Assign Stores</i></a>
+                        <a class="dropdown-item text-danger" href="/kapcco/dashboard/farmers/u/?action=drop-store-allocation&id={{$farmer['id']}}" class="mx-1 p-1">Remove Stores Assigned</a>
+                        @endif
+                      </div>
+
                     </div>
                   </td>
                 </tr>
@@ -377,4 +383,75 @@
       $('#approve-btn').hide();
     });
   })
+</script>
+
+<script>
+  // Initialize Shepherd
+  const tour = new Shepherd.Tour({
+    useModalOverlay: true,
+    defaultStepOptions: {
+      classes: 'shadow-md bg-purple-dark',
+      scrollTo: true
+    }
+  });
+
+  // Add steps to the tour
+  tour.addStep({
+    id: 'step-1',
+    text: 'If you need to approve farmers, use this checkbox, after an approve farmer button will appear in the top right corner of the screen',
+    attachTo: {
+      element: 'input.row-select', // Target the element you want to highlight
+      on: 'bottom',
+    },
+    buttons: [{
+      text: 'Back',
+      action: tour.back,
+      classes: 'shepherd-button-secondary',
+    }, {
+      text: 'Next',
+      action: tour.next,
+    }],
+  });
+
+  tour.addStep({
+    id: 'step-2',
+    text: 'Then click the approve button which will appear here to approve the selected farmers.',
+    attachTo: {
+      element: 'div.tour-step-2',
+      on: 'bottom',
+    },
+    buttons: [{
+      text: 'Back',
+      action: tour.back,
+      classes: 'shepherd-button-secondary',
+    }, {
+      text: 'Next',
+      action: tour.next,
+    }],
+  });
+
+  // Add final step with "Got It" button
+  tour.addStep({
+    id: 'step-3',
+    text: 'Follow these steps to approve a farmer.',
+    buttons: [{
+      text: 'Back',
+      action: tour.back,
+      classes: 'shepherd-button-secondary',
+    }, {
+      text: 'Got It',
+      action: function() {
+        setCookie('approveFarmerTourFinished', 'true', 7); // Set cookie with expiry of 7 days
+        tour.complete();
+      },
+    }],
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    if (getCookie('approveFarmerTourFinished') === 'true') {
+      tour.cancel();
+    } else {
+      tour.start();
+    }
+  });
 </script>

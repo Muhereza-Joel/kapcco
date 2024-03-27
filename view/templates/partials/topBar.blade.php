@@ -4,7 +4,7 @@
 <div class="d-flex align-items-center justify-content-between">
     <i class="bi bi-list toggle-sidebar-btn"></i>
   <a href="/{{$appName}}/dashboard/" class="logo d-flex align-items-center">
-    <span class="d-none d-lg-block">Kapccosmis</span>
+    <span class="badge" style="margin-left: 80%; background-color: #fafafa;">Kapcco Store Management System</span>
   </a>
 </div><!-- End Logo -->
 
@@ -15,8 +15,8 @@
     <li class="nav-item dropdown pe-3">
 
       <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-        <img src="{{$avator}}" alt="Profile" class="rounded-circle">
-        <span class="d-none d-md-block dropdown-toggle ps-2">{{$username}}</span>
+        <span class="d-none d-md-block dropdown-toggle pe-2">Hello, {{$username}}</span>
+        <img src="{{$avator}}" alt="Profile" class="rounded-circle" width="40px" height="40px" style="object-fit: cover;">
       </a><!-- End Profile Iamge Icon -->
 
       <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">

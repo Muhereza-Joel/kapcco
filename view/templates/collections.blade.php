@@ -19,7 +19,7 @@
 
   <section class="section">
     <div class="row">
-      <div class="col-lg-3">
+      <div class="col-lg-3 tour-step-1">
 
         @include('season')
 
@@ -48,7 +48,7 @@
                 <input type="text" id="end-date" required class="form-control mt-2" placeholder="Choose end date" name="end-date">
                 <div class="invalid-feedback">Please choose end date</div>
               </div>
-              <div class="my-2">
+              <div class="my-2 tour-step-2">
                 @if(!$currentSeason['id'])
                 <button type="submit" class="btn btn-primary btn-sm" id="set-season">Set current season</button>
                 @else
@@ -62,7 +62,7 @@
       <div class="col-lg-3">
         <div class="card">
           <div class="card-body">
-            <div class="card-title">Set Prices for the current season</div>
+            <div class="card-title tour-step-3">Set Prices for the current season</div>
             <form id="price-scales-form" novalidate class="row g-3 needs-validation">
               <div id="add-scale-success-alert" class="alert alert-success alert-dismissible fade d-none p-1" role="alert">
                 <i class="bi bi-check-circle me-1"></i>
@@ -71,11 +71,11 @@
               </div>
               <div class="form-group my-1">
                 <label for="product-name">Product Name</label>
-                <input name="product-name" type="text" class="form-control my-1" value="Coffee" required>
+                <input name="product-name" type="text" class="form-control my-1" value="Coffee" required readonly>
                 <input name="current-season-id" type="hidden" class="form-control my-1" value="{{$currentSeason['id']}}" required>
                 <div class="invalid-feedback">Please provide product name</div>
               </div>
-              <div class="form-control mt-2">
+              <div class="form-control mt-2 tour-step-4">
                 <label for="product-type">Product Type</label>
                 <select name="product-type" id="product-type" class="form-control" required>
                   <option value="">Select product type</option>
@@ -86,14 +86,14 @@
                 </select>
                 <div class="invalid-feedback">Please select coffee type</div>
               </div>
-              <div class="form-group mt-2">
+              <div class="form-group mt-2 tour-step-5">
                 <label for="unit-price">Unit Price per Kilogram</label>
                 <input name="unit-price" id="unit-price" type="number" class="form-control my-1" required>
                 <div class="invalid-feedback">Please enter unit price</div>
               </div>
 
               <div class="my-2">
-                <button type="submit" class="btn btn-primary btn-sm">Save Price Data</button>
+                <button type="submit" class="btn btn-primary btn-sm tour-step-6">Save Price Data</button>
               </div>
 
             </form>
@@ -225,4 +225,157 @@
     $("#time-remaining").text('Remaining time: ' + days + ' days.')
 
   })
+</script>
+
+<script>
+  const tour = new Shepherd.Tour({
+    useModalOverlay: true,
+    defaultStepOptions: {
+      classes: 'shadow-md bg-purple-dark',
+      scrollTo: true
+    }
+  });
+
+  tour.addStep({
+    id: 'step-0',
+    text: '<h4><strong>Hello {{$username}}, Take a brief tour on how you will manage seasons and price scales for your store</strong></h4> <h6>I will guide you through a few steps to achieve this task</h6>',
+    buttons: [{
+      text: 'No, I already no',
+      action: tour.cancel,
+      classes: 'shepherd-button-secondary',
+    }, {
+      text: 'Yeah, Lets Start',
+      action: tour.next,
+    }],
+  });
+
+  tour.addStep({
+    id: 'step-1',
+    text: 'To record collections, set the current season if there is no season which is running. <br/> <strong>Please note that all collections are tracked basing on the current and passed seasons</strong>',
+    attachTo: {
+      element: 'div.tour-step-1', // Target the element you want to highlight
+      on: 'bottom',
+    },
+    buttons: [{
+      text: 'Back',
+      action: tour.back,
+      classes: 'shepherd-button-secondary',
+    }, {
+      text: 'Next',
+      action: tour.next,
+    }],
+  });
+
+  tour.addStep({
+    id: 'step-2',
+    text: 'Use this button to save the start date and end date of the new season, Note that you can only set the season once until the end date has passed. That is when you will be able to set the new season again..',
+    attachTo: {
+      element: 'div.tour-step-2', // Target the element you want to highlight
+      on: 'bottom',
+    },
+    buttons: [{
+      text: 'Back',
+      action: tour.back,
+      classes: 'shepherd-button-secondary',
+    }, {
+      text: 'Next',
+      action: tour.next,
+    }],
+  });
+
+  tour.addStep({
+    id: 'step-3',
+    text: 'Always set price scales for the products your store recieves. Note that setting new price scales for a product will update its scale for that season.',
+    attachTo: {
+      element: 'div.tour-step-3', // Target the element you want to highlight
+      on: 'bottom',
+    },
+    buttons: [{
+      text: 'Back',
+      action: tour.back,
+      classes: 'shepherd-button-secondary',
+    }, {
+      text: 'Next',
+      action: tour.next,
+    }],
+  });
+
+  tour.addStep({
+    id: 'step-4',
+    text: 'Use this dropdown to select the product then provide the unit price for the product.',
+    attachTo: {
+      element: 'div.tour-step-4', // Target the element you want to highlight
+      on: 'bottom',
+    },
+    buttons: [{
+      text: 'Back',
+      action: tour.back,
+      classes: 'shepherd-button-secondary',
+    }, {
+      text: 'Next',
+      action: tour.next,
+    }],
+  });
+
+  tour.addStep({
+    id: 'step-5',
+    text: 'Enter the unit price here. Note that this price is only used in the current season, when you start a new season, you have to set a new unit price',
+    attachTo: {
+      element: 'div.tour-step-5', // Target the element you want to highlight
+      on: 'bottom',
+    },
+    buttons: [{
+      text: 'Back',
+      action: tour.back,
+      classes: 'shepherd-button-secondary',
+    }, {
+      text: 'Next',
+      action: tour.next,
+    }],
+  });
+
+  tour.addStep({
+    id: 'step-6',
+    text: 'Click this button to save the scale. It will be used when recording collections against this product',
+    attachTo: {
+      element: 'button.tour-step-6', // Target the element you want to highlight
+      on: 'bottom',
+    },
+    buttons: [{
+      text: 'Back',
+      action: tour.back,
+      classes: 'shepherd-button-secondary',
+    }, {
+      text: 'Next',
+      action: tour.next,
+    }],
+  });
+
+  tour.addStep({
+    id: 'step-7',
+    text: '<h4><strong>Alright {{$username}}, I hope you have understood all the steps to mange seasons and scales</strong></h4> Note that depending on your role, your the only person who can set seasons and scales, always pay attension to what you are doing.',
+    buttons: [{
+      text: 'Back',
+      action: tour.back,
+      classes: 'shepherd-button-secondary',
+    }, {
+      text: 'Got It',
+      action: function() {
+        setCookie('manageCollectionTourFinished', 'true', 7); // Set cookie with expiry of 7 days
+        tour.complete();
+      },
+    }],
+  });
+
+
+  
+
+
+  document.addEventListener('DOMContentLoaded', function() {
+    if (getCookie('manageCollectionTourFinished') === 'true') {
+      tour.cancel();
+    } else {
+      tour.start();
+    }
+  });
 </script>

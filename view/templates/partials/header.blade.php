@@ -29,6 +29,7 @@
 
   <!-- Template Main CSS File -->
   <link href="/{{$appName}}/assets/css/style.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shepherd.js@10.0.1/dist/css/shepherd.css"/>
 
   <style>
     #loading-overlay {
@@ -63,6 +64,31 @@
       100% {
         transform: rotate(360deg);
       }
+    }
+
+    .shepherd-modal {
+      background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+      
+    }
+
+    .shepherd-content {
+      color: #075E54; /* White text color */
+    }
+
+    .shepherd-buttons {
+      margin-top: 20px; /* Add spacing between buttons */
+    }
+
+    .shepherd-button {
+      background-color: #075E54; /* Blue button color */
+      color: #fff; /* White text color */
+      border-radius: 5px; /* Rounded corners */
+      padding: 4px 8px; /* Padding for buttons */
+      margin-right: 10px; /* Add spacing between buttons */
+    }
+
+    .shepherd-button:hover {
+      background-color: #075E54; /* Darker blue on hover */
     }
   </style>
 

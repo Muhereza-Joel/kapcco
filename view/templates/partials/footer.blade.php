@@ -1,5 +1,3 @@
-
-
 <!-- Vendor JS Files -->
 <script src="/{{$appName}}/assets/vendor/apexcharts/apexcharts.min.js"></script>
 <script src="/{{$appName}}/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -15,6 +13,7 @@
 <script src="/{{$appName}}/assets/js/moments.js"></script>
 <script src="/{{$appName}}/assets/vendor/jquery-ui/jquery-ui.min.js"></script>
 <script src="/{{$appName}}/assets/js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/shepherd.js@10.0.1/dist/js/shepherd.min.js"></script>
 
 <script>
   function showLoadingOverlay() {
@@ -24,6 +23,32 @@
   // Hide loading overlay
   function hideLoadingOverlay() {
     $('#loading-overlay').fadeOut();
+  }
+
+  function setCookie(name, value, days) {
+    var expires = "";
+    if (days) {
+      var date = new Date();
+      date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+      expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+  }
+
+  // Function to get the value of a cookie by name
+  function getCookie(name) {
+    var nameEQ = name + "=";
+    var cookies = document.cookie.split(';');
+    for (var i = 0; i < cookies.length; i++) {
+      var cookie = cookies[i];
+      while (cookie.charAt(0) == ' ') {
+        cookie = cookie.substring(1, cookie.length);
+      }
+      if (cookie.indexOf(nameEQ) == 0) {
+        return cookie.substring(nameEQ.length, cookie.length);
+      }
+    }
+    return null;
   }
 </script>
 
