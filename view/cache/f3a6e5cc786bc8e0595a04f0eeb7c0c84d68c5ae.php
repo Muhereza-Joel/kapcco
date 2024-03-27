@@ -8,7 +8,7 @@
     <div id="loading-overlay">
         <div id="loading-indicator"></div>
     </div>
-    <div class="row">
+    <div class="row g-1">
         <div class="col-lg-4">
             <div class="card">
                 <div class="card-body">
@@ -69,21 +69,22 @@
                                     </div>
 
                                 </th>
-                                <th scope="col">Client</th>
+                                
                                 <th scope="col">Branch</th>
                                 <th scope="col">Store</th>
                                 <th scope="col">Product</th>
-                                <th scope="col">Unit Price</th>
+                                <th scope="col">Price</th>
                                 <th scope="col">Quantity</th>
                                 <th scope="col">Total</th>
                                 <th scope="col">Status</th>
+                                <th scope="col">Date</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php $__currentLoopData = $lastCollections; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $collection): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <tr>
                                 <td><input type="checkbox" class="row-select" value="<?php echo e($collection['id']); ?>"></td>
-                                <td><img width="40px" height="40px" class="rounded-circle mx-3" src="<?php echo e($collection['image_url']); ?>"></td>
+                                
                                 <td><?php echo e($collection['branch_name']); ?></td>
                                 <td><?php echo e($collection['zone_name']); ?></td>
                                 <td><?php echo e($collection['product_type']); ?></td>
@@ -97,6 +98,7 @@
                                     <span class="badge bg-danger">Not Payed</span>
                                     <?php endif; ?>
                                 </td>
+                                <td><?php echo e($collection['created_at']); ?></td>
                             </tr>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </tbody>
@@ -152,7 +154,7 @@
                         $('#reports-table tbody').append(
                             '<tr>' +
                             '<td><input type="checkbox" class="row-select" value="' + value.user_id + '"></td>' +
-                            '<td>' + '<img width="40px" height="40px" class="rounded-circle mx-3" src = "' + value.image_url + '"></td>' +
+                            
                             '<td>' + value.branch_name + '</td>' +
                             '<td>' + value.zone_name + '</td>' +
                             '<td>' + value.product_type + '</td>' +
@@ -160,6 +162,7 @@
                             '<td>' + value.quantity + '</td>' +
                             '<td>' + value.total_amount + '</td>' +
                             '<td>' + (value.payed == 1 ? '<span class="badge bg-dark">Payed</span>' : '<span class="badge bg-danger">Not Payed</span>') + '</td>' +
+                            '<td>' + value.created_at + '</td>' +
                             '</tr>'
                         );
                     });

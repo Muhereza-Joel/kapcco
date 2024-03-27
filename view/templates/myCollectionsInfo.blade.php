@@ -5,7 +5,7 @@
 @include('partials/leftPane');
 
 <main id="main" class="main">
-  <div class="row">
+  <div class="row g-1">
     <div class="col-lg-4">
       @include('season')
 

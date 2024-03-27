@@ -100,7 +100,7 @@
         </div>
         <div class="row">
 
-          <div class="col-lg-8">
+          <div class="col-lg-9">
 
             @if($role == 'Administrator')
 
@@ -125,6 +125,7 @@
                       <th scope="col">Quantity</th>
                       <th scope="col">Total</th>
                       <th scope="col">Status</th>
+                      <th scope="col">Added On</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -145,6 +146,7 @@
                         <span class="badge bg-danger">Not Payed</span>
                         @endif
                       </td>
+                      <td>{{$collection['created_at']}}</td>
                     </tr>
                     @endforeach
                   </tbody>

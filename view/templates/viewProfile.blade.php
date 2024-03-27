@@ -31,7 +31,7 @@
 
   <section class="section profile">
 
-    <div class="row">
+    <div class="row g-1">
       <div class="col-xl-4">
 
         <div class="card">

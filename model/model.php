@@ -541,7 +541,7 @@ class Model
 
     public function get_last_collections()
     {
-        $query = "SELECT c.id,c.current_season,b.branch_name,z.zone_name,up.fullname,up.image_url,up.phone,c.product_type,c.unit_price,c.quantity,c.total_amount,c.payed,c.farmer_id
+        $query = "SELECT c.id,c.current_season,b.branch_name,z.zone_name,up.fullname,up.image_url,up.phone,c.product_type,c.unit_price,c.quantity,c.total_amount,c.payed,c.farmer_id, c.created_at
                   FROM
                     collections c
                   LEFT JOIN
@@ -565,7 +565,7 @@ class Model
 
     public function get_farmer_last_collections($id)
     {
-        $query = "SELECT c.id,c.current_season,b.branch_name,z.zone_name,up.fullname,up.image_url,up.phone,c.product_type,c.unit_price,c.quantity,c.total_amount,c.payed,c.farmer_id
+        $query = "SELECT c.id,c.current_season,b.branch_name,z.zone_name,up.fullname,up.image_url,up.phone,c.product_type,c.unit_price,c.quantity,c.total_amount,c.payed,c.farmer_id, c.created_at
                   FROM
                     collections c
                   LEFT JOIN

@@ -5,7 +5,7 @@
 <?php echo $__env->make('partials/leftPane', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>;
 
 <main id="main" class="main">
-  <div class="row">
+  <div class="row g-1">
     <div class="col-lg-4">
       <?php echo $__env->make('season', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 

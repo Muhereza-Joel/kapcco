@@ -100,7 +100,7 @@
         </div>
         <div class="row">
 
-          <div class="col-lg-8">
+          <div class="col-lg-9">
 
             <?php if($role == 'Administrator'): ?>
 
@@ -125,6 +125,7 @@
                       <th scope="col">Quantity</th>
                       <th scope="col">Total</th>
                       <th scope="col">Status</th>
+                      <th scope="col">Added On</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -145,6 +146,7 @@
                         <span class="badge bg-danger">Not Payed</span>
                         <?php endif; ?>
                       </td>
+                      <td><?php echo e($collection['created_at']); ?></td>
                     </tr>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                   </tbody>
