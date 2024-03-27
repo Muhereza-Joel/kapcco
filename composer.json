@@ -10,12 +10,19 @@
     "require": {
         "jenssegers/blade": "^1.1",
         "vlucas/phpdotenv": "^4.3",
-        "tecnickcom/tcpdf": "^6.6"
+        "tecnickcom/tcpdf": "^6.6",
+        "dompdf/dompdf": "^0.8.3",
+        "nesbot/carbon": "^1.39"
     },
 
     "autoload": {
         "psr-4": {
             "kapcco\\": "C:\\wamp64\\www\\kapcco"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "kylekatarnls/update-helper": true
         }
     }
 }

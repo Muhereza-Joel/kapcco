@@ -55,4 +55,6 @@ Route::post('/kapcco/dashboard/colllections/set-price-scale/', 'kapcco\controlle
 Route::post('/kapcco/dashboard/colllections/get-product-unit-price/', 'kapcco\controller\CollectionsController@get_product_unit_price');
 Route::post('/kapcco/dashboard/colllections/add/', 'kapcco\controller\CollectionsController@add_collection');
 
+//PDF Controller Routes
+Route::post('/kapcco/reports/pdf/last-collections/', 'kapcco\controller\PDFController@export_last_five_collections_pdf');
 ?>

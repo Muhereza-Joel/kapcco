@@ -1,3 +1,7 @@
+@php
+use Carbon\Carbon;
+@endphp
+
 @include('partials/header')
 
 @include('partials/topBar');
@@ -100,13 +104,23 @@
         </div>
         <div class="row">
 
-          <div class="col-lg-9">
+          <div class="col-lg-10">
 
             @if($role == 'Administrator')
 
             <div class="card" style="position: sticky; top: 50px">
               <div class="card-body">
-                <div id="report-header" class="card-title fw-bold">Showing last {{count($lastCollections)}} collections.</div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div id="report-header" class="card-title fw-bold">Showing last {{count($lastCollections)}} collections.</div>
+
+                  </div>
+                  <div class="col-sm-6 mt-3">
+                    <div class="text-end"><button id="exportPdfBtn" class="btn btn-primary btn-sm">Export To Pdf</button></div>
+
+                  </div>
+
+                </div>
                 <table class="table table-striped" id="reports-table">
                   <thead>
                     <tr>
@@ -146,7 +160,7 @@
                         <span class="badge bg-danger">Not Payed</span>
                         @endif
                       </td>
-                      <td>{{$collection['created_at']}}</td>
+                      <td>{{ \Carbon\Carbon::parse($collection['created_at'])->format('d-m-Y') }}</td>
                     </tr>
                     @endforeach
                   </tbody>
@@ -164,6 +178,49 @@
     </div>
   </section>
 
+  <div class="modal fade" id="pdfModal" tabindex="-1" aria-labelledby="pdfModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="pdfModalLabel">PDF Preview</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <iframe id="pdfIframe" width="100%" height="500px" frameborder="0"></iframe>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </main><!-- End #main -->
 
 @include('partials/footer')
+
+<script>
+  $(document).ready(function(){
+    $("#exportPdfBtn").on("click", function() {
+      
+      $.ajax({
+        url: '/kapcco/reports/pdf/last-collections/',
+        method: 'post',
+        processData: false,
+        contentType: false,
+        success: function(response) {
+
+          var pdfData = response;
+
+          $("#pdfIframe").attr("src", "data:application/pdf;base64," + pdfData);
+
+          // Open the Bootstrap modal
+          $("#pdfModal").modal("show");
+        },
+        error: function(xhr, status, error) {
+          console.error("Error:", error);
+        }
+      });
+    });
+  })
+</script>
