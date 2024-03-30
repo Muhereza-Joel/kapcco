@@ -1,3 +1,6 @@
+<?php 
+use Carbon\Carbon;
+ ?>
 <?php echo $__env->make('partials/header', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 
 <?php echo $__env->make('partials/topBar', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>;
@@ -8,24 +11,31 @@
   <div id="loading-overlay">
     <div id="loading-indicator"></div>
   </div>
-  <div class="pagetitle">
-    <h1>Reports</h1>
-    <nav>
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/<?php echo e($appName); ?>/dashboard/">Dashboard</a></li>
-        <li class="breadcrumb-item">Collections</li>
-        <li class="breadcrumb-item active">Reports</li>
-      </ol>
-    </nav>
-  </div><!-- End Page Title -->
+  <div class="d-flex">
+    <div class="pagetitle w-50">
+      <h1>Reports</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/<?php echo e($appName); ?>/dashboard/">Dashboard</a></li>
+          <li class="breadcrumb-item">Collections</li>
+          <li class="breadcrumb-item active">Reports</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+    <div class="w-50 text-end">
+      <div class="text-end"><button id="exportPdfBtn" class="btn btn-primary btn-sm">Export To Pdf</button></div>
+
+    </div>
+
+  </div>
 
   <section class="section">
     <div class="row g-1">
-      <div class="col-lg-4">
+      <div class="col-lg-3">
         <?php echo $__env->make('selectBranchAndStore', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
         <?php echo $__env->make('farmerCollectionTable', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
       </div>
-      <div class="col-lg-8">
+      <div class="col-lg-9">
 
         <div class="card" style="position: sticky; top: 50px">
           <div class="card-body">
@@ -33,13 +43,7 @@
             <table class="table table-striped datatable" id="reports-table">
               <thead>
                 <tr>
-                  <th>
-                    <div class="icon">
-                      <i class="bi bi-check-square-fill"></i>
 
-                    </div>
-
-                  </th>
                   <th scope="col">Client</th>
                   <th scope="col">Branch</th>
                   <th scope="col">Store</th>
@@ -48,12 +52,13 @@
                   <th scope="col">Quantity</th>
                   <th scope="col">Total</th>
                   <th scope="col">Status</th>
+                  <th scope="col">Added On</th>
                 </tr>
               </thead>
               <tbody>
                 <?php $__currentLoopData = $lastCollections; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $collection): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <tr>
-                  <td><input type="checkbox" class="row-select" value="<?php echo e($collection['id']); ?>"></td>
+
                   <td><img width="40px" height="40px" class="rounded-circle mx-3" src="<?php echo e($collection['image_url']); ?>"></td>
                   <td><?php echo e($collection['branch_name']); ?></td>
                   <td><?php echo e($collection['zone_name']); ?></td>
@@ -68,6 +73,7 @@
                     <span class="badge bg-danger">Not Payed</span>
                     <?php endif; ?>
                   </td>
+                  <td><?php echo e(\Carbon\Carbon::parse($collection['created_at'])->format('d-m-Y')); ?></td>
                 </tr>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
               </tbody>
@@ -78,6 +84,23 @@
       </div>
     </div>
   </section>
+
+  <div class="modal fade" id="pdfModal" tabindex="-1" aria-labelledby="pdfModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="pdfModalLabel">PDF Preview</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <iframe id="pdfIframe" width="100%" height="500px" frameborder="0"></iframe>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </main><!-- End #main -->
 
@@ -91,11 +114,14 @@
     var selectedStore;
     var selectedBranch;
     var datatable = $('#reports-table.datatable');
-    
+    var selectedOption = 'branch';
+    var farmerId;
+
 
     $('#parent-branch-drop-down').on('change', function() {
       $('#farmers-to-allocate-table tbody').empty();
       selectedFarmers = [];
+      selectedOption = 'branch';
 
       selectedBranch = $(this).val();
 
@@ -120,9 +146,13 @@
           $('#reports-table tbody').empty();
 
           $.each(data.collections, function(key, value) {
+            var createdAt = new Date(value.created_at);
+            var formattedDate = (createdAt.getDate() < 10 ? '0' : '') + createdAt.getDate() + '-' +
+              ((createdAt.getMonth() + 1) < 10 ? '0' : '') + (createdAt.getMonth() + 1) + '-' +
+              createdAt.getFullYear();
             $('#reports-table tbody').append(
               '<tr>' +
-              '<td><input type="checkbox" class="row-select" value="' + value.user_id + '"></td>' +
+
               '<td>' + '<img width="40px" height="40px" class="rounded-circle mx-3" src = "' + value.image_url + '"></td>' +
               '<td>' + value.branch_name + '</td>' +
               '<td>' + value.zone_name + '</td>' +
@@ -131,6 +161,7 @@
               '<td>' + value.quantity + '</td>' +
               '<td>' + value.total_amount + '</td>' +
               '<td>' + (value.payed == 1 ? '<span class="badge bg-dark">Payed</span>' : '<span class="badge bg-danger">Not Payed</span>') + '</td>' +
+              '<td>' + formattedDate + '</td>' +
               '</tr>'
             );
           });
@@ -138,7 +169,7 @@
           $('#report-header').text('Collection data for seleted branch.')
           hideLoadingOverlay();
 
-          
+
         },
         error: function(error) {
           hideLoadingOverlay();
@@ -151,6 +182,7 @@
 
       selectedStore = $(this).val();
       selectedFarmers = [];
+      selectedOption = 'store'
 
       showLoadingOverlay();
 
@@ -176,9 +208,13 @@
           $('#reports-table tbody').empty();
 
           $.each(data.collections, function(key, value) {
+            var createdAt = new Date(value.created_at);
+            var formattedDate = (createdAt.getDate() < 10 ? '0' : '') + createdAt.getDate() + '-' +
+              ((createdAt.getMonth() + 1) < 10 ? '0' : '') + (createdAt.getMonth() + 1) + '-' +
+              createdAt.getFullYear();
             $('#reports-table tbody').append(
               '<tr>' +
-              '<td><input type="checkbox" class="row-select" value="' + value.user_id + '"></td>' +
+
               '<td>' + '<img width="40px" height="40px" class="rounded-circle mx-3" src = "' + value.image_url + '"></td>' +
               '<td>' + value.branch_name + '</td>' +
               '<td>' + value.zone_name + '</td>' +
@@ -187,14 +223,15 @@
               '<td>' + value.quantity + '</td>' +
               '<td>' + value.total_amount + '</td>' +
               '<td>' + (value.payed == 1 ? '<span class="badge bg-dark">Payed</span>' : '<span class="badge bg-danger">Not Payed</span>') + '</td>' +
+              '<td>' + formattedDate + '</td>' +
               '</tr>'
             );
           });
 
           $('#report-header').text('Collection data for seleted branch and store.')
           hideLoadingOverlay();
-         
-         ;
+
+          ;
         },
         error: function(error) {
           console.log('Error fetching data:', error);
@@ -205,7 +242,7 @@
 
 
     $('#farmers-to-allocate-table tbody').on('change', 'input.row-select', function() {
-      var farmerId = $(this).val();
+      farmerId = $(this).val();
 
       if (this.checked) {
         if (selectedFarmers.length >= maxSelection) {
@@ -213,6 +250,7 @@
           alert('You can only fetch recods for one farmer per selection.');
         } else {
           selectedFarmers.push(farmerId);
+          selectedOption = 'farmer';
           getSelectedFarmerCollections(selectedBranch, selectedStore, farmerId);
         }
       } else {
@@ -237,9 +275,14 @@
           $('#reports-table tbody').empty();
 
           $.each(data.collections, function(key, value) {
+            var createdAt = new Date(value.created_at);
+            var formattedDate = (createdAt.getDate() < 10 ? '0' : '') + createdAt.getDate() + '-' +
+              ((createdAt.getMonth() + 1) < 10 ? '0' : '') + (createdAt.getMonth() + 1) + '-' +
+              createdAt.getFullYear();
+
             $('#reports-table tbody').append(
               '<tr>' +
-              '<td><input type="checkbox" class="row-select" value="' + value.user_id + '"></td>' +
+
               '<td>' + '<img width="40px" height="40px" class="rounded-circle mx-3" src = "' + value.image_url + '"></td>' +
               '<td>' + value.branch_name + '</td>' +
               '<td>' + value.zone_name + '</td>' +
@@ -248,6 +291,7 @@
               '<td>' + value.quantity + '</td>' +
               '<td>' + value.total_amount + '</td>' +
               '<td>' + (value.payed == 1 ? '<span class="badge bg-dark">Payed</span>' : '<span class="badge bg-danger">Not Payed</span>') + '</td>' +
+              '<td>' + formattedDate + '</td>' +
               '</tr>'
             );
           });
@@ -257,6 +301,70 @@
 
         }
       })
+    }
+
+    $('#exportPdfBtn').click(function() {
+      switch (selectedOption) {
+        case 'branch':
+          fetchData('branch', {
+            branch_id: selectedBranch
+          })
+          break;
+        case 'store':
+          fetchData('store', {
+            store_id: selectedStore
+          })
+          break;
+        case 'farmer':
+          fetchData('farmer', {
+            branch_id: selectedBranch,
+            store_id: selectedStore,
+            farmer_id: farmerId
+          })
+          break;
+        default:
+          console.error('Invalid selected option');
+          return;
+      }
+    })
+
+    function fetchData(selectedOption, requestData) {
+      var url;
+
+      switch (selectedOption) {
+        case 'branch':
+          url = `/kapcco/reports/pdf/branch-collections/?branch_id=${selectedBranch}`;
+          break;
+        case 'store':
+          url = `/kapcco/reports/pdf/store-collections/?store_id=${selectedStore}`;
+          break;
+        case 'farmer':
+          url = `/kapcco/reports/pdf/farmer-collections/?branch=${selectedBranch}&store=${selectedStore}&farmer_id=${farmerId}`;
+          break;
+        default:
+          console.error('Invalid selected option');
+          return;
+      }
+
+      $.ajax({
+        url: url,
+        method: 'post',
+        processData: false,
+        contentType: false,
+        success: function(response) {
+
+          var pdfData = response;
+
+          $("#pdfIframe").attr("src", "data:application/pdf;base64," + pdfData);
+
+          // Open the Bootstrap modal
+          $("#pdfModal").modal("show");
+        },
+        error: function(xhr, status, error) {
+          console.error("Error:", error);
+        }
+      });
+
     }
 
 

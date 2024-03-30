@@ -57,4 +57,7 @@ Route::post('/kapcco/dashboard/colllections/add/', 'kapcco\controller\Collection
 
 //PDF Controller Routes
 Route::post('/kapcco/reports/pdf/last-collections/', 'kapcco\controller\PDFController@export_last_five_collections_pdf');
+Route::post('/kapcco/reports/pdf/branch-collections/', 'kapcco\controller\PDFController@export_branch_collections_pdf');
+Route::post('/kapcco/reports/pdf/store-collections/', 'kapcco\controller\PDFController@export_store_collections_pdf');
+Route::post('/kapcco/reports/pdf/farmer-collections/', 'kapcco\controller\PDFController@export_farmer_collections_pdf');
 ?>
