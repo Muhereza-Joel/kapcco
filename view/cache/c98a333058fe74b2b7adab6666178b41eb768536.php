@@ -49,7 +49,7 @@
                 <div class="invalid-feedback">Please choose end date</div>
               </div>
               <div class="my-2 tour-step-2">
-                <?php if(!$currentSeason['id']): ?>
+                <?php if(!isset($currentSeason['id']) || $currentSeason['id'] === null): ?>
                 <button type="submit" class="btn btn-primary btn-sm" id="set-season">Set current season</button>
                 <?php else: ?>
                 <button type="submit" class="btn btn-primary btn-sm" id="set-season" disabled>Set current season</button>

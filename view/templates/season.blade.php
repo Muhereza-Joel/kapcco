@@ -1,4 +1,4 @@
-@if(!$currentSeason['id'])
+@if(!isset($currentSeason['id']) || $currentSeason['id'] === null)
 
 <div class="card">
   <div class="card-body">
