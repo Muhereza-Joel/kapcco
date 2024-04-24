@@ -36,9 +36,15 @@ class DashboardController
     public function render_add_collection_view()
     {
         $model = new Model();
-        $current_season = $model->get_current_season();
         $branches = $model->get_all_branches();
-        $scales = $model->get_scales_for_current_season($current_season['id']);
+        $current_season = $model->get_current_season();
+        $scales = [];
+
+        if($current_season){
+            $scales = $model->get_scales_for_current_season($current_season['id']);
+        } else{
+            $scales = $model->get_scales_for_current_season(null);
+        }
 
         $blade_view = new BladeView();
         $html = $blade_view->render('addCollection', [
@@ -60,7 +66,13 @@ class DashboardController
     {
         $model = new Model();
         $current_season = $model->get_current_season();
-        $scales = $model->get_scales_for_current_season($current_season['id']);
+        $scales = [];
+
+        if($current_season){
+            $scales = $model->get_scales_for_current_season($current_season['id']);
+        } else{
+            $scales = $model->get_scales_for_current_season(null);
+        }
 
         $blade_view = new BladeView();
         $html = $blade_view->render('collections', [
@@ -217,7 +229,13 @@ class DashboardController
     {
         $model = new Model();
         $current_season = $model->get_current_season();
-        $scales = $model->get_scales_for_current_season($current_season['id']);
+        $scales = [];
+
+        if($current_season){
+            $scales = $model->get_scales_for_current_season($current_season['id']);
+        } else{
+            $scales = $model->get_scales_for_current_season(null);
+        }
         $assigned_stores = $model->get_farmer_assignments(Session::get('user_id'));
 
         $blade_view = new BladeView();

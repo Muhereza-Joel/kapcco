@@ -72,7 +72,9 @@
               <div class="form-group my-1">
                 <label for="product-name">Product Name</label>
                 <input name="product-name" type="text" class="form-control my-1" value="Coffee" required readonly>
+                <?php if($currentSeason): ?>
                 <input name="current-season-id" type="hidden" class="form-control my-1" value="<?php echo e($currentSeason['id']); ?>" required>
+                <?php endif; ?>
                 <div class="invalid-feedback">Please provide product name</div>
               </div>
               <div class="form-control mt-2 tour-step-4">

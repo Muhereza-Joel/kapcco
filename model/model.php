@@ -305,7 +305,7 @@ class Model
 
     public function get_current_season()
     {
-        $query = "SELECT * FROM season WHERE status = 'Ongoing'";
+        $query = "SELECT * FROM season WHERE status = 'Ongoing' AND season.end_date > CURRENT_DATE";
 
         $stmt = $this->database->prepare($query);
         $stmt->execute();
