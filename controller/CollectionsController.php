@@ -36,4 +36,10 @@ class CollectionsController
         $model = new Model();
         $model->save_collection_data();
     }
+
+    public function pay_collection($id)
+    {
+        $model = new Model();
+        $model->pay_collection($id);
+    }
 }

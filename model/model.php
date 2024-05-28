@@ -591,6 +591,55 @@ class Model
         return $collections;
     }
 
+    public function up_paid_collections()
+    {
+        $query = "SELECT c.id,c.current_season,b.branch_name,z.zone_name,up.fullname,up.image_url,up.phone,c.product_type,c.unit_price,c.quantity,c.total_amount,c.payed,c.farmer_id, c.created_at
+        FROM collections c
+        LEFT JOIN branches b ON c.parent_branch = b.id
+        LEFT JOIN zones z ON c.parent_store = z.id 
+        LEFT JOIN user_profile up ON c.farmer_id = up.user_id
+        WHERE  c.payed = 0   
+        ORDER BY c.id DESC 
+                          ";
+
+        $stmt = $this->database->prepare($query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $collections = $result->fetch_all(MYSQLI_ASSOC);
+
+        $stmt->close();
+
+        return $collections;
+    }
+
+    public function pay_collection($id)
+    {
+
+        $stmt = $this->database->prepare("UPDATE collections SET payed = 1 WHERE id = ?");
+        $stmt->bind_param('i', $id);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            $response = ['message' => 'Collection cleared successfully'];
+            $httpStatus = 200;
+
+            Request::send_response($httpStatus, $response);
+        } elseif ($stmt->affected_rows == 0) {
+            $response = ['message' => 'Collection Not Found'];
+            $httpStatus = 200;
+
+            Request::send_response($httpStatus, $response);
+        } else {
+
+            $response = ['error' => $stmt->error];
+            $httpStatus = 500;
+
+            Request::send_response($httpStatus, $response);
+        }
+
+        $stmt->close();
+    }
+
     public function get_branches_total()
     {
         $count = 0;

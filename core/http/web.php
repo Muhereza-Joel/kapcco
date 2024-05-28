@@ -24,6 +24,7 @@ Route::post('/kapcco/auth/user/profile/', 'kapcco\controller\AuthController@rend
 Route::post('/kapcco/dashboard/', 'kapcco\controller\DashboardController@index');
 Route::post('/kapcco/dashboard/add-collection/', 'kapcco\controller\DashboardController@render_add_collection_view');
 Route::post('/kapcco/dashboard/collections/', 'kapcco\controller\DashboardController@render_collections_view');
+Route::post('/kapcco/dashboard/collections/not-paid/', 'kapcco\controller\DashboardController@render_collections_not_paid_view');
 Route::post('/kapcco/dashboard/branches/', 'kapcco\controller\DashboardController@render_branches_view');
 Route::post('/kapcco/dashboard/zones/', 'kapcco\controller\DashboardController@render_zones_view');
 Route::post('/kapcco/dashboard/reports/branch-store/', 'kapcco\controller\DashboardController@render_branch_stores_reports_view');
@@ -54,6 +55,7 @@ Route::post('/kapcco/dashboard/colllections/add-season/', 'kapcco\controller\Col
 Route::post('/kapcco/dashboard/colllections/set-price-scale/', 'kapcco\controller\CollectionsController@set_price_scale');
 Route::post('/kapcco/dashboard/colllections/get-product-unit-price/', 'kapcco\controller\CollectionsController@get_product_unit_price');
 Route::post('/kapcco/dashboard/colllections/add/', 'kapcco\controller\CollectionsController@add_collection');
+Route::post('/kapcco/dashboard/colllections/up-paid/clear', 'kapcco\controller\CollectionsController@pay_collection');
 
 //PDF Controller Routes
 Route::post('/kapcco/reports/pdf/last-collections/', 'kapcco\controller\PDFController@export_last_five_collections_pdf');

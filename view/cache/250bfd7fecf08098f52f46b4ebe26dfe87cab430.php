@@ -21,6 +21,13 @@
       <span>Add Collection</span>
     </a>
   </li>
+
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="/<?php echo e($appName); ?>/dashboard/collections/not-paid/">
+      <i class="bi bi-card-list"></i>
+      <span>Un-Paid Collections</span>
+    </a>
+  </li>
   
   
   <li class="nav-item pb-2">

@@ -225,6 +225,26 @@ class DashboardController
         echo ($html);
     }
 
+    public function render_collections_not_paid_view()
+    {
+        $model = new Model();
+        $unpaid_collections = $model->up_paid_collections();
+
+        $blade_view = new BladeView();
+        $html = $blade_view->render('unPaidCollections', [
+            'pageTitle' => "KAPCCO - farmers",
+            'appName' => getenv('APP_NAME'),
+            'username' => Session::get('username'),
+            'role' => Session::get('role'),
+            'avator' => Session::get('avator'),
+            'userId' => Session::get('user_id'),
+            'unPaidCollections' => $unpaid_collections,
+
+        ]);
+
+        echo ($html);
+    }
+
     public function render_my_collections_info_view()
     {
         $model = new Model();
