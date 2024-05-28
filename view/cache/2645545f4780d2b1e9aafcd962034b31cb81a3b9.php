@@ -92,7 +92,7 @@
             <span>Email: info@karangurapeakcoffee.org</span>
             <br>
             <h4 class="document-header">
-                Last Five Collections Report
+                Collections Report
             </h4>
         </div>
     </div>
